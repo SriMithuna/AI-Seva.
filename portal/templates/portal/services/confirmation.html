@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted | AI Seva</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px #ddd;
+        }
+
+        .success {
+            font-size: 65px;
+            color: #138808;
+        }
+
+        h1 { color: #102f63; }
+
+        .tracking {
+            background: #fff5e6;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 25px 0;
+            color: #102f63;
+        }
+
+        .details {
+            text-align: left;
+            line-height: 2;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #138808;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 8px;
+        }
+
+        .home {
+            background: #102f63;
+        }
+
+        .note {
+            color: #68778b;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="success">✓</div>
+
+    <h1>Application Submitted!</h1>
+
+    <p>Your application has been successfully recorded in AI Seva.</p>
+
+    <div class="tracking">
+        <p>Your Tracking ID</p>
+        <h2>{{ application.tracking_id }}</h2>
+    </div>
+
+    <div class="details">
+        <p><strong>Applicant:</strong> {{ application.full_name }}</p>
+        <p><strong>Scheme / Service:</strong> {{ application.scheme.name }}</p>
+        <p><strong>Submitted Date:</strong> {{ application.created_at|date:"d M Y" }}</p>
+        <p><strong>Status:</strong> {{ application.status }}</p>
+    </div>
+
+    <a href="/applications/track/" class="btn">
+        Track Application
+    </a>
+
+    <a href="/" class="btn home">
+        Home
+    </a>
+
+    <p class="note">
+        This is an AI Seva demonstration application.
+        It does not represent official government approval or submission.
+    </p>
+
+</div>
+
+{% include "portal/chatbot_widget.html" %}
+</body>
+</html>

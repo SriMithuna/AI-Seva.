@@ -1,0 +1,212 @@
+{% extends "agriculture/base.html" %}
+
+{% block title %}Agriculture | AI Seva{% endblock %}
+
+{% block extra_styles %}
+  .crumbs { padding-top:24px; color:var(--soft); font-size:13px; }
+  .crumbs a { color:var(--navy); text-decoration:none; }
+  .hero { padding:35px 0 38px; background:linear-gradient(180deg,#fff4e5 0,var(--bg) 94%); }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr); gap:42px; align-items:center; }
+  .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--grn); font-weight:700; font-size:13px; letter-spacing:.09em; text-transform:uppercase; }
+  .eyebrow::before { content:""; width:24px; height:3px; border-radius:4px; background:var(--saf); }
+  .hero h1 { margin-top:12px; max-width:760px; color:var(--navy); font-size:clamp(34px,5vw,54px); line-height:1.08; font-weight:800; }
+  .hero h1 span { color:var(--grn); }
+  .hero-copy { max-width:630px; margin:18px 0 22px; color:var(--soft); font-size:17px; }
+  .hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
+  .hero-art { position:relative; min-height:235px; display:grid; place-items:center; }
+  .art-orbit { position:absolute; width:215px; aspect-ratio:1; border:1px dashed rgba(192,145,51,.45); border-radius:50%; }
+  .art-disc { position:relative; width:164px; aspect-ratio:1; display:grid; place-items:center; border:1px solid #f2dfb8; border-radius:50%; background:linear-gradient(145deg,#fff0cf,#fffaf0); box-shadow:0 20px 50px rgba(158,112,37,.15); }
+  .art-disc svg { width:96px; height:96px; color:#9b6b1b; }
+  .art-leaf { position:absolute; display:grid; place-items:center; width:48px; height:48px; border:1px solid #f1dfbb; border-radius:15px; background:#fffaf0; color:#a75d0a; box-shadow:0 8px 24px rgba(122,86,28,.12); }
+  .art-leaf svg { width:23px; height:23px; }
+  .leaf-one { top:22px; right:32px; transform:rotate(8deg); } .leaf-two { bottom:24px; left:30px; transform:rotate(-8deg); }
+  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:15px; }
+  .stat-box { position:relative; overflow:hidden; padding:18px 20px; border:1px solid #eee1c7; border-radius:14px; background:linear-gradient(150deg,#fff 60%,#fffaf0); box-shadow:0 5px 16px rgba(122,86,28,.07); }
+  .stat-box::before { content:""; position:absolute; inset:0 0 auto; height:4px; background:linear-gradient(90deg,#b98932,#f5dda5,#c79b4b); }
+  .stat-num { display:block; color:var(--navy); font-size:28px; line-height:1.1; font-weight:800; }
+  .stat-label { display:block; margin-top:5px; color:var(--soft); font-size:13px; font-weight:600; }
+  .notice { margin-top:20px; display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid #ecd9ad; border-radius:10px; background:linear-gradient(100deg,#fff7e5,#fffaf1); color:#70501e; font-size:13px; }
+  .notice-icon { flex:0 0 23px; width:23px; height:23px; display:grid; place-items:center; border:1px solid #e5c987; border-radius:50%; background:#f8e8c4; color:#805610; font-weight:800; }
+  .section { padding:50px 0 12px; }
+  .section-heading { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:22px; }
+  .section-heading h2 { color:var(--navy); font-size:clamp(25px,3vw,34px); font-weight:800; }
+  .section-heading h2::after { content:""; display:block; width:64px; height:4px; margin-top:9px; border-radius:4px; background:linear-gradient(90deg,#b98932,#efd18c); }
+  .section-heading p { max-width:440px; margin-top:8px; color:var(--soft); }
+  .module-total { color:var(--soft); font-size:13px; white-space:nowrap; }
+  .toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin:20px 0 24px; }
+  .filters { display:flex; gap:8px; overflow-x:auto; padding:3px; }
+  .filter-button { flex:0 0 auto; border:1px solid var(--line); border-radius:999px; padding:9px 15px; background:#fff; color:var(--soft); font-weight:600; transition:.2s; }
+  .filter-button:hover { border-color:#d7b46d; color:#805610; }
+  .filter-button[aria-pressed="true"] { border-color:#bb8b35; background:linear-gradient(135deg,#f1d38f,#e8bf69); color:#30220b; box-shadow:0 4px 10px rgba(158,112,37,.16); }
+  .search-wrap { position:relative; flex:1 1 260px; max-width:360px; }
+  .search-wrap svg { position:absolute; left:13px; top:50%; width:18px; height:18px; transform:translateY(-50%); color:#788197; pointer-events:none; }
+  .search-input { width:100%; min-height:43px; padding:10px 13px 10px 40px; border:1px solid var(--line); border-radius:9px; background:#fff; color:var(--ink); font:inherit; }
+  .search-input:focus { outline:3px solid rgba(11,42,107,.12); border-color:var(--navy); }
+  .card-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:19px; align-items:stretch; }
+  .module-card { position:relative; overflow:hidden; display:flex; flex-direction:column; min-width:0; padding:22px; border:1px solid #eadfc9; border-radius:16px; background:linear-gradient(155deg,#fff 62%,#fffaf1); box-shadow:0 6px 18px rgba(122,86,28,.08); transition:transform .28s,box-shadow .28s,border-color .28s; }
+  .module-card[hidden] { display:none; }
+  .module-card::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,#b98932,#f2d99e,#c5943d); transition:width .25s; }
+  .module-card:hover { transform:translateY(-5px); border-color:#d5bd8d; box-shadow:0 16px 34px rgba(122,86,28,.14); }
+  .module-card:hover::before { width:6px; }
+  .card-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .module-icon { width:53px; height:53px; display:grid; place-items:center; border:1px solid #ead8ad; border-radius:15px; background:linear-gradient(145deg,#fff3d9,#f2dfb8); color:#8b641f; box-shadow:inset 0 1px 0 rgba(255,255,255,.85); }
+  .module-icon svg { width:27px; height:27px; }
+  .type-pill { border:1px solid #e4d1a7; border-radius:999px; padding:5px 10px; background:#fff8e8; color:#805d1f; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+  .module-card h3 { margin-top:17px; color:var(--navy); font-size:20px; line-height:1.25; }
+  .full-name { min-height:20px; margin-top:4px; color:#7a8294; font-size:12px; }
+  .module-summary { margin-top:12px; color:var(--soft); font-size:14px; }
+  .benefit { display:flex; align-items:flex-start; gap:9px; margin-top:15px; padding:11px 12px; border:1px solid #eee0bf; border-radius:9px; background:linear-gradient(100deg,#fff7e6,#fffaf1); color:#6e4e17; font-size:13px; font-weight:600; }
+  .benefit svg { flex:0 0 17px; width:17px; height:17px; margin-top:1px; }
+  .card-details { margin-top:14px; border-top:1px solid var(--line); }
+  .card-details summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 0 3px; color:var(--navy); font-size:13px; font-weight:700; cursor:pointer; list-style:none; }
+  .card-details summary::-webkit-details-marker { display:none; }
+  .card-details summary::after { content:""; flex:0 0 8px; width:8px; height:8px; margin:0 5px 4px 0; border-right:2px solid #9b6b1b; border-bottom:2px solid #9b6b1b; transform:rotate(45deg); transition:transform .2s; }
+  .card-details[open] summary::after { transform:rotate(225deg); margin-bottom:0; }
+  .detail-block { padding:12px 0 3px; }
+  .detail-block h4 { margin-bottom:5px; color:var(--ink); font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+  .detail-block p,.detail-block li { color:var(--soft); font-size:13px; }
+  .detail-block ul,.detail-block ol { margin:0; padding-left:19px; }
+  .detail-block li+li { margin-top:3px; }
+  .card-actions { display:flex; align-items:center; flex-wrap:wrap; gap:13px; margin-top:auto; padding-top:18px; }
+  .card-actions .btn { padding:9px 13px; font-size:13px; }
+  .official-link { color:var(--navy); font-size:13px; font-weight:700; text-decoration:none; }
+  .official-link:hover { color:var(--saf-d); }
+  .empty-state { grid-column:1/-1; display:none; padding:40px 20px; border:1px dashed #c8cfda; border-radius:14px; color:var(--soft); text-align:center; }
+  @media (max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1fr) 260px; gap:20px; } .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:700px) { .crumbs { padding-top:18px; } .hero { padding:24px 0 28px; } .hero-grid { grid-template-columns:1fr; } .hero-art { display:none; } .hero-copy { margin:13px 0 18px; font-size:15px; } .stats-row { gap:9px; } .stat-box { padding:14px 10px; } .stat-num { font-size:23px; } .stat-label { font-size:11px; } .section { padding-top:38px; } .section-heading { display:block; } .module-total { display:block; margin-top:10px; } .toolbar { align-items:stretch; } .filters { width:100%; } .search-wrap { max-width:none; flex-basis:100%; } .card-grid { grid-template-columns:1fr; } .module-card { padding:19px; } }
+  @media (prefers-reduced-motion:reduce) { .module-card,.module-card::before { transition:none; } }
+{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><span>Agriculture</span></div>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Agriculture department</span>
+          <h1>Support for farmers, <span>from field to market.</span></h1>
+          <p class="hero-copy">{% if scheme_only %}Explore government agriculture schemes for income support, crop insurance and farm credit.{% else %}Explore government schemes and services for farmer support, crop protection, agricultural credit, soil testing and market access.{% endif %}</p>
+          <div class="hero-actions">
+            <a class="btn btn-saf" href="#modules">{% if scheme_only %}Explore schemes{% else %}Explore all modules{% endif %} <span aria-hidden="true">↓</span></a>
+            <a class="btn btn-out" href="/#departments">All departments</a>
+          </div>
+          <div class="notice"><span class="notice-icon" aria-hidden="true">i</span><span>AI Seva provides scheme guidance and tracks your demo request. It does not determine eligibility or submit applications to government systems.</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit"></div>
+          <div class="art-disc">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M50 79V43M50 57c-15 0-24-9-24-23 14 0 24 8 24 23ZM50 49c0-15 9-25 25-25 0 15-10 25-25 25ZM27 80h48M34 87h34" />
+              <path d="M20 70c7 2 12 5 16 10M80 68c-7 2-12 5-16 10" opacity=".65" />
+            </svg>
+          </div>
+          <span class="art-leaf leaf-one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4C10 4 5 8 5 14c0 3 2 5 5 5 6 0 9-6 9-15Z"/><path d="M4 21c3-5 6-8 11-11"/></svg></span>
+          <span class="art-leaf leaf-two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V8m0 6c-4 0-6-2-6-6 4 0 6 2 6 6Zm0-3c0-4 2-6 6-6 0 4-2 6-6 6Z"/></svg></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" aria-label="Agriculture department overview">
+      <div class="stats-row">
+        <div class="stat-box"><span class="stat-num">{{ scheme_count }}</span><span class="stat-label">Government schemes</span></div>
+        {% if not scheme_only %}<div class="stat-box"><span class="stat-num">{{ service_count }}</span><span class="stat-label">Farmer services</span></div>
+        <div class="stat-box"><span class="stat-num">05</span><span class="stat-label">Ways AI Seva can guide you</span></div>{% endif %}
+      </div>
+    </section>
+
+    <section class="section wrap" id="modules" aria-labelledby="modules-heading">
+      <div class="section-heading">
+        <div><h2 id="modules-heading">{% if scheme_only %}Agriculture schemes{% else %}Explore schemes &amp; services{% endif %}</h2><p>Learn what each module offers, what you may need, and how the process works.</p></div>
+        <span class="module-total" id="result-count" aria-live="polite">Showing {{ items|length }} {% if scheme_only %}schemes{% else %}modules{% endif %}</span>
+      </div>
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter by module type">
+          <button class="filter-button" type="button" data-filter="all" aria-pressed="true">{% if scheme_only %}All schemes{% else %}All modules{% endif %} <span>({{ items|length }})</span></button>
+          {% if not scheme_only %}<button class="filter-button" type="button" data-filter="Scheme" aria-pressed="false">Schemes <span>({{ scheme_count }})</span></button>
+          <button class="filter-button" type="button" data-filter="Service" aria-pressed="false">Services <span>({{ service_count }})</span></button>{% endif %}
+        </div>
+        <label class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+          <span class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Search Agriculture {% if scheme_only %}schemes{% else %}schemes and services{% endif %}</span>
+          <input class="search-input" id="module-search" type="search" placeholder="{% if scheme_only %}Search agriculture schemes{% else %}Search by scheme, service or topic{% endif %}" autocomplete="off" />
+        </label>
+      </div>
+      <div class="card-grid" id="module-grid">
+        {% for item in items %}
+        <article class="module-card" data-type="{{ item.item_type }}" data-search="{{ item.name }} {{ item.full_name }} {{ item.summary }} {{ item.description }} {{ item.eligibility }}">
+          <div class="card-top">
+            <span class="module-icon" aria-hidden="true">
+              {% if item.slug == "pm-kisan" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5"/><path d="M6.5 6.3h3M6.5 8h2.3m-2.3 1.8h3"/><circle cx="16" cy="16" r="5"/><path d="M14.5 14.3h3m-3 1.7h2.3m-2.3 1.8h3"/></svg>
+              {% elif item.slug == "pmfby" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 3v5c0 4.8-3.2 8.2-8 10-4.8-1.8-8-5.2-8-10V6l8-3Z"/><path d="m8.5 12 2.3 2.3 4.8-5"/></svg>
+              {% elif item.slug == "kisan-credit-card" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/><path d="M16.5 13.2c-.3-.4-.7-.6-1.2-.6-.8 0-1.3.5-1.3 1.1 0 .7.5 1.1 1.3 1.1s1.3.4 1.3 1.1c0 .6-.5 1.1-1.3 1.1-.5 0-.9-.2-1.2-.6M15.3 12v.6m0 5.1v.6"/></svg>
+              {% elif item.slug == "soil-health-card" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M8 15h8m-6-3h4"/><path d="m11 17 1 1 2-2"/></svg>
+              {% else %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 2-5h14l2 5M4 10h16v10H4z"/><path d="M9 20v-6h6v6M3 10c0 1.2.8 2 2 2s2-.8 2-2c0 1.2.8 2 2 2s2-.8 2-2c0 1.2.8 2 2 2s2-.8 2-2c0 1.2.8 2 2 2s2-.8 2-2"/></svg>
+              {% endif %}
+            </span>
+            <span class="type-pill">{{ item.item_type }}</span>
+          </div>
+          <h3>{{ item.name }}</h3>
+          <p class="full-name">{{ item.full_name }}</p>
+          <p class="module-summary">{{ item.summary }}</p>
+          <div class="benefit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+            <span>{{ item.final_output }}</span>
+          </div>
+          <details class="card-details">
+            <summary>View eligibility, documents &amp; process</summary>
+            <div class="detail-block"><h4>About this module</h4><p>{{ item.description }}</p></div>
+            <div class="detail-block"><h4>Eligibility guidance</h4><p>{{ item.eligibility }}</p></div>
+            <div class="detail-block"><h4>Benefits</h4><ul>{% for benefit in item.benefits %}<li>{{ benefit }}</li>{% endfor %}</ul></div>
+            {% if item.parameters %}<div class="detail-block"><h4>Soil test parameters</h4><p>{{ item.parameters|join:", " }}</p></div>{% endif %}
+            <div class="detail-block"><h4>Documents to prepare</h4><ul>{% for document in item.documents %}<li>{{ document }}</li>{% endfor %}</ul></div>
+            <div class="detail-block"><h4>How it works</h4><ol>{% for step in item.workflow %}<li>{{ step }}</li>{% endfor %}</ol></div>
+            <div class="detail-block"><h4>What AI Seva can show</h4><ul>{% for result in item.result %}<li>{{ result }}</li>{% endfor %}</ul></div>
+          </details>
+          <div class="card-actions">
+            <a class="btn btn-saf" href="{% url 'agriculture:apply' item.slug %}">Apply now <span aria-hidden="true">→</span></a>
+            <a class="official-link" href="{{ item.official_link }}" target="_blank" rel="noopener noreferrer">Official portal ↗</a>
+          </div>
+        </article>
+        {% endfor %}
+        <div class="empty-state" id="empty-state">No matching scheme or service. Try another search.</div>
+      </div>
+    </section>
+
+  </main>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    (() => {
+      const cards = [...document.querySelectorAll(".module-card")];
+      const buttons = [...document.querySelectorAll(".filter-button")];
+      const search = document.getElementById("module-search");
+      const count = document.getElementById("result-count");
+      const empty = document.getElementById("empty-state");
+      let activeFilter = "all";
+      function updateCards() {
+        const query = search.value.trim().toLocaleLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const matchesType = activeFilter === "all" || card.dataset.type === activeFilter;
+          const matchesText = card.dataset.search.toLocaleLowerCase().includes(query);
+          card.hidden = !(matchesType && matchesText);
+          if (!card.hidden) visible += 1;
+        });
+        count.textContent = `Showing ${visible} ${visible === 1 ? "module" : "modules"}`;
+        empty.style.display = visible ? "none" : "block";
+      }
+      buttons.forEach((button) => button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        updateCards();
+      }));
+      search.addEventListener("input", updateCards);
+    })();
+  </script>
+{% endblock %}

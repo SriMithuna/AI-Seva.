@@ -1,0 +1,113 @@
+{% extends "agriculture/base.html" %}
+
+{% block title %}{{ item.name }} | AI Seva{% endblock %}
+
+{% block extra_styles %}
+  .apply-wrap { padding-top:24px; }
+  .crumbs { color:var(--soft); font-size:13px; }
+  .crumbs a { color:var(--navy); text-decoration:none; }
+  .apply-heading { margin:22px 0 25px; }
+  .eyebrow { color:var(--grn); font-size:12px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+  .apply-heading h1 { margin-top:8px; color:var(--navy); font-size:clamp(28px,4vw,40px); line-height:1.15; }
+  .apply-heading p { max-width:700px; margin-top:10px; color:var(--soft); }
+  .apply-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr); gap:22px; align-items:start; }
+  .form-panel,.summary-panel { border:1px solid #eadfc9; border-radius:16px; background:#fff; box-shadow:0 8px 24px rgba(11,42,107,.06); }
+  .form-panel { padding:25px; }
+  .summary-panel { position:sticky; top:96px; padding:22px; background:linear-gradient(155deg,#fff 58%,#fffaf1); }
+  .panel-heading { margin-bottom:18px; color:var(--navy); font-size:20px; }
+  .field-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px 16px; }
+  .field { min-width:0; }
+  .field.full { grid-column:1/-1; }
+  .field label { display:block; margin-bottom:6px; color:#25324a; font-size:13px; font-weight:700; }
+  .field input,.field select,.field textarea { display:block; width:100%; min-height:44px; padding:10px 12px; border:1px solid #d9deea; border-radius:8px; background:#fff; color:var(--ink); font:inherit; font-size:14px; }
+  .field textarea { min-height:94px; resize:vertical; }
+  .field input:focus,.field select:focus,.field textarea:focus { outline:3px solid rgba(11,42,107,.12); border-color:var(--navy); }
+  .field input[type="file"] { padding:8px; }
+  .help-text { margin-top:5px; color:#6e7788; font-size:12px; }
+  .field-errors,.errorlist { margin:5px 0 0; padding-left:18px; color:#a32626; font-size:12px; }
+  .form-section + .form-section { margin-top:25px; padding-top:22px; border-top:1px solid var(--line); }
+  .form-section h2 { margin-bottom:5px; color:var(--navy); font-size:17px; }
+  .section-copy { margin-bottom:16px; color:var(--soft); font-size:13px; }
+  .privacy-note,.demo-note { margin-top:18px; padding:13px 15px; border-radius:9px; font-size:12px; line-height:1.55; }
+  .privacy-note { border:1px solid #eadfc9; background:#fffaf1; color:#66543a; }
+  .demo-note { border-left:4px solid var(--saf); background:#fff4e5; color:#66543a; }
+  .submit-row { display:flex; align-items:center; flex-wrap:wrap; gap:14px; margin-top:22px; }
+  .submit-row .btn { border:0; }
+  .back-link { color:var(--navy); font-size:13px; font-weight:700; text-decoration:none; }
+  .summary-pill { display:inline-block; padding:5px 10px; border:1px solid #e4d1a7; border-radius:999px; background:#fff8e8; color:#805d1f; font-size:11px; font-weight:700; text-transform:uppercase; }
+  .summary-panel h2 { margin-top:13px; color:var(--navy); font-size:20px; }
+  .summary-panel > p { margin-top:9px; color:var(--soft); font-size:13px; }
+  .summary-panel h3 { margin:18px 0 7px; color:var(--ink); font-size:12px; letter-spacing:.04em; text-transform:uppercase; }
+  .summary-panel ul,.summary-panel ol { padding-left:18px; color:var(--soft); font-size:13px; }
+  .summary-panel li+li { margin-top:5px; }
+  .summary-official { display:inline-block; margin-top:17px; color:var(--navy); font-size:13px; font-weight:700; text-decoration:none; }
+  @media(max-width:820px) { .apply-grid { grid-template-columns:1fr; } .summary-panel { position:static; grid-row:1; } }
+  @media(max-width:560px) { .apply-wrap { padding-top:18px; } .form-panel { padding:19px; } .field-grid { grid-template-columns:1fr; } .field.full { grid-column:auto; } }
+{% endblock %}
+
+{% block content %}
+  <main class="wrap apply-wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true"> / </span><a href="{% url 'education_home' %}">Education</a><span aria-hidden="true"> / </span><span>{{ item.name }}</span></nav>
+    <header class="apply-heading">
+      <span class="eyebrow">{% if item.item_type == "Service" %}Student service{% else %}Education scheme{% endif %}</span>
+      <h1>{% if item.item_type == "Service" %}Start a request{% else %}Prepare to apply{% endif %}</h1>
+      <p>Enter the details you are comfortable sharing. AI Seva will save a demo request and provide a tracking ID; continue to the official portal for government submission.</p>
+    </header>
+
+    <div class="apply-grid">
+      <section class="form-panel" aria-labelledby="form-title">
+        <h2 class="panel-heading" id="form-title">Student and contact details</h2>
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="field-grid">
+            {% for field in form %}
+            <div class="field {% if field.name == 'address' or field.name == 'purpose' or field.name == 'supporting_document' %}full{% endif %}">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.help_text %}<p class="help-text">{{ field.help_text }}</p>{% endif %}
+              {% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+
+          {% if details_form %}
+          <div class="form-section">
+            <h2>Details for {{ item.name }}</h2>
+            <p class="section-copy">Provide the details needed to prepare this assistance request.</p>
+            {{ details_form.non_field_errors }}
+            <div class="field-grid">
+              {% for field in details_form %}
+              <div class="field {% if field.field.widget.input_type == 'file' or field.name == 'applicant_remarks' %}full{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}<p class="help-text">{{ field.help_text }}</p>{% endif %}
+                {% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <p class="privacy-note">Do not enter an Aadhaar number, full bank account number, PIN or password. The optional priority category is self-reported and will only affect internal processing after an officer verifies it; it does not decide eligibility.</p>
+          <p class="demo-note">Saving this form creates an AI Seva demo record only. It does not submit an application to a government department or lender.</p>
+          <div class="submit-row">
+            <button class="btn btn-saf" type="submit">Save request &amp; get tracking ID <span aria-hidden="true">→</span></button>
+            <a class="back-link" href="{% url 'education_home' %}">Back to Education</a>
+          </div>
+        </form>
+      </section>
+
+      <aside class="summary-panel" aria-label="Request details">
+        <span class="summary-pill">{{ item.item_type }}</span>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.summary }}</p>
+        <h3>Eligibility guidance</h3>
+        <p>{{ item.eligibility }}</p>
+        <h3>Prepare these details</h3>
+        <ul>{% for document in item.documents %}<li>{{ document }}</li>{% endfor %}</ul>
+        <a class="summary-official" href="{{ item.official_url }}" target="_blank" rel="noopener noreferrer">Continue to official portal ↗</a>
+      </aside>
+    </div>
+  </main>
+{% endblock %}

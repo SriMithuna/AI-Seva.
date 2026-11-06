@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -31,19 +32,23 @@
       html {
         scroll-behavior: smooth;
       }
+
       body {
-        font-family: "Hind", sans-serif;
+        font-family: "Roboto", sans-serif;
         background: var(--bg);
         color: var(--ink);
         line-height: 1.55;
       }
+
       h1,
       h2,
       h3,
       h4 {
-        font-family: "Poppins", sans-serif;
+        font-family: "Roboto", sans-serif;
+        font-weight: 700;
         letter-spacing: -0.01em;
       }
+
       a {
         color: inherit;
         text-decoration: none;
@@ -86,13 +91,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 68px;
+        gap: 24px;
+        min-height: 76px;
       }
       .brand {
         display: flex;
         align-items: center;
         gap: 10px;
-        font: 800 21px "Poppins";
+        font: 800 21px "Roboto";
         color: var(--navy);
       }
       .brand em {
@@ -107,6 +113,7 @@
       }
       .links {
         display: flex;
+        align-items: center;
         gap: 28px;
         font-weight: 500;
         color: var(--soft);
@@ -226,36 +233,83 @@
       }
 
       /* totals */
+      /* Premium Statistics Section */
       .stats {
-        padding: 0 0 8px;
+        padding: 12px 0 28px;
       }
+
       .sg {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
+        gap: 20px;
       }
-      @media (max-width: 700px) {
-        .sg {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
+
       .stat {
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 18px 16px;
+        position: relative;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e8eaf0;
+        border-radius: 16px;
+        padding: 26px 18px;
         text-align: center;
+        box-shadow: 0 4px 14px rgba(11, 42, 107, 0.05);
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease,
+          border-color 0.35s ease;
       }
+
+      .stat::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--saf), #ffffff, var(--grn));
+      }
+
+      .stat:hover {
+        transform: translateY(-7px);
+        border-color: #d5dbea;
+        box-shadow: 0 14px 30px rgba(11, 42, 107, 0.12);
+      }
+
       .stat .cnt {
         display: block;
-        font: 800 36px "Poppins";
+        font:
+          800 38px "Roboto",
+          sans-serif;
         color: var(--navy);
-        line-height: 1.2;
+        line-height: 1.3;
+        margin-bottom: 7px;
+        transition: color 0.3s ease;
       }
+
+      .stat:hover .cnt {
+        color: var(--grn);
+      }
+
       .stat .l {
         font-weight: 600;
         color: var(--soft);
-        font-size: 14.5px;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+      }
+
+      @media (max-width: 700px) {
+        .sg {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 14px;
+        }
+
+        .stat {
+          padding: 22px 12px;
+        }
+
+        .stat .cnt {
+          font-size: 32px;
+        }
       }
 
       section.s {
@@ -299,116 +353,291 @@
       }
 
       /* services */
+      /* Premium Services Section */
+
+      #services {
+        padding: 76px 0;
+      }
+
+      #services .head {
+        margin-bottom: 34px;
+      }
+
+      /* PREMIUM DEPARTMENT FILTERS */
+
+      /* Premium Department Filter Bar */
       .tabs {
         display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
         gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 24px;
+        margin-bottom: 30px;
+        padding: 5px 2px 14px;
+
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
       }
+
+      .tabs::-webkit-scrollbar {
+        display: none;
+      }
+
       .tab {
-        padding: 9px 18px;
+        flex: 0 0 auto;
+        padding: 10px 17px;
+
+        border: 1px solid #e5e9f0;
         border-radius: 30px;
-        border: 1.5px solid var(--line);
-        background: #fff;
+
+        background: #ffffff;
+        color: #536078;
+
+        font-family: "Roboto", sans-serif;
+        font-size: 13.5px;
         font-weight: 600;
-        color: var(--soft);
-        transition: 0.25s;
+
+        cursor: pointer;
+        white-space: nowrap;
+
+        transition: all 0.3s ease;
       }
+
       .tab:hover {
-        border-color: var(--navy);
+        color: var(--navy);
+        background: #fff7ed;
+        border-color: var(--saf);
+        transform: translateY(-2px);
       }
+
       .tab.on {
+        color: #ffffff;
         background: var(--navy);
         border-color: var(--navy);
-        color: #fff;
-        transform: scale(1.04);
+
+        box-shadow: 0 5px 14px rgba(11, 42, 107, 0.15);
+      }
+
+      .tab:focus-visible {
+        outline: 3px solid rgba(255, 153, 51, 0.3);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 700px) {
+        .tabs {
+          gap: 8px;
+        }
+
+        .tab {
+          padding: 9px 14px;
+          font-size: 12.5px;
+        }
       }
       .row {
         display: flex;
-        gap: 20px;
+        gap: 22px;
         overflow-x: auto;
-        padding: 8px 4px 20px;
-        scroll-snap-type: x proximity;
+        padding: 10px 5px 24px;
+        scroll-snap-type: x mandatory;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
       }
+
       .row::-webkit-scrollbar {
-        height: 6px;
+        display: none;
       }
+
+      .row::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
       .row::-webkit-scrollbar-thumb {
-        background: var(--saf);
-        border-radius: 6px;
+        background: linear-gradient(90deg, var(--saf), var(--grn));
+        border-radius: 10px;
       }
+
+      /* Animated scroll hint */
+
+      /* ADD HERE */
+      .service-scroll-hint {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 7px;
+        margin: -12px 4px 12px;
+        color: var(--navy);
+        font-size: 12px;
+        font-weight: 600;
+        animation: hintMove 1.5s ease-in-out infinite;
+      }
+
+      @keyframes hintMove {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(5px);
+        }
+      }
+
+      /* Existing row CSS starts here */
+      .row {
+        /* keep your existing styles */
+      }
+
+      #services .row {
+        position: relative;
+      }
+
+      #services .row::after {
+        content: "Scroll to explore  →";
+        position: sticky;
+        right: 0;
+        flex: 0 0 145px;
+        align-self: stretch;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 12px;
+        justify-content: center;
+
+        margin: 0 -5px 0 -145px;
+        padding: 10px;
+
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--navy);
+
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.96) 35%
+        );
+
+        animation: scrollHint 1.5s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes scrollHint {
+        0%,
+        100% {
+          opacity: 0.55;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* PREMIUM SERVICE CARDS */
+
+      /* Compact Premium Service Cards */
+
       .sv {
+        display: block;
+        color: inherit;
+        text-decoration: none;
         flex: 0 0 270px;
-        scroll-snap-align: start;
+        min-height: 215px;
+        padding: 24px 22px;
         position: relative;
         overflow: hidden;
+        isolation: isolate;
+
         background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 26px 22px;
-        min-height: 210px;
+        border: 1px solid #e6eaf0;
+        border-radius: 16px;
+
+        box-shadow: 0 5px 18px rgba(11, 42, 107, 0.05);
+
         transition:
-          transform 0.35s,
-          box-shadow 0.35s;
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+
         animation: pop 0.5s both;
         animation-delay: var(--d, 0s);
       }
+
       .sv::before {
         content: "";
         position: absolute;
-        left: 0;
         top: 0;
+        left: 0;
         width: 100%;
-        height: 5px;
+        height: 4px;
         background: var(--c);
-        transform: scaleX(0.25);
-        transform-origin: left;
-        transition: transform 0.45s;
       }
-      .sv:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 18px 34px rgba(11, 42, 107, 0.14);
-      }
-      .sv:hover::before {
-        transform: scaleX(1);
-      }
-      .sv .ic {
-        width: 50px;
-        height: 50px;
+
+      .sv::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 110px;
+        height: 110px;
+        right: -55px;
+        bottom: -55px;
         border-radius: 50%;
+        background: var(--c);
+        opacity: 0.05;
+        transition: transform 0.4s ease;
+      }
+
+      .sv:hover {
+        transform: translateY(-6px);
+        border-color: #d5ddeb;
+        box-shadow: 0 13px 28px rgba(11, 42, 107, 0.1);
+      }
+
+      .sv:hover::after {
+        transform: scale(1.4);
+      }
+
+      .sv .ic {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
         display: grid;
         place-items: center;
+        background: color-mix(in srgb, var(--c) 10%, white);
+        color: var(--c);
+        border: 1px solid color-mix(in srgb, var(--c) 15%, white);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .sv:hover .ic {
+        transform: translateY(-2px);
         background: var(--c);
         color: #fff;
-        margin-bottom: 16px;
-        transition: transform 0.45s;
       }
-      .sv:hover .ic {
-        transform: rotate(360deg) scale(1.08);
-      }
+
       .sv .tg {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
         color: var(--c);
+        margin-bottom: 6px;
       }
+
       .sv h4 {
-        font-size: 17px;
-        margin: 4px 0 6px;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.4;
         color: var(--navy);
+        margin: 0 0 8px;
       }
+
       .sv p {
-        font-size: 14.5px;
-        color: var(--soft);
+        font-size: 13.5px;
+        line-height: 1.65;
+        color: #657086;
+        margin: 0;
       }
-      @keyframes pop {
-        from {
-          opacity: 0;
-          transform: translateY(20px) scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
+      .sv {
+        flex-basis: 260px;
       }
 
       /* departments */
@@ -427,66 +656,205 @@
           grid-template-columns: 1fr;
         }
       }
-      .dp {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        min-height: 140px;
-        padding: 20px;
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        cursor: pointer;
-        transition:
-          transform 0.3s,
-          box-shadow 0.3s,
-          border-color 0.3s;
-      }
-      .dp:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 14px 28px rgba(19, 136, 8, 0.15);
-        border-color: var(--grn);
-      }
-      .dp .ic {
-        flex: 0 0 58px;
-        height: 58px;
-        border-radius: 14px;
-        background: var(--saf);
-        color: #fff;
+      /* PREMIUM DEPARTMENT CARDS */
+      /* PREMIUM VERTICAL DEPARTMENT CARDS */
+
+      /* DEPARTMENT GRID */
+      .dg {
         display: grid;
-        place-items: center;
-        transition: 0.3s;
-      }
-      .dp:hover .ic {
-        background: var(--grn);
-        transform: rotate(-8deg) scale(1.08);
-      }
-      .dp h4 {
-        font-size: 16px;
-        color: var(--navy);
-        transition: color 0.3s;
-      }
-      .dp:hover h4 {
-        color: var(--grn);
-      }
-      .dp p {
-        font-size: 13px;
-        color: var(--soft);
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .dp .cn {
-        display: block;
-        margin-top: 4px;
-        font:
-          600 12.5px ui-monospace,
-          Consolas,
-          monospace;
-        color: var(--grn);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
       }
 
+      @media (max-width: 700px) {
+        .dg {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* HORIZONTAL RECTANGULAR CARDS */
+      /* PREMIUM DEPARTMENT CARDS */
+      /* PREMIUM IVORY & GOLD DEPARTMENT CARDS */
+      /* SAFFRON DOMINANT DEPARTMENT CARDS */
+      /* LIGHT GOLDEN DEPARTMENT CARDS */
+      /* LIGHT GOLDEN DEPARTMENT CARDS */
+      /* SOFT GOLDEN DEPARTMENT CARDS */
+      /* LIGHT GOLDEN DEPARTMENT CARDS */
+      .dp {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-height: 125px;
+        padding: 19px 22px;
+
+        background-color: #fff5e4;
+        background-image: radial-gradient(
+          circle,
+          rgba(190, 139, 54, 0.17) 1px,
+          transparent 1.5px
+        );
+        background-size: 17px 17px;
+
+        border: 1px solid #ead8b8;
+        border-radius: 14px;
+        overflow: hidden;
+        cursor: pointer;
+
+        box-shadow: 0 5px 16px rgba(122, 86, 28, 0.07);
+        transition:
+          transform 0.4s ease,
+          box-shadow 0.4s ease,
+          border-color 0.4s ease,
+          background-color 0.4s ease;
+      }
+
+      /* Tricolour accent */
+      .dp::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: linear-gradient(
+          to bottom,
+          #ff9933 0%,
+          #ffffff 50%,
+          #138808 100%
+        );
+        transition: width 0.35s ease;
+      }
+
+      /* Soft golden glow */
+      .dp::after {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        right: -75px;
+        top: -80px;
+        border-radius: 50%;
+        background: rgba(255, 153, 51, 0.17);
+        transition: transform 0.5s ease;
+        pointer-events: none;
+      }
+
+      .dp:hover {
+        transform: translateY(-6px);
+        border-color: #d7b46d;
+        box-shadow: 0 14px 30px rgba(122, 86, 28, 0.16);
+        background-color: #fff0d4;
+        background-position: 8px 8px;
+      }
+
+      .dp:hover::before {
+        width: 6px;
+      }
+
+      .dp:hover::after {
+        transform: scale(1.5);
+      }
+
+      /* Icon */
+      .dp .ic {
+        position: relative;
+        z-index: 1;
+        flex: 0 0 56px;
+        width: 56px;
+        height: 56px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 14px;
+        background: linear-gradient(145deg, #ffe5c5, #ffd69e);
+        color: #a75d0a;
+
+        transition: all 0.4s ease;
+      }
+
+      .dp .ic svg {
+        width: 27px;
+        height: 27px;
+      }
+
+      .dp:hover .ic {
+        background: linear-gradient(145deg, #ff9933, #138808);
+        color: #fff;
+        transform: scale(1.09) rotate(-5deg);
+      }
+
+      /* Department title */
+      .dp h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #172d55;
+        margin-bottom: 5px;
+        transition: color 0.35s ease;
+      }
+
+      .dp:hover h4 {
+        color: #138808;
+      }
+
+      /* Description */
+      .dp p {
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: #655a49;
+        margin: 0;
+        padding-right: 12px;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
+        transition: color 0.35s ease;
+      }
+
+      .dp:hover p {
+        color: #35445b;
+      }
+
+      /* Scheme and service labels */
+      .dp .cn {
+        display: inline-block;
+        margin-top: 7px;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: #c56b12;
+        transition: color 0.35s ease;
+      }
+
+      .dp:hover .cn {
+        color: #138808;
+      }
+      /* Scheme and service labels */
+      .dp .cn {
+        display: inline-block;
+        margin-top: 7px;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: #c17b32;
+        transition: color 0.35s ease;
+      }
+
+      .dp:hover .cn {
+        color: #138808;
+      }
+      /* Scheme and service labels */
+      .dp .cn {
+        display: inline-block;
+        margin-top: 7px;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: #c56b12;
+        transition: color 0.35s ease;
+      }
+
+      .dp:hover .cn {
+        color: #138808;
+      }
       /* categories */
       .cg {
         display: grid;
@@ -509,10 +877,11 @@
         border: 0;
         font: inherit;
         color: inherit;
-        cursor: pointer;
+        cursor: default;
         transition: transform 0.3s;
       }
-      .cc:hover {
+      .cc.is-link { cursor: pointer; }
+      .cc.is-link:hover {
         transform: translateY(-6px);
       }
       .cc .ib {
@@ -533,8 +902,7 @@
         transform: rotate(-12deg);
         transition: transform 0.4s;
       }
-      .cc:hover .ib::before,
-      .cc.on .ib::before {
+      .cc.is-link:hover .ib::before {
         transform: rotate(0) scale(1.1);
       }
       .cc .ib svg {
@@ -543,7 +911,7 @@
         height: 44px;
         transition: transform 0.4s;
       }
-      .cc:hover .ib svg {
+      .cc.is-link:hover .ib svg {
         transform: scale(1.15);
       }
       .cc .n {
@@ -559,54 +927,8 @@
         margin-top: 4px;
         line-height: 1.3;
       }
-      .cc:hover .nm,
-      .cc.on .nm {
+      .cc.is-link:hover .nm {
         color: var(--navy);
-      }
-      .cd {
-        margin-top: 36px;
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 28px 30px;
-        box-shadow:
-          inset 0 5px 0 var(--c),
-          0 14px 30px rgba(11, 42, 107, 0.08);
-      }
-      .cd[hidden] {
-        display: none;
-      }
-      .cd:not([hidden]) {
-        animation: pop 0.45s both;
-      }
-      .cd h3 {
-        font-size: 21px;
-        color: var(--navy);
-      }
-      .cd .cs {
-        color: var(--soft);
-        margin: 2px 0 18px;
-      }
-      .cl {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        margin-bottom: 22px;
-      }
-      @media (max-width: 640px) {
-        .cl {
-          grid-template-columns: 1fr;
-        }
-      }
-      .cl h4 {
-        font-size: 15px;
-        color: var(--c);
-        margin-bottom: 8px;
-      }
-      .cl ol {
-        padding-left: 22px;
-        display: grid;
-        gap: 4px;
       }
 
       /* reco */
@@ -954,7 +1276,7 @@
           <!-- LOGO: save your image as logo.png in the same folder as this file (or change the src below) -->
           <img
             class="logo-img"
-            src="logo.png"
+            src="{% static 'portal/images/aiseva-logo.png' %}"
             alt="AI Seva logo"
             onerror="
               this.onerror = null;
@@ -969,7 +1291,13 @@
           ><a href="#schemes">Schemes</a><a href="#reco">Eligibility</a
           ><a href="#track">Track</a>
         </nav>
-        <a class="btn btn-out" href="#reco">Sign in</a>
+
+        <a class="btn btn-saf" href="{% url 'citizen_register' %}">
+          Create account
+        </a>
+
+        <a class="btn btn-out" href="#reco"> Sign in </a>
+
         <button class="menu" id="menu" aria-label="Menu">
           <svg
             width="28"
@@ -1016,18 +1344,22 @@
       </section>
 
       <section class="stats"><div class="wrap sg" id="sg"></div></section>
-
       <section class="s" id="services">
         <div class="wrap">
           <div class="head rv">
             <h2>Explore services</h2>
             <p>Request any of 17 services online, across 8 departments.</p>
           </div>
+
+          <!-- Scroll hint -->
+          <div class="service-scroll-hint">
+            Scroll to explore more services <span>→</span>
+          </div>
+
           <div class="tabs rv" id="tabs"></div>
           <div class="row" id="row"></div>
         </div>
       </section>
-
       <section
         class="s"
         id="departments"
@@ -1049,13 +1381,9 @@
         <div class="wrap">
           <div class="head rv">
             <h2>Schemes, by category</h2>
-            <p>
-              Browse by the area of life a scheme applies to. Select a category
-              to see its schemes and services.
-            </p>
+            <p>Browse schemes by department. Select Education or Agriculture to open its scheme catalogue.</p>
           </div>
-          <div class="cg rv" id="cg"></div>
-          <div class="cd" id="cd" hidden aria-live="polite"></div>
+          <div class="cg rv" id="cg" aria-label="Browse schemes by department"></div>
         </div>
       </section>
 
@@ -1180,7 +1508,7 @@
       </div>
     </footer>
 
-    <button class="chat" id="chat" aria-label="Ask the AI assistant">
+    <button class="chat" id="chat" type="button" aria-label="Ask the AI assistant" aria-controls="chat-window" aria-expanded="false">
       <svg
         width="26"
         height="26"
@@ -1260,7 +1588,7 @@
           s: "Agriculture",
           i: "agri",
           c: "#556b2f",
-          d: "Income support, crop insurance, credit and farmer services.",
+          d: "Farmer income support, crop insurance and agricultural credit.",
           sc: ["PM-KISAN", "PM Fasal Bima Yojana", "Kisan Credit Card"],
           sv: [
             [
@@ -1269,7 +1597,7 @@
             ],
             [
               "e-NAM Farmer Registration",
-              "Register to sell your produce on the national agriculture market online.",
+              "Register for trading through an e-NAM-connected mandi.",
             ],
           ],
         },
@@ -1398,6 +1726,26 @@
         },
       ];
       const pl = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+      // Connect the homepage service cards to their working department forms.
+      const SERVICE_URLS = {
+        "edu|NSP Student Registration": "/departments/education/apply/nsp-student-registration/",
+        "edu|ABC ID Creation": "/departments/education/apply/abc-id-creation/",
+        "agri|Soil Health Card Request": "/departments/agriculture/apply/soil-health-card/",
+        "agri|e-NAM Farmer Registration": "/departments/agriculture/apply/enam-registration/",
+      };
+      const serviceUrl = (dept, name) => SERVICE_URLS[`${dept}|${name}`];
+      const departmentSchemeUrl = (d) => d.k === "edu"
+        ? "/departments/education/schemes/"
+        : d.k === "agri"
+          ? "/departments/agriculture/?type=scheme"
+          : null;
+      $("#cg").innerHTML = D.map((d) => {
+        const content = `<span class="ib">${ic(P[d.i])}</span><span class="n">${pl(d.sc.length, "Scheme")}</span><span class="nm">${d.n}</span>`;
+        const href = departmentSchemeUrl(d);
+        return href
+          ? `<a class="cc is-link" href="${href}" style="--c:${d.c}" aria-label="View ${d.n} schemes">${content}</a>`
+          : `<div class="cc" style="--c:${d.c}">${content}</div>`;
+      }).join("");
       const NS = D.reduce((a, d) => a + d.sc.length, 0),
         NV = D.reduce((a, d) => a + d.sv.length, 0);
 
@@ -1437,7 +1785,9 @@
         $("#row").innerHTML = SV.filter((s) => f === "all" || s.d.k === f)
           .map(
             (s, i) =>
-              `<article class="sv" style="--c:${s.d.c};--d:${i * 0.08}s"><div class="ic">${ic(P[s.d.i])}</div><span class="tg">${s.d.s}</span><h4>${s.n}</h4><p>${s.t}</p></article>`,
+              serviceUrl(s.d.k, s.n)
+                ? `<a class="sv" href="${serviceUrl(s.d.k, s.n)}" aria-label="Apply for ${s.n}" style="--c:${s.d.c};--d:${i * 0.08}s"><div class="ic">${ic(P[s.d.i])}</div><span class="tg">${s.d.s}</span><h4>${s.n}</h4><p>${s.t}</p></a>`
+                : `<article class="sv" style="--c:${s.d.c};--d:${i * 0.08}s"><div class="ic">${ic(P[s.d.i])}</div><span class="tg">${s.d.s}</span><h4>${s.n}</h4><p>${s.t}</p></article>`,
           )
           .join("");
         $("#row").scrollTo({ left: 0, behavior: "smooth" });
@@ -1456,36 +1806,18 @@
       // departments
       $("#dg").innerHTML = D.map(
         (d, i) =>
-          `<div class="dp rv" style="--d:${(i % 3) * 0.12}s"><div class="ic">${ic(P[d.i])}</div><div><h4>${d.n}</h4><p>${d.d}</p><span class="cn">${pl(d.sc.length, "scheme")}, ${pl(d.sv.length, "service")}</span></div></div>`,
+          `<div class="dp rv"
+      style="--d:${(i % 3) * 0.12}s"
+      onclick="${d.k === "edu" ? "window.location.href='/departments/education/'" : d.k === "agri" ? "window.location.href='/departments/agriculture/'" : ""}"
+      style="cursor:${d.k === "edu" || d.k === "agri" ? "pointer" : "default"}">
+      <div class="ic">${ic(P[d.i])}</div>
+      <div>
+        <h4>${d.n}</h4>
+        <p>${d.d}</p>
+        <span class="cn">${pl(d.sc.length, "scheme")}, ${pl(d.sv.length, "service")}</span>
+      </div>
+    </div>`,
       ).join("");
-
-      // categories (tiles open a panel listing that category's schemes and services)
-      let cur = -1;
-      $("#cg").innerHTML = D.map(
-        (d, i) =>
-          `<button class="cc" data-i="${i}" style="--c:${d.c}" aria-controls="cd"><span class="ib">${ic(P[d.i])}</span><span class="n">${pl(d.sc.length, "Scheme")}, ${pl(d.sv.length, "Service")}</span><span class="nm">${d.n}</span></button>`,
-      ).join("");
-      $("#cg").onclick = (e) => {
-        const b = e.target.closest(".cc");
-        if (!b) return;
-        const i = +b.dataset.i,
-          box = $("#cd");
-        document
-          .querySelectorAll(".cc")
-          .forEach((x) => x.classList.remove("on"));
-        if (i === cur) {
-          cur = -1;
-          box.hidden = true;
-          return;
-        }
-        cur = i;
-        b.classList.add("on");
-        const d = D[i];
-        box.style.setProperty("--c", d.c);
-        box.innerHTML = `<h3>${d.n}</h3><p class="cs">${pl(d.sc.length, "scheme")} and ${pl(d.sv.length, "service")}</p><div class="cl"><div><h4>Schemes (${d.sc.length})</h4><ol>${d.sc.map((x) => `<li>${x}</li>`).join("")}</ol></div><div><h4>Services (${d.sv.length})</h4><ol>${d.sv.map((x) => `<li>${x[0]}</li>`).join("")}</ol></div></div><a class="btn btn-grn" href="#reco">Check my eligibility</a>`;
-        box.hidden = false;
-        box.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      };
 
       // reveal + counters
       const io = new IntersectionObserver(
@@ -1627,8 +1959,75 @@
           $("#fill").style.width = "34%";
         }, 500);
       };
-      $("#chat").onclick = () =>
-        alert("AI assistant: connect your chatbot backend here.");
+
+      const chatButton = $("#chat");
+      const chatWindow = $("#chat-window");
+      const chatClose = $("#chat-close");
+      const chatForm = $("#chat-form");
+      const chatInput = $("#chat-input");
+      const chatMessages = $("#chat-messages");
+      const chatSend = $("#chat-send");
+
+      chatButton.onclick = () => {
+        chatWindow.style.display = "flex";
+        chatInput.focus();
+      };
+
+      chatClose.onclick = () => {
+        chatWindow.style.display = "none";
+      };
+
+      function addChatMessage(message, sender) {
+        const bubble = document.createElement("div");
+        bubble.className = sender === "user" ? "user-message" : "bot-message";
+        bubble.textContent = message;
+        chatMessages.appendChild(bubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return bubble;
+      }
+
+      chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        addChatMessage(message, "user");
+        chatInput.value = "";
+        chatInput.disabled = true;
+        chatSend.disabled = true;
+
+        const loading = addChatMessage("Thinking...", "bot");
+
+        try {
+          const csrfToken = chatForm.querySelector(
+            '[name="csrfmiddlewaretoken"]',
+          ).value;
+
+          const response = await fetch("/chatbot/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({ message }),
+          });
+
+          const data = await response.json();
+
+          loading.textContent = response.ok
+            ? data.reply || "I couldn't find a reply."
+            : data.reply || "Sorry, something went wrong.";
+        } catch (error) {
+          loading.textContent = "Unable to connect. Please check the server.";
+          console.error(error);
+        } finally {
+          chatInput.disabled = false;
+          chatSend.disabled = false;
+          chatInput.focus();
+        }
+      });
     </script>
+    {% include "portal/chatbot.html" %}
   </body>
 </html>

@@ -1,14 +1,11 @@
 
 from django.core.management.base import BaseCommand
 from portal.models import Department, Scheme
+from departments.agriculture.seed import seed_agriculture_catalog
+from departments.education.seed import seed_education_catalog
 
 
 DATA = [
-    ("Education", "EDU", [
-        ("Post-Matric Scholarship", "Scholarship support for eligible students.", "SC,ST", "Student", 0, 1000000),
-        ("Central Sector Scholarship", "Financial assistance for eligible college students.", "", "Student", 0, 450000),
-        ("PM Vidyalaxmi", "Education loan support for eligible students.", "", "Student", 0, None),
-    ]),
     ("Agriculture", "AGR", [
         ("PM-KISAN", "Income support for eligible farmer families.", "", "Farmer", 0, None),
         ("PM Fasal Bima Yojana", "Crop insurance for eligible farmers.", "", "Farmer", 0, None),
@@ -80,6 +77,9 @@ class Command(BaseCommand):
                     },
                 )
                 total += 1
+
+        total += seed_education_catalog()
+        total += seed_agriculture_catalog()
 
         self.stdout.write(
             self.style.SUCCESS(

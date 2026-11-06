@@ -1,0 +1,42 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'portal/chatbot.css' %}?v=2" />
+
+<div id="chat-window" class="aiseva-chat-window" style="display:none" role="dialog" aria-label="AI Seva assistant">
+  <div class="chat-header">
+    <div class="chat-logo" aria-hidden="true">AI</div>
+    <div class="chat-title">
+      <strong>AI Seva Assistant</strong>
+      <p>Grounded in AI Seva scheme data</p>
+    </div>
+    <button type="button" id="chat-close" aria-label="Close chat">×</button>
+  </div>
+
+  <div id="chat-messages" class="chat-messages" aria-live="polite" aria-relevant="additions text">
+    <div class="bot-message">Vanakkam! Ask me about scheme eligibility, documents, application steps or your application status.</div>
+  </div>
+
+  <div class="chat-suggestions">
+    <button type="button" data-message="What documents do I need for PM-KISAN?">PM-KISAN documents</button>
+    <button type="button" data-message="Explain Kisan Credit Card eligibility">KCC eligibility</button>
+    <button type="button" data-message="Education schemes">Education schemes</button>
+  </div>
+
+  <div class="chat-voice-tools">
+    <label for="chat-voice-language" class="chat-language-label">Voice language</label>
+    <select id="chat-voice-language" aria-label="Voice input language">
+      <option value="en-IN">English</option>
+      <option value="ta-IN">தமிழ்</option>
+    </select>
+    <button type="button" id="chat-voice-input" aria-label="Speak a question" title="Speak a question">🎙</button>
+    <button type="button" id="chat-speak-toggle" aria-label="Turn voice replies on" aria-pressed="false" title="Voice replies off">🔈</button>
+  </div>
+
+  <form id="chat-form" class="chat-form">
+    {% csrf_token %}
+    <input id="chat-input" type="text" placeholder="Ask about a scheme or service" maxlength="1000" autocomplete="off" dir="auto" required />
+    <button id="chat-send" type="submit" aria-label="Send message">➤</button>
+  </form>
+</div>
+
+<script src="{% static 'portal/chatbot.js' %}?v=2" defer></script>

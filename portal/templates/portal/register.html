@@ -1,0 +1,379 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Registration | AI Seva</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #102f70;
+            --orange: #ff982e;
+            --cream: #fffaf3;
+            --text: #182b4d;
+            --muted: #78849a;
+            --border: #e0e6ef;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        .topbar {
+            height: 78px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--navy);
+            font-size: 23px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            width: 43px;
+            height: 43px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            background: var(--orange);
+            font-size: 20px;
+        }
+
+        .brand span small {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.4px;
+        }
+
+        .top-login {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .top-login a {
+            margin-left: 5px;
+            color: var(--navy);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .page {
+            min-height: calc(100vh - 78px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 38px 18px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 500px;
+            padding: 36px 40px;
+            background: white;
+            border: 1px solid #edf0f5;
+            border-radius: 22px;
+            box-shadow: 0 15px 45px #102f7010;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border-radius: 20px;
+            background: #fff1df;
+            color: #9a520c;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--orange);
+        }
+
+        h1 {
+            margin: 19px 0 9px;
+            color: var(--navy);
+            font-size: 29px;
+            letter-spacing: -1px;
+        }
+
+        .intro {
+            margin: 0 0 26px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px 14px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #273955;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            height: 45px;
+            padding: 0 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            background: #fff;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 13px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        input::placeholder {
+            color: #a0a9b8;
+        }
+
+        input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px #ff982e20;
+        }
+
+        .help {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .error {
+            margin-top: 6px;
+            color: #b42318;
+            font-size: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 48px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--navy);
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .2s, transform .2s;
+        }
+
+        .submit-btn:hover {
+            background: #1b438f;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn span {
+            color: var(--orange);
+            font-size: 19px;
+        }
+
+        .bottom-text {
+            margin: 20px 0 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .bottom-text a {
+            color: var(--navy);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .messages {
+            margin-bottom: 16px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #fff0ef;
+            color: #b42318;
+            font-size: 12px;
+        }
+
+        @media (max-width: 520px) {
+            .topbar {
+                height: 70px;
+                padding: 0 18px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .top-login {
+                font-size: 12px;
+            }
+
+            .page {
+                padding: 24px 12px;
+            }
+
+            .register-card {
+                padding: 27px 21px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <a class="brand" href="/">
+            <div class="brand-mark">AI</div>
+            <span>AI Seva<small>CITIZEN SERVICES PORTAL</small></span>
+        </a>
+
+        <div class="top-login">
+            Already registered?
+            <a href="/">Sign in</a>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="register-card">
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Citizen registration
+            </div>
+
+            <h1>Create your account</h1>
+            <p class="intro">
+                Join AI Seva to discover government schemes,
+                apply for services and track your applications in one place.
+            </p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="messages">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div class="error">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="{{ form.first_name.id_for_label }}">Full name</label>
+                        {{ form.first_name }}
+                        {% for error in form.first_name.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="field">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="field full">
+                        <label for="{{ form.email.id_for_label }}">Email address</label>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="field">
+                        <label for="{{ form.password1.id_for_label }}">Password</label>
+                        {{ form.password1 }}
+                        {% for error in form.password1.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="field">
+                        <label for="{{ form.password2.id_for_label }}">Confirm password</label>
+                        {{ form.password2 }}
+                        {% for error in form.password2.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button class="submit-btn" type="submit">
+                    Create Citizen Account <span>→</span>
+                </button>
+            </form>
+
+            <p class="bottom-text">
+                Your journey to easier public services starts here.
+            </p>
+        </section>
+    </main>
+    {% include "portal/chatbot_widget.html" %}
+</body>
+</html>

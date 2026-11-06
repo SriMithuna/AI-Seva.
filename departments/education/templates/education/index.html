@@ -1,0 +1,214 @@
+{% extends "agriculture/base.html" %}
+
+{% block title %}Education | AI Seva{% endblock %}
+
+{% block extra_styles %}
+  .crumbs { padding-top:24px; color:var(--soft); font-size:13px; }
+  .crumbs a { color:var(--navy); text-decoration:none; }
+  .edu-hero { padding:34px 0 40px; background:linear-gradient(180deg,#fff4e5 0,var(--bg) 94%); }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(245px,.7fr); gap:40px; align-items:center; }
+  .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--grn); font-weight:700; font-size:13px; letter-spacing:.09em; text-transform:uppercase; }
+  .eyebrow::before { content:""; width:24px; height:3px; border-radius:4px; background:var(--saf); }
+  .edu-hero h1 { margin-top:12px; max-width:740px; color:var(--navy); font-size:clamp(34px,5vw,54px); line-height:1.08; font-weight:800; }
+  .edu-hero h1 span { color:var(--grn); }
+  .hero-copy { max-width:650px; margin:17px 0 22px; color:var(--soft); font-size:17px; }
+  .hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
+  .hero-art { position:relative; min-height:230px; display:grid; place-items:center; }
+  .art-orbit { position:absolute; width:210px; aspect-ratio:1; border:1px dashed rgba(192,145,51,.5); border-radius:50%; }
+  .art-disc { position:relative; width:158px; aspect-ratio:1; display:grid; place-items:center; border:1px solid #f2dfb8; border-radius:50%; background:linear-gradient(145deg,#fff0cf,#fffaf0); box-shadow:0 20px 50px rgba(158,112,37,.15); color:#8b641f; }
+  .art-disc svg { width:82px; height:82px; }
+  .art-badge { position:absolute; display:grid; place-items:center; width:49px; height:49px; border:1px solid #f1dfbb; border-radius:15px; background:#fffaf0; color:#a75d0a; box-shadow:0 8px 24px rgba(122,86,28,.12); }
+  .art-badge svg { width:23px; height:23px; }
+  .badge-one { top:20px; right:30px; transform:rotate(7deg); } .badge-two { bottom:18px; left:26px; transform:rotate(-7deg); }
+  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-top:17px; }
+  .stat-box { position:relative; overflow:hidden; padding:17px 19px; border:1px solid #eee1c7; border-radius:14px; background:linear-gradient(150deg,#fff 60%,#fffaf0); box-shadow:0 5px 16px rgba(122,86,28,.07); }
+  .stat-box::before { content:""; position:absolute; inset:0 0 auto; height:4px; background:linear-gradient(90deg,#b98932,#f5dda5,#c79b4b); }
+  .stat-num { display:block; color:var(--navy); font-size:27px; line-height:1.1; font-weight:800; }
+  .stat-label { display:block; margin-top:5px; color:var(--soft); font-size:13px; font-weight:600; }
+  .edu-note { display:flex; align-items:flex-start; gap:11px; margin-top:20px; padding:14px 16px; border:1px solid #ecd9ad; border-radius:10px; background:linear-gradient(100deg,#fff7e5,#fffaf1); color:#70501e; font-size:13px; }
+  .edu-note svg { flex:0 0 20px; width:20px; height:20px; margin-top:1px; }
+  .section { padding:48px 0 12px; }
+  .section-heading { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:20px; }
+  .section-heading h2 { color:var(--navy); font-size:clamp(25px,3vw,34px); font-weight:800; }
+  .section-heading h2::after { content:""; display:block; width:64px; height:4px; margin-top:9px; border-radius:4px; background:linear-gradient(90deg,#b98932,#efd18c); }
+  .section-heading p { max-width:450px; margin-top:8px; color:var(--soft); }
+  .toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin:21px 0 23px; }
+  .filters { display:flex; gap:8px; overflow-x:auto; padding:3px; }
+  .filter-button { flex:0 0 auto; border:1px solid var(--line); border-radius:999px; padding:9px 15px; background:#fff; color:var(--soft); font-weight:600; }
+  .filter-button:hover { border-color:#d7b46d; color:#805610; }
+  .filter-button[aria-pressed="true"] { border-color:#bb8b35; background:linear-gradient(135deg,#f1d38f,#e8bf69); color:#30220b; box-shadow:0 4px 10px rgba(158,112,37,.16); }
+  .search-wrap { position:relative; flex:1 1 260px; max-width:360px; }
+  .search-wrap svg { position:absolute; left:13px; top:50%; width:18px; height:18px; transform:translateY(-50%); color:#788197; pointer-events:none; }
+  .search-input { width:100%; min-height:43px; padding:10px 13px 10px 40px; border:1px solid var(--line); border-radius:9px; background:#fff; color:var(--ink); font:inherit; }
+  .search-input:focus { outline:3px solid rgba(11,42,107,.12); border-color:var(--navy); }
+  .result-count { margin-bottom:12px; color:var(--soft); font-size:13px; }
+  .card-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:19px; align-items:stretch; }
+  .module-card { position:relative; overflow:hidden; display:flex; flex-direction:column; min-width:0; padding:22px; border:1px solid #eadfc9; border-radius:16px; background:linear-gradient(155deg,#fff 62%,#fffaf1); box-shadow:0 6px 18px rgba(122,86,28,.08); transition:transform .25s,box-shadow .25s,border-color .25s; }
+  .module-card[hidden] { display:none; }
+  .module-card::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,#b98932,#f2d99e,#c5943d); }
+  .module-card:hover { transform:translateY(-4px); border-color:#d5bd8d; box-shadow:0 15px 30px rgba(122,86,28,.13); }
+  .card-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .module-icon { width:52px; height:52px; display:grid; place-items:center; border:1px solid #ead8ad; border-radius:15px; background:linear-gradient(145deg,#fff3d9,#f2dfb8); color:#8b641f; }
+  .module-icon svg { width:26px; height:26px; }
+  .type-pill { border:1px solid #e4d1a7; border-radius:999px; padding:5px 10px; background:#fff8e8; color:#805d1f; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+  .module-card h3 { margin-top:17px; color:var(--navy); font-size:19px; line-height:1.25; }
+  .full-name { min-height:17px; margin-top:5px; color:#7a8294; font-size:12px; }
+  .module-summary { margin-top:11px; color:var(--soft); font-size:14px; }
+  .benefit { display:flex; align-items:flex-start; gap:9px; margin-top:14px; padding:11px 12px; border:1px solid #eee0bf; border-radius:9px; background:linear-gradient(100deg,#fff7e6,#fffaf1); color:#6e4e17; font-size:13px; font-weight:600; }
+  .benefit svg { flex:0 0 17px; width:17px; height:17px; margin-top:1px; }
+  .card-details { margin-top:14px; border-top:1px solid var(--line); }
+  .card-details summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 0 3px; color:var(--navy); font-size:13px; font-weight:700; cursor:pointer; list-style:none; }
+  .card-details summary::-webkit-details-marker { display:none; }
+  .card-details summary::after { content:""; flex:0 0 8px; width:8px; height:8px; margin:0 5px 4px 0; border-right:2px solid #9b6b1b; border-bottom:2px solid #9b6b1b; transform:rotate(45deg); transition:transform .2s; }
+  .card-details[open] summary::after { transform:rotate(225deg); margin-bottom:0; }
+  .detail-block { padding:12px 0 3px; }
+  .detail-block h4 { margin-bottom:5px; color:var(--ink); font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+  .detail-block p,.detail-block li { color:var(--soft); font-size:13px; }
+  .detail-block ul,.detail-block ol { margin:0; padding-left:19px; }
+  .detail-block li+li { margin-top:3px; }
+  .card-actions { display:flex; align-items:center; flex-wrap:wrap; gap:13px; margin-top:auto; padding-top:17px; }
+  .card-actions .btn { padding:9px 13px; font-size:13px; }
+  .official-link { color:var(--navy); font-size:13px; font-weight:700; text-decoration:none; }
+  .official-link:hover { color:var(--saf-d); }
+  .empty-state { grid-column:1/-1; display:none; padding:38px 20px; border:1px dashed #c8cfda; border-radius:14px; color:var(--soft); text-align:center; }
+  .steps-section { margin-top:46px; padding:27px; border:1px solid #eadfc9; border-radius:17px; background:#fff; }
+  .steps-section h2 { color:var(--navy); font-size:23px; }
+  .steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px; }
+  .step-card { display:flex; gap:12px; padding:17px; border:1px solid #eee1c7; border-radius:12px; background:linear-gradient(135deg,#fffaf0,#fff); }
+  .step-number { flex:0 0 32px; width:32px; height:32px; display:grid; place-items:center; border-radius:50%; background:#f1d38f; color:#30220b; font-weight:800; }
+  .step-card h3 { color:var(--navy); font-size:14px; }
+  .step-card p { margin-top:4px; color:var(--soft); font-size:13px; }
+  .disclaimer { margin-top:19px; padding:15px 17px; border-left:4px solid var(--saf); border-radius:8px; background:#fff5e8; color:#66543a; font-size:13px; }
+  @media(max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1fr) 250px; gap:20px; } .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(max-width:700px) { .crumbs { padding-top:18px; } .edu-hero { padding:24px 0 30px; } .hero-grid { grid-template-columns:1fr; } .hero-art { display:none; } .hero-copy { margin:13px 0 18px; font-size:15px; } .stats-row { gap:9px; } .stat-box { padding:14px 10px; } .stat-num { font-size:23px; } .stat-label { font-size:11px; } .section { padding-top:38px; } .section-heading { display:block; } .toolbar { align-items:stretch; } .filters { width:100%; } .search-wrap { max-width:none; flex-basis:100%; } .card-grid { grid-template-columns:1fr; } .module-card { padding:19px; } .steps-grid { grid-template-columns:1fr; } .steps-section { padding:20px; } }
+  @media(prefers-reduced-motion:reduce) { .module-card,.card-details summary::after { transition:none; } }
+{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><span>Education</span></div>
+    <section class="edu-hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Education department</span>
+          <h1>Support for students, <span>at every step.</span></h1>
+          <p class="hero-copy">Explore scholarship guidance, higher education support and student services. Compare requirements, prepare your details and continue to the official portal.</p>
+          <div class="hero-actions">
+            <a class="btn btn-saf" href="#education-catalog">Explore education support <span aria-hidden="true">→</span></a>
+            <a class="btn btn-out" href="{% url 'citizen_dashboard' %}">Track my requests</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit"></div>
+          <div class="art-disc"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22 32 9l25 13-25 13L7 22Z"/><path d="M17 28v13c8 7 22 7 30 0V28M57 22v19"/><path d="M24 49h16"/></svg></div>
+          <span class="art-badge badge-one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h7"/></svg></span>
+          <span class="art-badge badge-two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="m15 17 2 2 4-5"/></svg></span>
+        </div>
+      </div>
+      <div class="wrap stats-row" aria-label="Education support catalogue totals">
+        <div class="stat-box"><span class="stat-num">{{ scheme_count }}</span><span class="stat-label">Scholarship &amp; loan schemes</span></div>
+        {% if not scheme_only %}<div class="stat-box"><span class="stat-num">{{ service_count }}</span><span class="stat-label">Student services</span></div>{% endif %}
+        <div class="stat-box"><span class="stat-num">1</span><span class="stat-label">Place to start</span></div>
+      </div>
+      <div class="wrap">
+        <div class="edu-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg><span>AI Seva offers guidance and a demo request workflow. It does not submit an official scholarship or loan application.</span></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="education-catalog">
+      <div class="section-heading">
+        <div><h2>{% if scheme_only %}Education schemes{% else %}Education schemes &amp; services{% endif %}</h2><p>Choose a starting point. Check current rules and deadlines on the official portal before applying.</p></div>
+      </div>
+      <div class="toolbar" aria-label="Filter education support">
+        <div class="filters" role="group" aria-label="Filter by category">
+          <button class="filter-button" type="button" data-filter="all" aria-pressed="true">{% if scheme_only %}All schemes{% else %}All support{% endif %}</button>
+          <button class="filter-button" type="button" data-filter="scholarships" aria-pressed="false">Scholarships</button>
+          <button class="filter-button" type="button" data-filter="higher-education" aria-pressed="false">Higher education</button>
+          {% if not scheme_only %}<button class="filter-button" type="button" data-filter="student-services" aria-pressed="false">Student services</button>{% endif %}
+        </div>
+        <label class="search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input class="search-input" id="education-search" type="search" placeholder="{% if scheme_only %}Search education schemes{% else %}Search schemes and services{% endif %}" aria-label="Search education schemes and services" /></label>
+      </div>
+      <p class="result-count" id="result-count" aria-live="polite">Showing {{ items|length }} items</p>
+      <div class="card-grid" id="education-cards">
+        {% for item in items %}
+        <article class="module-card" data-type="{{ item.category|slugify }}" data-search="{{ item.name }} {{ item.full_name }} {{ item.summary }} {{ item.eligibility }} {{ item.category }}">
+          <div class="card-top">
+            <span class="module-icon" aria-hidden="true">
+              {% if item.slug == "post-matric-scholarship" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14M3 5h6a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H3zM21 5h-6a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h6z"/></svg>
+              {% elif item.slug == "central-sector-scholarship" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.3 4.7 5.2.8-3.8 3.7.9 5.2-4.6-2.5-4.6 2.5.9-5.2-3.8-3.7 5.2-.8L12 3Z"/><path d="M7 20h10"/></svg>
+              {% elif item.slug == "pm-vidyalaxmi" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M5 10v9m5-9v9m4-9v9m5-9v9M3 21h18M12 3 3 8h18l-9-5Z"/></svg>
+              {% elif item.slug == "nsp-student-registration" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1M17 11h4m-2-2v4"/></svg>
+              {% elif item.slug == "abc-id-creation" %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M5 16c.7-1.6 1.7-2.4 3-2.4s2.3.8 3 2.4m2-5h4m-4 4h4"/></svg>
+              {% else %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M8 13h8m-8 4h6"/><path d="m16 17 1.5 1.5L21 15"/></svg>
+              {% endif %}
+            </span>
+            <span class="type-pill">{{ item.item_type }}</span>
+          </div>
+          <h3>{{ item.name }}</h3>
+          <p class="full-name">{{ item.full_name }}</p>
+          <p class="module-summary">{{ item.summary }}</p>
+          <div class="benefit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>{{ item.final_output }}</span></div>
+          <details class="card-details">
+            <summary>Eligibility, documents &amp; steps</summary>
+            <div class="detail-block"><h4>Eligibility guidance</h4><p>{{ item.eligibility }}</p></div>
+            <div class="detail-block"><h4>Documents to prepare</h4><ul>{% for document in item.documents %}<li>{{ document }}</li>{% endfor %}</ul></div>
+            <div class="detail-block"><h4>Benefits of this guidance</h4><ul>{% for benefit in item.benefits %}<li>{{ benefit }}</li>{% endfor %}</ul></div>
+            <div class="detail-block"><h4>Next steps</h4><ol>{% for step in item.workflow %}<li>{{ step }}</li>{% endfor %}</ol></div>
+          </details>
+          <div class="card-actions">
+            <a class="btn btn-saf" href="{% url 'education_apply' item.slug %}">{% if item.item_type == "Service" %}Start service{% else %}Apply now{% endif %} <span aria-hidden="true">→</span></a>
+            <a class="official-link" href="{{ item.official_url }}" target="_blank" rel="noopener noreferrer">Official portal ↗</a>
+          </div>
+        </article>
+        {% endfor %}
+        <div class="empty-state" id="empty-state">No matching education support found. Try another search.</div>
+      </div>
+      <section class="steps-section" aria-labelledby="steps-title">
+        <h2 id="steps-title">How to get started</h2>
+        <div class="steps-grid">
+          <div class="step-card"><span class="step-number">1</span><div><h3>Explore</h3><p>Search the catalogue and open the details that fit your need.</p></div></div>
+          <div class="step-card"><span class="step-number">2</span><div><h3>Prepare</h3><p>Review the current official rules and gather the requested information.</p></div></div>
+          <div class="step-card"><span class="step-number">3</span><div><h3>Continue</h3><p>Use the official portal for submission. Track any AI Seva demo request from your account.</p></div></div>
+        </div>
+        <p class="disclaimer"><strong>Please note:</strong> AI Seva guidance and demo requests are not official government submissions or approvals. Scheme criteria and document lists can change; confirm them on the linked official portal.</p>
+      </section>
+    </section>
+  </main>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    (() => {
+      const cards = [...document.querySelectorAll(".module-card")];
+      const buttons = [...document.querySelectorAll(".filter-button")];
+      const search = document.getElementById("education-search");
+      const count = document.getElementById("result-count");
+      const empty = document.getElementById("empty-state");
+      let activeFilter = "all";
+      function updateCards() {
+        const query = search.value.trim().toLocaleLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const matchesType = activeFilter === "all" || card.dataset.type === activeFilter;
+          const matchesText = card.dataset.search.toLocaleLowerCase().includes(query);
+          card.hidden = !(matchesType && matchesText);
+          if (!card.hidden) visible += 1;
+        });
+        count.textContent = `Showing ${visible} ${visible === 1 ? "item" : "items"}`;
+        empty.style.display = visible ? "none" : "block";
+      }
+      buttons.forEach((button) => button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        updateCards();
+      }));
+      search.addEventListener("input", updateCards);
+    })();
+  </script>
+{% endblock %}

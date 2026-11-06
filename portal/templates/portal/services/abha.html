@@ -1,0 +1,202 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABHA Health ID | AI Seva</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: #101b35;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ff9d42;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #101b35, #263f70);
+            color: white;
+            padding: 65px 8%;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 650px;
+            line-height: 1.7;
+            color: #e0e7f5;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #ff9d42;
+            color: #172033;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 14px;
+            box-shadow: 0 5px 22px #1720330d;
+        }
+
+        .panel h2 {
+            color: #172b50;
+            margin-top: 0;
+        }
+
+        li {
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            background: #ff9d42;
+            color: #172033;
+            padding: 14px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .notice {
+            background: #fff4e7;
+            border-left: 4px solid #ff9d42;
+            padding: 16px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            background: #101b35;
+            color: #d8deeb;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            header {
+                padding: 18px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">AI <span>Seva</span></div>
+        <a href="/">← Back to Home</a>
+    </header>
+
+    <section class="hero">
+        <span class="tag">HEALTH SERVICE</span>
+
+        <h1>ABHA Health ID Registration</h1>
+
+        <p>
+            Explore the ABHA Health ID service through AI Seva.
+            Learn about the service and follow a guided demonstration
+            of the application process.
+        </p>
+
+        <a class="button" href="/services/abha/apply/">
+            Start Application Demo →
+        </a>
+    </section>
+
+    <main>
+
+        <section class="panel">
+            <h2>About This Service</h2>
+
+            <p>
+                ABHA stands for Ayushman Bharat Health Account.
+                It is intended to help individuals participate in
+                India's digital health ecosystem.
+            </p>
+        </section>
+
+        <section class="panel">
+            <h2>What You'll Do in This Demo</h2>
+
+            <ol>
+                <li>Enter basic sample applicant details.</li>
+                <li>Submit a demonstration application.</li>
+                <li>Receive a tracking ID to check the demo status.</li>
+            </ol>
+        </section>
+
+        <section class="panel">
+            <h2>Before You Continue</h2>
+
+            <div class="notice">
+                This is a college project demonstration, not an
+                official ABHA registration service. Do not enter
+                your real Aadhaar number, health information,
+                or other sensitive personal data.
+            </div>
+
+            <a class="button" href="/services/abha/apply/">
+                Continue to Demo
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        © AI Seva — Citizen Service Assistance Portal
+    </footer>
+
+    {% include "portal/chatbot_widget.html" %}
+</body>
+</html>
+```

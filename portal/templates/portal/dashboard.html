@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Dashboard | AI Seva</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff8ee;
+            color: #24344d;
+        }
+        header {
+            background: #102f63;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        header h2 { margin: 0; }
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+        .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #ff9933;
+            margin-bottom: 25px;
+        }
+        .welcome h1 { color: #102f63; margin-top: 0; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .stat {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            border-top: 4px solid #ff9933;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+        .stat h2 { color: #102f63; font-size: 30px; margin: 8px 0; }
+        .applications {
+            background: white;
+            padding: 24px;
+            margin-top: 28px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+        .applications h2 { color: #102f63; }
+        table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        th, td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th { color: #102f63; background: #fff5e6; }
+        .status { font-weight: bold; }
+        .empty { text-align: center; padding: 25px; color: #777; }
+        .apply {
+            display: inline-block;
+            background: #102f63;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h2>AI Seva | Citizen Portal</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/departments/education/">Education</a>
+        <a href="{% url 'citizen_logout' %}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="welcome">
+        <h1>Welcome, {{ request.user.first_name|default:request.user.username }}!</h1>
+        <p>Manage your government service applications in one place.</p>
+        <a class="apply" href="/departments/education/">Explore Education</a>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <p>Total Applications</p>
+            <h2>{{ total_applications }}</h2>
+        </div>
+        <div class="stat">
+            <p>Pending</p>
+            <h2>{{ pending_applications }}</h2>
+        </div>
+        <div class="stat">
+            <p>Approved</p>
+            <h2>{{ approved_applications }}</h2>
+        </div>
+        <div class="stat">
+            <p>Rejected</p>
+            <h2>{{ rejected_applications }}</h2>
+        </div>
+    </section>
+
+    <section class="applications">
+        <h2>My Applications</h2>
+
+        {% if applications %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Tracking ID</th>
+                    <th>Scheme / Service</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app.tracking_id }}</td>
+                    <td>{{ app.scheme.name }}</td>
+                    <td>{{ app.scheme.department.name }}</td>
+                    <td>{{ app.created_at|date:"d M Y" }}</td>
+                    <td class="status">{{ app.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">
+            <p>You haven't submitted any applications yet.</p>
+            <a class="apply" href="/departments/education/">Explore Schemes</a>
+        </div>
+        {% endif %}
+    </section>
+</main>
+{% include "portal/chatbot_widget.html" %}
+</body>
+</html>

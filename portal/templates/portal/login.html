@@ -1,0 +1,81 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Login | AI Seva</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff5e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-card {
+            background: white;
+            width: 350px;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px #0002;
+            border-top: 5px solid #ff9933;
+        }
+        h2 { color: #102f63; text-align: center; }
+        p { text-align: center; color: #555; }
+        label { display: block; margin-top: 18px; color: #102f63; }
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 25px;
+            background: #102f63;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover { background: #138808; }
+        .error { color: #c62828; text-align: center; }
+        a { color: #102f63; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2>AI Seva</h2>
+        <p>Citizen Login</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <label>Username</label>
+            <input type="text" name="username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>New citizen? <a href="{% url 'citizen_register' %}">Register here</a></p>
+    </div>
+    {% include "portal/chatbot_widget.html" %}
+</body>
+</html>

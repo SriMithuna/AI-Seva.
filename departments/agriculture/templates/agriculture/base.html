@@ -1,0 +1,137 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fffdf9" />
+    <title>{% block title %}Agriculture | AI Seva{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --saf:#ff9933; --saf-d:#d9770f; --grn:#138808; --grn-l:#e8f5e6;
+        --navy:#0b2a6b; --ink:#1c2233; --soft:#505a70; --bg:#fffdf9;
+        --line:#e7e2d8; --white:#fff; --shadow:0 12px 32px rgba(11,42,107,.08);
+      }
+      *,*::before,*::after { box-sizing:border-box; }
+      html { scroll-behavior:smooth; }
+      body { margin:0; color:var(--ink); background:var(--bg); font:16px/1.55 "Roboto",Arial,sans-serif; }
+      h1,h2,h3,h4 { margin:0; font-weight:700; letter-spacing:-.01em; }
+      a { color:inherit; }
+      button { font:inherit; cursor:pointer; }
+      :focus-visible { outline:3px solid var(--navy); outline-offset:3px; }
+      .wrap { width:min(1180px,100%); margin:0 auto; padding:0 24px; }
+      .flagbar { height:6px; background:linear-gradient(90deg,var(--saf) 33.3%,#fff 33.3% 66.6%,var(--grn) 66.6%); border-bottom:1px solid var(--line); }
+      .site-header { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+      .nav { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+      .brand { display:flex; align-items:center; gap:10px; color:var(--navy); text-decoration:none; font-size:21px; font-weight:800; white-space:nowrap; }
+      .brand em { color:var(--saf-d); font-style:normal; }
+      .logo { width:44px; height:44px; object-fit:contain; border-radius:8px; }
+      .nav-links { display:flex; align-items:center; gap:25px; color:var(--soft); font-weight:500; }
+      .nav-links a { text-decoration:none; transition:color .2s; }
+      .nav-links a:hover,.nav-links a[aria-current="page"] { color:var(--navy); }
+      .nav-actions { display:flex; align-items:center; gap:10px; }
+      .btn { display:inline-flex; justify-content:center; align-items:center; gap:8px; padding:11px 19px; border:2px solid transparent; border-radius:8px; font-weight:700; text-decoration:none; transition:background .2s,color .2s,transform .2s,box-shadow .2s; }
+      .btn:hover { transform:translateY(-1px); }
+      .btn-saf { background:var(--saf); color:#1c1200; }
+      .btn-saf:hover { background:var(--saf-d); color:#fff; box-shadow:0 6px 16px rgba(217,119,15,.22); }
+      .btn-out { border-color:var(--navy); color:var(--navy); background:transparent; }
+      .btn-out:hover { color:#fff; background:var(--navy); }
+      .menu-button { display:none; border:0; background:none; color:var(--navy); padding:8px; }
+      .menu-button svg { width:26px; height:26px; }
+      .site-footer { margin-top:70px; background:#0b1e49; color:#fff; }
+      .footer-main { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:42px; padding-top:42px; padding-bottom:36px; }
+      .footer-main p { max-width:340px; margin:12px 0 0; color:#d4dbea; font-size:14px; }
+      .footer-main h2 { margin-bottom:12px; color:#fff; font-size:15px; }
+      .footer-links { display:grid; gap:8px; color:#e0e7f4; font-size:14px; }
+      .footer-links a { text-decoration:none; }
+      .footer-links a:hover { color:var(--saf); }
+      .footer-bottom { border-top:1px solid rgba(255,255,255,.14); padding:15px 24px; text-align:center; color:#cbd3e2; font-size:13px; }
+      @media (max-width:900px) {
+        .nav-links { gap:14px; font-size:14px; }
+        .nav-actions .btn-out { display:none; }
+        .brand { font-size:19px; }
+      }
+      @media (max-width:700px) {
+        .wrap { padding-right:18px; padding-left:18px; }
+        .nav { min-height:68px; }
+        .menu-button { display:inline-flex; }
+        .nav-links { display:none; position:absolute; top:68px; left:0; right:0; padding:16px 22px 20px; background:#fff; border-bottom:1px solid var(--line); box-shadow:0 12px 20px rgba(11,42,107,.08); flex-direction:column; align-items:stretch; gap:0; }
+        .nav-links.open { display:flex; }
+        .nav-links a { padding:11px 4px; }
+        .nav-actions { margin-left:auto; }
+        .nav-actions .btn { padding:9px 12px; font-size:13px; }
+        .logo { width:38px; height:38px; }
+        .footer-main { grid-template-columns:1fr 1fr; gap:28px; }
+        .footer-main > div:first-child { grid-column:1/-1; }
+      }
+      @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
+      {% block extra_styles %}{% endblock %}
+    </style>
+  </head>
+  <body>
+    <div class="flagbar"></div>
+    <header class="site-header">
+      <div class="wrap nav">
+        <a class="brand" href="/" aria-label="AI Seva home">
+          <img class="logo" src="{% static 'portal/images/aiseva-logo.png' %}" alt="" />
+          <span>AI <em>Seva</em></span>
+        </a>
+        <nav class="nav-links" id="site-nav" aria-label="Main navigation">
+          <a href="/#services">Services</a>
+          <a href="/#departments">Departments</a>
+          <a href="{% url 'agriculture:home' %}"{% if active_department != 'education' %} aria-current="page"{% endif %}>Agriculture</a>
+          <a href="{% url 'education_home' %}"{% if active_department == 'education' %} aria-current="page"{% endif %}>Education</a>
+          <a href="/#track">Track</a>
+        </nav>
+        <div class="nav-actions">
+          {% if user.is_authenticated %}
+            <a class="btn btn-out" href="{% url 'citizen_dashboard' %}">My applications</a>
+          {% else %}
+            <a class="btn btn-out" href="{% url 'citizen_login' %}">Sign in</a>
+            <a class="btn btn-saf" href="{% url 'citizen_register' %}">Create account</a>
+          {% endif %}
+          <button class="menu-button" id="menu-button" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    {% block content %}{% endblock %}
+    <footer class="site-footer">
+      <div class="wrap footer-main">
+        <div>
+          <a class="brand" href="/" style="color:#fff"><span>AI <em>Seva</em></span></a>
+          <p>One citizen portal for government schemes, applications and tracking.</p>
+        </div>
+        <div>
+          <h2>Explore</h2>
+          <div class="footer-links"><a href="{% url 'agriculture:home' %}">Agriculture</a><a href="{% url 'education_home' %}">Education</a><a href="/#departments">Departments</a><a href="/#schemes">Browse schemes</a></div>
+        </div>
+        <div>
+          <h2>Your account</h2>
+          <div class="footer-links"><a href="{% url 'citizen_dashboard' %}">My applications</a><a href="/#track">Track an application</a><a href="/#reco">Get scheme recommendations</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 AI Seva — Unified Government Citizen Portal. College project demo.</div>
+    </footer>
+    {% include "portal/chatbot_widget.html" %}
+    <script>
+      const menuButton = document.getElementById("menu-button");
+      const siteNav = document.getElementById("site-nav");
+      menuButton?.addEventListener("click", () => {
+        const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+        menuButton.setAttribute("aria-expanded", String(!isOpen));
+        menuButton.setAttribute("aria-label", isOpen ? "Open navigation menu" : "Close navigation menu");
+        siteNav.classList.toggle("open", !isOpen);
+      });
+      siteNav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
+        siteNav.classList.remove("open");
+        menuButton?.setAttribute("aria-expanded", "false");
+      }));
+    </script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
