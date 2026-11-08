@@ -3,112 +3,61 @@
 {% block title %}{{ item.name }} application | AI Seva{% endblock %}
 
 {% block extra_styles %}
-  .crumbs { padding-top:24px; color:var(--soft); font-size:13px; }
-  .crumbs a { color:var(--navy); text-decoration:none; }
-  .apply-hero { padding:30px 0 28px; background:linear-gradient(180deg,#fff4e5 0,var(--bg) 100%); }
-  .apply-hero-grid { display:flex; align-items:center; justify-content:space-between; gap:24px; }
-  .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--grn); font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
-  .eyebrow::before { content:""; width:22px; height:3px; border-radius:3px; background:var(--saf); }
-  .apply-hero h1 { margin-top:8px; color:var(--navy); font-size:clamp(28px,4vw,42px); line-height:1.12; font-weight:800; }
-  .apply-hero p { max-width:680px; margin-top:10px; color:var(--soft); }
-  .request-step { flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:11px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--soft); font-size:12px; font-weight:600; }
-  .step-number { display:grid; place-items:center; width:29px; height:29px; border-radius:50%; background:var(--navy); color:white; }
-  .apply-layout { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(260px,.75fr); gap:24px; align-items:start; padding-top:28px; }
-  .form-card,.side-card { border:1px solid #e8eaf0; border-radius:15px; background:#fff; box-shadow:0 6px 20px rgba(11,42,107,.05); }
-  .form-card { overflow:hidden; }
-  .form-card-head { padding:22px 25px; border-bottom:1px solid var(--line); background:linear-gradient(100deg,#fff8ed,#fff); }
-  .form-card-head h2 { color:var(--navy); font-size:20px; }
-  .form-card-head p { margin-top:4px; color:var(--soft); font-size:13px; }
-  .form-content { padding:7px 25px 25px; }
-  .form-section { margin-top:18px; }
-  .form-section h3 { display:flex; align-items:center; gap:10px; margin-bottom:15px; color:var(--navy); font-size:16px; }
-  .section-number { display:grid; place-items:center; width:25px; height:25px; border-radius:8px; background:#fff0dc; color:#a75d0a; font-size:12px; }
-  .field-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; }
-  .field-grid p { min-width:0; margin:0 0 14px; }
-  .field-grid p:has(textarea),.field-grid p:has(input[type="checkbox"]) { grid-column:1/-1; }
-  .field-grid label { display:block; margin-bottom:6px; color:#30394d; font-size:13px; font-weight:600; }
-  .field-grid input:not([type="checkbox"]),.field-grid select,.field-grid textarea { width:100%; min-height:43px; padding:10px 11px; border:1px solid #d8dce4; border-radius:8px; background:#fff; color:var(--ink); font:14px "Roboto",sans-serif; transition:border-color .18s,box-shadow .18s; }
-  .field-grid textarea { min-height:78px; resize:vertical; }
-  .field-grid input:focus,.field-grid select:focus,.field-grid textarea:focus { outline:0; border-color:var(--navy); box-shadow:0 0 0 3px rgba(11,42,107,.1); }
-  .field-grid p:has(input[type="checkbox"]) { display:flex; align-items:flex-start; gap:9px; padding:11px 12px; border-radius:8px; background:#fff9ee; }
-  .field-grid p:has(input[type="checkbox"]) br { display:none; }
-  .field-grid p:has(input[type="checkbox"]) label { order:2; margin:0; font-weight:500; }
-  .field-grid input[type="checkbox"] { order:1; width:17px; height:17px; margin:1px 0 0; accent-color:var(--grn); }
-  .field-grid .errorlist { margin:4px 0 0; padding-left:17px; color:#b42318; font-size:12px; }
-  .privacy-note { margin-top:5px; padding:12px 13px; border-left:3px solid var(--saf); border-radius:0 7px 7px 0; background:#fff8ed; color:#70501e; font-size:12px; }
-  .submit-row { display:flex; align-items:center; flex-wrap:wrap; gap:14px; margin-top:19px; padding-top:18px; border-top:1px solid var(--line); }
-  .submit-row .btn { border:0; font-size:14px; }
-  .submit-hint { color:var(--soft); font-size:12px; }
-  .side-stack { display:grid; gap:16px; }
-  .side-card { padding:19px; }
-  .side-card h2 { color:var(--navy); font-size:16px; }
-  .side-card p { margin-top:8px; color:var(--soft); font-size:13px; }
-  .doc-list,.workflow-list { display:grid; gap:10px; margin:14px 0 0; padding:0; list-style:none; }
-  .doc-list li { display:flex; align-items:flex-start; gap:9px; color:var(--soft); font-size:13px; }
-  .doc-list li::before { content:"✓"; flex:0 0 18px; display:grid; place-items:center; width:18px; height:18px; border-radius:50%; background:var(--grn-l); color:var(--grn); font-size:11px; font-weight:800; }
-  .workflow-list { counter-reset:process; }
-  .workflow-list li { position:relative; min-height:26px; padding-left:34px; color:var(--soft); font-size:13px; counter-increment:process; }
-  .workflow-list li::before { content:counter(process); position:absolute; left:0; top:0; display:grid; place-items:center; width:23px; height:23px; border:1px solid #f2d2a5; border-radius:50%; background:#fff8ed; color:#a75d0a; font-size:11px; font-weight:700; }
-  .official-source { display:inline-flex; align-items:center; gap:7px; margin-top:13px; color:var(--navy); font-size:13px; font-weight:700; text-decoration:none; }
-  .official-source:hover { color:var(--saf-d); }
-  .demo-warning { margin-top:14px; padding:12px; border:1px solid #f3dfbd; border-radius:9px; background:#fff9ee; color:#70501e; font-size:12px; }
-  @media (max-width:900px) { .apply-layout { grid-template-columns:minmax(0,1.3fr) minmax(230px,.8fr); gap:16px; } .form-content { padding-right:19px; padding-left:19px; } }
-  @media (max-width:700px) { .crumbs { padding-top:18px; } .apply-hero { padding:23px 0; } .apply-hero-grid { display:block; } .request-step { display:inline-flex; margin-top:15px; } .apply-layout { grid-template-columns:1fr; padding-top:18px; } .form-card-head { padding:18px; } .form-content { padding:2px 18px 20px; } .field-grid { grid-template-columns:1fr; } .field-grid p:has(textarea),.field-grid p:has(input[type="checkbox"]) { grid-column:auto; } }
+  .crumbs{padding-top:22px;color:var(--soft);font-size:13px}.crumbs a{color:var(--navy);text-decoration:none}
+  .apply-hero{padding:28px 0;background:linear-gradient(180deg,#fff4e5,var(--bg))}.apply-hero-grid{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--grn);font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.eyebrow:before{content:"";width:22px;height:3px;border-radius:3px;background:var(--saf)}
+  .apply-hero h1{margin-top:8px;color:var(--navy);font-size:clamp(28px,4vw,42px);line-height:1.12}.apply-hero p{max-width:680px;margin-top:10px;color:var(--soft)}
+  .request-step{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--soft);font-size:12px}.step-number{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:var(--navy);color:#fff}
+  .apply-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.75fr);gap:23px;align-items:start;padding:24px 0 60px}.form-card,.side-card{border:1px solid #e8eaf0;border-radius:16px;background:#fff;box-shadow:0 8px 25px rgba(11,42,107,.055)}.form-card{overflow:hidden}.form-card-head{padding:22px 25px;border-bottom:1px solid var(--line);background:linear-gradient(100deg,#fff8ed,#fff)}.form-card-head h2{color:var(--navy);font-size:20px}.form-card-head p{margin-top:5px;color:var(--soft);font-size:13px}.form-content{padding:22px 25px 25px}
+  .wizard-progress{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:25px}.progress-item{display:flex;align-items:center;gap:9px;min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px;color:var(--soft);font-size:12px;transition:all .25s}.progress-item span:first-child{display:grid;place-items:center;flex:0 0 25px;height:25px;border-radius:50%;background:#f1f3f7;font-weight:700}.progress-item.active{border-color:#e9bd76;background:#fff9ed;color:var(--navy)}.progress-item.active span:first-child,.progress-item.done span:first-child{background:var(--saf);color:#251800}.wizard-step{display:none;animation:stepEnter .3s ease both}.wizard-step.active{display:block}@keyframes stepEnter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+  .step-heading{margin-bottom:5px;color:var(--navy);font-size:18px}.step-copy{margin-bottom:16px;color:var(--soft);font-size:13px;line-height:1.55}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.field-grid p{min-width:0;margin:0 0 14px}.field-grid p:has(textarea),.field-grid p:has(input[type=checkbox]){grid-column:1/-1}.field-grid label{display:block;margin-bottom:6px;color:#30394d;font-size:13px;font-weight:600}.field-grid input:not([type=checkbox]),.field-grid select,.field-grid textarea{width:100%;min-height:43px;padding:10px 11px;border:1px solid #d8dce4;border-radius:8px;background:#fff;color:var(--ink);font:14px Roboto,sans-serif;transition:border-color .18s,box-shadow .18s}.field-grid textarea{min-height:78px;resize:vertical}.field-grid input:focus,.field-grid select:focus,.field-grid textarea:focus{outline:0;border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,42,107,.1)}.field-grid p:has(input[type=checkbox]){display:flex;align-items:flex-start;gap:9px;padding:11px 12px;border-radius:8px;background:#fff9ee}.field-grid p:has(input[type=checkbox]) br{display:none}.field-grid p:has(input[type=checkbox]) label{order:2;margin:0;font-weight:500}.field-grid input[type=checkbox]{order:1;width:17px;height:17px;margin:1px 0 0;accent-color:var(--grn)}.field-grid .errorlist{margin:4px 0 0;padding-left:17px;color:#b42318;font-size:12px}.privacy-note{margin-top:4px;padding:12px 13px;border-left:3px solid var(--saf);border-radius:0 7px 7px 0;background:#fff8ed;color:#70501e;font-size:12px}
+  .wizard-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;padding-top:17px;border-top:1px solid var(--line)}.wizard-actions .btn{border:0;cursor:pointer}.wizard-actions .back-step{padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--navy);font-weight:700}.wizard-actions .back-step[hidden]{display:none}.review-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.review-entry{min-width:0;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fffdf9}.review-entry small{display:block;color:var(--soft);font-size:11px}.review-entry strong{display:block;margin-top:4px;overflow-wrap:anywhere;color:var(--navy);font-size:13px}.review-empty{color:var(--soft);font-size:13px}.side-stack{display:grid;gap:15px}.side-card{padding:19px}.side-card h2{color:var(--navy);font-size:16px}.side-card p{margin-top:8px;color:var(--soft);font-size:13px}.doc-list,.workflow-list{display:grid;gap:10px;margin:14px 0 0;padding:0;list-style:none}.doc-list li{display:flex;align-items:flex-start;gap:9px;color:var(--soft);font-size:13px}.doc-list li:before{content:"✓";flex:0 0 18px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--grn-l);color:var(--grn);font-size:11px;font-weight:800}.workflow-list{counter-reset:process}.workflow-list li{position:relative;min-height:26px;padding-left:34px;color:var(--soft);font-size:13px;counter-increment:process}.workflow-list li:before{content:counter(process);position:absolute;left:0;top:0;display:grid;place-items:center;width:23px;height:23px;border:1px solid #f2d2a5;border-radius:50%;background:#fff8ed;color:#a75d0a;font-size:11px;font-weight:700}.official-source{display:inline-flex;gap:7px;margin-top:13px;color:var(--navy);font-size:13px;font-weight:700;text-decoration:none}.demo-warning{margin-top:14px;padding:12px;border:1px solid #f3dfbd;border-radius:9px;background:#fff9ee;color:#70501e;font-size:12px}
+  @media(max-width:850px){.apply-layout{grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:15px}.form-content{padding:18px}}@media(max-width:700px){.crumbs{padding-top:17px}.apply-hero{padding:22px 0}.apply-hero-grid{display:block}.request-step{display:inline-flex;margin-top:15px}.apply-layout{grid-template-columns:1fr;padding-top:17px}.side-stack{grid-row:1}.field-grid{grid-template-columns:1fr}.field-grid p:has(textarea),.field-grid p:has(input[type=checkbox]){grid-column:auto}.review-list{grid-template-columns:1fr}.progress-item{justify-content:center;padding:8px 4px}.progress-item .progress-label{display:none}}
+  @media(prefers-reduced-motion:reduce){.wizard-step,.progress-item{animation:none;transition:none}}
 {% endblock %}
 
 {% block content %}
-  <main>
-    <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><a href="{% url 'agriculture:home' %}">Agriculture</a><span aria-hidden="true"> / </span><span>Request assistance</span></div>
-    <section class="apply-hero">
-      <div class="wrap apply-hero-grid">
-        <div>
-          <span class="eyebrow">{{ item.item_type }} · Agriculture</span>
-          <h1>{{ item.name }}</h1>
-          <p>{{ item.summary }}</p>
-        </div>
-        <div class="request-step"><span class="step-number">1</span><span>Submit your request<br><strong>Get a tracking ID</strong></span></div>
+<main>
+  <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><a href="{% url 'agriculture:home' %}">Agriculture</a><span aria-hidden="true"> / </span><span>{{ item.name }}</span></div>
+  <section class="apply-hero"><div class="wrap apply-hero-grid"><div><span class="eyebrow">{{ item.item_type }} · Agriculture</span><h1>{{ item.name }}</h1><p>{{ item.summary }}</p></div><div class="request-step"><span class="step-number" data-current-step>1</span><span>Guided request<br><strong>About 2 minutes</strong></span></div></div></section>
+  <div class="wrap apply-layout">
+    <section class="form-card" aria-labelledby="request-heading">
+      <div class="form-card-head"><h2 id="request-heading">Request guidance from AI Seva</h2><p>Complete the steps below to create a trackable demo request.</p></div>
+      <div class="form-content">
+        <div class="wizard-progress" aria-label="Form progress" style="grid-template-columns:repeat({{ procedure|length }},minmax(0,1fr))">{% for step in procedure %}<div class="progress-item{% if forloop.first %} active{% endif %}"><span>{{ forloop.counter }}</span><span class="progress-label">{{ step.title }}</span></div>{% endfor %}</div>
+        <form method="post" novalidate data-request-wizard>
+          {% csrf_token %}
+          {% for step in procedure %}
+          <section class="wizard-step{% if forloop.first %} active{% endif %}" data-step="{{ forloop.counter0 }}"><h3 class="step-heading">{{ step.title }}</h3><p class="step-copy">{{ step.description }}</p>
+            {% if step.review %}<p class="review-empty" data-review-empty>Review the information you entered before saving.</p><div class="review-list" data-review-list></div><div class="demo-warning">AI Seva will create a demo tracking record. It does not submit an application to a government system or determine eligibility.</div>{% else %}<div class="field-grid">
+              {% for field in form %}{% if field.name in step.applicant_fields %}<p>{{ field.label_tag }}{{ field }}{{ field.errors }}</p>{% endif %}{% endfor %}
+              {% for field in details_form %}{% if field.name in step.detail_fields %}<p>{{ field.label_tag }}{{ field }}{{ field.errors }}</p>{% endif %}{% endfor %}
+            </div>{% endif %}
+          </section>
+          {% endfor %}
+          <div class="privacy-note">For your safety, do not enter Aadhaar numbers, full bank account numbers, PINs or passwords. This prototype creates an AI Seva request only; use the official portal for enrollment and decisions.</div>
+          <div class="wizard-actions"><button type="button" class="back-step" data-back hidden>← Back</button><span class="submit-hint" data-step-hint>Step 1 of {{ procedure|length }}</span><button type="button" class="btn btn-saf" data-next>Continue <span aria-hidden="true">→</span></button><button type="submit" class="btn btn-saf" data-submit hidden>Save request <span aria-hidden="true">→</span></button></div>
+        </form>
       </div>
     </section>
-    <div class="wrap apply-layout">
-      <section class="form-card" aria-labelledby="request-heading">
-        <div class="form-card-head"><h2 id="request-heading">Request guidance from AI Seva</h2><p>Fields marked required help us create and track your request.</p></div>
-        <div class="form-content">
-          <form method="post">
-            {% csrf_token %}
-            <div class="form-section">
-              <h3><span class="section-number">1</span> Applicant details</h3>
-              <div class="field-grid">{{ form.as_p }}</div>
-            </div>
-            <div class="form-section">
-              <h3><span class="section-number">2</span> {{ item.name }} details</h3>
-              <div class="field-grid">{{ details_form.as_p }}</div>
-            </div>
-            <div class="privacy-note">For your safety, do not enter Aadhaar numbers, complete bank account numbers, PINs or passwords. This demo does not upload documents or send information to an external agency.</div>
-            <div class="submit-row">
-              <button class="btn btn-saf" type="submit">Save request <span aria-hidden="true">→</span></button>
-              <span class="submit-hint">You’ll receive an AI Seva tracking ID.</span>
-            </div>
-          </form>
-        </div>
-      </section>
-      <aside class="side-stack" aria-label="Application guidance">
-        <section class="side-card">
-          <h2>Documents to prepare</h2>
-          <p>These are common preparation items. The official authority confirms what it accepts.</p>
-          <ul class="doc-list">{% for document in item.documents %}<li>{{ document }}</li>{% endfor %}</ul>
-          <div class="demo-warning">Document upload is not enabled in this prototype. Keep your identity and financial documents private.</div>
-          <a class="official-source" href="{{ item.official_link }}" target="_blank" rel="noopener noreferrer">Open official portal <span aria-hidden="true">↗</span></a>
-        </section>
-        <section class="side-card">
-          <h2>What happens next</h2>
-          <ol class="workflow-list">{% for step in workflow %}<li>{{ step }}</li>{% endfor %}</ol>
-        </section>
-        <section class="side-card">
-          <h2>What this prototype tracks</h2>
-          <ul class="doc-list">{% for result in item.result %}<li>{{ result }}</li>{% endfor %}</ul>
-          <p>Official decisions and live benefit, claim, bank, mandi or laboratory updates are not connected yet.</p>
-        </section>
-      </aside>
-    </div>
-  </main>
+    <aside class="side-stack" aria-label="Application guidance">
+      <section class="side-card"><h2>Documents to prepare</h2><p>Check the official portal for final requirements.</p><ul class="doc-list">{% for document in item.documents %}<li>{{ document }}</li>{% endfor %}</ul><div class="demo-warning">This request flow does not upload documents. Keep identity and financial documents private.</div><a class="official-source" href="{{ item.official_link }}" target="_blank" rel="noopener noreferrer">Open official portal <span aria-hidden="true">↗</span></a></section>
+      <section class="side-card"><h2>What happens next</h2><ol class="workflow-list">{% for step in workflow %}<li>{{ step }}</li>{% endfor %}</ol></section>
+      <section class="side-card"><h2>What this prototype tracks</h2><ul class="doc-list">{% for result in item.result %}<li>{{ result }}</li>{% endfor %}</ul><p>Official decisions and live benefit, claim, bank, mandi or laboratory updates are not connected yet.</p></section>
+    </aside>
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(()=>{const form=document.querySelector('[data-request-wizard]');if(!form)return;const steps=[...form.querySelectorAll('[data-step]')],progress=[...document.querySelectorAll('.progress-item')],back=form.querySelector('[data-back]'),next=form.querySelector('[data-next]'),submit=form.querySelector('[data-submit]'),hint=form.querySelector('[data-step-hint]'),counter=document.querySelector('[data-current-step]'),review=form.querySelector('[data-review-list]');let current=0,ready=false;
+const show=(n)=>{current=n;steps.forEach((s,i)=>s.classList.toggle('active',i===n));progress.forEach((p,i)=>{p.classList.toggle('active',i===n);p.classList.toggle('done',i<n)});back.hidden=n===0;next.hidden=n===steps.length-1;submit.hidden=n!==steps.length-1;hint.textContent=`Step ${n+1} of ${steps.length}`;if(counter)counter.textContent=String(n+1);if(n===steps.length-1)buildReview();document.querySelector('.form-card').scrollIntoView({behavior:'smooth',block:'start'});};
+const fieldsIn=(step)=>[...steps[step].querySelectorAll('input,select,textarea')].filter(el=>!['hidden','file'].includes(el.type)&&!el.disabled);
+const valid=(step)=>{for(const el of fieldsIn(step)){if(!el.checkValidity()){if(current!==step)show(step);el.reportValidity();return false}}for(const el of steps[step].querySelectorAll('input[type=file][required]')){if(!el.checkValidity()){if(current!==step)show(step);el.reportValidity();return false}}return true};
+const buildReview=()=>{review.replaceChildren();let count=0;form.querySelectorAll('input,select,textarea').forEach(el=>{if(['hidden','submit','button','file','password'].includes(el.type)||el.name==='csrfmiddlewaretoken')return;let value='';if(el.type==='checkbox')value=el.checked?'Yes':'No';else if(el.tagName==='SELECT')value=el.selectedOptions[0]?.text||'';else value=el.value.trim();if(!value)return;const label=form.querySelector(`label[for="${CSS.escape(el.id)}"]`)?.textContent?.trim()||el.name.replaceAll('_',' ');const card=document.createElement('div');card.className='review-entry';const title=document.createElement('small');title.textContent=label;const val=document.createElement('strong');val.textContent=value;card.append(title,val);review.append(card);count++});form.querySelectorAll('input[type=file]').forEach(el=>{if(!el.files?.length)return;const card=document.createElement('div');card.className='review-entry';const title=document.createElement('small');title.textContent=form.querySelector(`label[for="${CSS.escape(el.id)}"]`)?.textContent?.trim()||'Document';const val=document.createElement('strong');val.textContent=el.files[0].name;card.append(title,val);review.append(card);count++});form.querySelector('[data-review-empty]').hidden=count>0};
+next.addEventListener('click',()=>{if(valid(current))show(Math.min(current+1,steps.length-1))});back.addEventListener('click',()=>show(Math.max(current-1,0)));form.addEventListener('submit',e=>{if(ready)return;e.preventDefault();for(let i=0;i<steps.length;i++){if(!valid(i)){show(i);return}}ready=true;form.requestSubmit(submit)});
+const errorStep=steps.findIndex(step=>step.querySelector('.errorlist'));if(errorStep>0)show(errorStep);
+})();
+</script>
 {% endblock %}

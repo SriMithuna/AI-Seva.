@@ -1,0 +1,274 @@
+{% extends "agriculture/base.html" %}
+
+{% block title %}Central Sector Scholarship | AI Seva{% endblock %}
+
+{% block extra_styles %}
+  .csss-wrap { padding:28px 0 56px; }
+  .csss-hero { margin:0 0 25px; }
+  .csss-crumbs { color:var(--soft); font-size:13px; margin-bottom:16px; }
+  .csss-crumbs a { color:var(--navy); text-decoration:none; }
+  .csss-kicker { color:#9b6615; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .csss-hero h1 { margin:7px 0 8px; color:var(--navy); font-size:clamp(28px,4vw,40px); line-height:1.15; }
+  .csss-hero p { max-width:760px; margin:0; color:var(--soft); }
+  .csss-notice { margin-top:15px; padding:12px 15px; border:1px solid #ecd9ad; border-radius:10px; background:linear-gradient(100deg,#fff7e5,#fffaf1); color:#70501e; font-size:13px; }
+  .csss-layout { display:grid; grid-template-columns:245px minmax(0,1fr); gap:20px; align-items:start; }
+  .csss-steps,.csss-main { border:1px solid #eadfc9; border-radius:16px; background:#fff; box-shadow:0 8px 24px rgba(11,42,107,.06); }
+  .csss-steps { padding:18px 13px; position:sticky; top:94px; }
+  .csss-steps-title { margin:0 9px 12px; color:#8c7955; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .csss-step { display:flex; align-items:center; gap:10px; padding:10px 8px; border-radius:10px; color:#738093; transition:background .22s,color .22s,transform .22s; }
+  .csss-step.active { background:#fff3df; color:var(--navy); transform:translateX(2px); }
+  .csss-step.done .csss-num { border-color:#b8d8bd; background:#edf8ee; color:#26783b; }
+  .csss-num { flex:0 0 29px; width:29px; height:29px; display:grid; place-items:center; border:1px solid #e4d8c0; border-radius:50%; background:#fffdf8; color:#80601f; font-size:12px; font-weight:800; transition:all .22s; }
+  .csss-step.active .csss-num { border-color:var(--saf); background:var(--saf); color:#fff; }
+  .csss-step b { display:block; font-size:12px; }
+  .csss-step small { display:block; margin-top:2px; color:#8a93a1; font-size:10px; }
+  .csss-main { padding:25px 28px; min-width:0; }
+  .csss-mainhead { padding-bottom:16px; margin-bottom:20px; border-bottom:1px solid var(--line); }
+  .csss-mainhead h2 { margin:0 0 5px; color:var(--navy); font-size:21px; }
+  .csss-mainhead p { margin:0; color:var(--soft); font-size:13px; line-height:1.6; }
+  .csss-pane { display:none; }
+  .csss-pane.active { display:block; animation:csss-enter .32s ease both; }
+  @keyframes csss-enter { from { opacity:0; transform:translateX(12px); } to { opacity:1; transform:translateX(0); } }
+  .csss-section-title { margin:0 0 5px; color:var(--navy); font-size:16px; }
+  .csss-section-copy { margin:0 0 17px; color:var(--soft); font-size:13px; line-height:1.6; }
+  .csss-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px 16px; }
+  .csss-field { min-width:0; }
+  .csss-field.full { grid-column:1/-1; }
+  .csss-field label { display:block; margin:0 0 6px; color:#25324a; font-size:13px; font-weight:700; }
+  .csss-field input,.csss-field select,.csss-field textarea { display:block; width:100%; min-height:44px; padding:10px 12px; border:1px solid #d9deea; border-radius:8px; background:#fff; color:var(--ink); font:inherit; font-size:14px; }
+  .csss-field input[type=file] { padding:8px; }
+  .csss-field input:focus,.csss-field select:focus,.csss-field textarea:focus { outline:3px solid rgba(255,153,51,.18); border-color:#d98b25; }
+  .csss-help { margin:5px 0 0; color:#6e7788; font-size:12px; line-height:1.5; }
+  .field-errors,.errorlist { margin:5px 0 0; padding-left:18px; color:#a32626; font-size:12px; }
+  .csss-status,.csss-privacy,.csss-demo { margin-top:17px; padding:13px 15px; border-radius:9px; font-size:12px; line-height:1.6; }
+  .csss-status { border:1px solid #cfe5d2; background:#f2faf2; color:#28663a; }
+  .csss-privacy { border:1px solid #eadfc9; background:#fffaf1; color:#66543a; }
+  .csss-demo { border-left:4px solid var(--saf); background:#fff4e5; color:#66543a; }
+  .csss-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:24px; padding-top:17px; border-top:1px solid var(--line); }
+  .csss-action-group { display:flex; gap:10px; }
+  .csss-actions button { border:0; cursor:pointer; }
+  .csss-back { background:#f1f3f6; color:#58677b; }
+  .csss-progress { color:#7b8493; font-size:12px; }
+  .csss-review { display:grid; gap:13px; }
+  .csss-review-card { padding:13px 15px; border:1px solid var(--line); border-radius:10px; }
+  .csss-review-card h3 { margin:0 0 9px; color:#9b6615; font-size:13px; }
+  .csss-review-row { display:flex; justify-content:space-between; gap:16px; padding:5px 0; border-top:1px solid #f2eee6; font-size:12px; }
+  .csss-review-row span:first-child { color:var(--soft); }
+  .csss-review-row span:last-child { color:var(--ink); font-weight:600; text-align:right; overflow-wrap:anywhere; }
+  .csss-confirm { display:flex; align-items:flex-start; gap:9px; margin-top:17px; color:#58677b; font-size:12px; line-height:1.6; }
+  .csss-confirm input { margin-top:3px; accent-color:#138808; }
+  @media(max-width:820px) { .csss-layout { grid-template-columns:1fr; } .csss-steps { position:static; display:flex; overflow:auto; gap:3px; padding:9px; } .csss-steps-title { display:none; } .csss-step { min-width:125px; align-items:flex-start; } }
+  @media(max-width:560px) { .csss-wrap { padding-top:19px; } .csss-main { padding:19px 15px; } .csss-fields { grid-template-columns:1fr; } .csss-field.full { grid-column:auto; } .csss-actions { flex-wrap:wrap; } .csss-progress { order:-1; width:100%; } .csss-review-row { display:block; } .csss-review-row span { display:block; text-align:left!important; } }
+{% endblock %}
+
+{% block content %}
+  <main class="wrap csss-wrap">
+    <nav class="csss-crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true"> / </span><a href="{% url 'education_home' %}">Education</a><span aria-hidden="true"> / </span><span>Central Sector Scholarship</span></nav>
+    <header class="csss-hero">
+      <span class="csss-kicker">Education department · Scholarship</span>
+      <h1>Central Sector Scholarship Scheme</h1>
+      <p>Prepare your scholarship assistance request step by step. Review the latest eligibility and application dates on the official National Scholarship Portal.</p>
+      <div class="csss-notice">AI Seva saves a demo assistance request and tracking ID. It does not submit an official scholarship application or decide eligibility.</div>
+    </header>
+
+    <form id="csssForm" method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ form.non_field_errors }}{{ details_form.non_field_errors }}
+      <div class="csss-layout">
+        <aside class="csss-steps" aria-label="Application steps">
+          <p class="csss-steps-title">Your progress</p>
+          <div class="csss-step active" data-step-marker="0"><span class="csss-num">1</span><span><b>Account</b><small>Signed-in details</small></span></div>
+          <div class="csss-step" data-step-marker="1"><span class="csss-num">2</span><span><b>Eligibility</b><small>Academic information</small></span></div>
+          <div class="csss-step" data-step-marker="2"><span class="csss-num">3</span><span><b>Study details</b><small>Institution and course</small></span></div>
+          <div class="csss-step" data-step-marker="3"><span class="csss-num">4</span><span><b>Bank details</b><small>Limited account details</small></span></div>
+          <div class="csss-step" data-step-marker="4"><span class="csss-num">5</span><span><b>Documents</b><small>Supporting files</small></span></div>
+          <div class="csss-step" data-step-marker="5"><span class="csss-num">6</span><span><b>Review</b><small>Confirm your details</small></span></div>
+        </aside>
+
+        <section class="csss-main" aria-labelledby="stepTitle">
+          <div class="csss-mainhead"><h2 id="stepTitle">Account details</h2><p id="stepDescription">This request is linked to the email address on your signed-in account.</p></div>
+
+          <section class="csss-pane active" data-step="0">
+            <h3 class="csss-section-title">Your account</h3>
+            <p class="csss-section-copy">Confirm the contact information that will be attached to your AI Seva assistance request.</p>
+            <div class="csss-fields">
+              {% for field in form %}
+                {% if field.name == 'full_name' or field.name == 'date_of_birth' or field.name == 'gender' or field.name == 'mobile_number' or field.name == 'address' %}
+                <div class="csss-field {% if field.name == 'address' %}full{% endif %}">{{ field.label_tag }}{{ field }}{% if field.help_text %}<p class="csss-help">{{ field.help_text }}</p>{% endif %}{% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="csss-status"><strong>Email on account:</strong> {{ request.user.email }}. Your registration email verification is handled during sign-up.</div>
+          </section>
+
+          <section class="csss-pane" data-step="1">
+            <h3 class="csss-section-title">Academic eligibility details</h3>
+            <p class="csss-section-copy">Enter the Class 12 and family-income information requested for the scheme. AI Seva does not determine eligibility.</p>
+            <div class="csss-fields">
+              {% for field in details_form %}
+                {% if field.name == 'category' or field.name == 'board_name' or field.name == 'passing_year' or field.name == 'class_12_percentage' or field.name == 'board_merit_details' or field.name == 'annual_income' %}
+                <div class="csss-field {% if field.name == 'board_merit_details' %}full{% endif %}">{{ field.label_tag }}{{ field }}{% if field.help_text %}<p class="csss-help">{{ field.help_text }}</p>{% endif %}{% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </section>
+
+          <section class="csss-pane" data-step="2">
+            <h3 class="csss-section-title">Student and course details</h3>
+            <p class="csss-section-copy">Use the information shown on your current institution and course records.</p>
+            <div class="csss-fields">
+              {% for field in details_form %}
+                {% if field.name == 'institution_name' or field.name == 'course_name' or field.name == 'current_year' or field.name == 'application_type' or field.name == 'other_scholarship' %}
+                <div class="csss-field">{{ field.label_tag }}{{ field }}{% if field.help_text %}<p class="csss-help">{{ field.help_text }}</p>{% endif %}{% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </section>
+
+          <section class="csss-pane" data-step="3">
+            <h3 class="csss-section-title">Bank details</h3>
+            <p class="csss-section-copy">Only provide the limited details below. Never enter a PIN, password, OTP or full bank account number.</p>
+            <div class="csss-fields">
+              {% for field in details_form %}
+                {% if field.name == 'bank_name' or field.name == 'bank_account_last4' or field.name == 'ifsc_code' %}
+                <div class="csss-field">{{ field.label_tag }}{{ field }}{% if field.help_text %}<p class="csss-help">{{ field.help_text }}</p>{% endif %}{% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="csss-privacy">For your safety, this form asks only for the last four account digits. Do not upload Aadhaar or full bank account details to AI Seva.</div>
+          </section>
+
+          <section class="csss-pane" data-step="4">
+            <h3 class="csss-section-title">Document checklist</h3>
+            <p class="csss-section-copy">Upload the requested supporting files for this demo record. PDF, JPG and PNG files up to 5 MB each are accepted.</p>
+            <div class="csss-fields">
+              {% for field in details_form %}
+                {% if field.name == 'class_12_marksheet' or field.name == 'admission_proof' or field.name == 'income_certificate' or field.name == 'previous_year_marksheet' %}
+                <div class="csss-field">{{ field.label_tag }}{{ field }}{% if field.help_text %}<p class="csss-help">{{ field.help_text }}</p>{% endif %}{% if field.errors %}<ul class="field-errors">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="csss-privacy">Uploads are stored with your AI Seva demo request so an authorized officer can review them. Do not upload Aadhaar or documents containing full account numbers.</div>
+          </section>
+
+          <section class="csss-pane" data-step="5">
+            <h3 class="csss-section-title">Review and confirm</h3>
+            <p class="csss-section-copy">Check the details and selected files before saving your assistance request.</p>
+            <div class="csss-review" id="reviewSummary"></div>
+            <label class="csss-confirm"><input type="checkbox" id="confirmDetails"><span>I confirm that the information is accurate. I understand this creates an AI Seva demo request only, not an official scholarship application.</span></label>
+            <div class="csss-demo">Check the current scheme notice and complete any official submission through the <a href="{{ item.official_url }}" target="_blank" rel="noopener noreferrer">National Scholarship Portal</a>.</div>
+          </section>
+
+          <div class="csss-actions">
+            <button class="btn csss-back" id="stepBack" type="button" disabled>← Back</button>
+            <span class="csss-progress" id="stepProgress">Step 1 of 6</span>
+            <div class="csss-action-group">
+              <button class="btn btn-saf" id="stepNext" type="button">Continue →</button>
+              <button class="btn btn-saf" id="submitRequest" type="submit" hidden>Save request &amp; get tracking ID →</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </form>
+  </main>
+  <script>
+    (() => {
+      const form = document.getElementById("csssForm");
+      const panes = [...document.querySelectorAll(".csss-pane")];
+      const markers = [...document.querySelectorAll("[data-step-marker]")];
+      const titles = ["Account details", "Academic eligibility", "Student and course details", "Bank details", "Documents", "Review and confirm"];
+      const descriptions = [
+        "This request is linked to the email address on your signed-in account.",
+        "Enter the Class 12 and family-income information requested for the scheme.",
+        "Provide your current institution, course and application type.",
+        "Review the limited bank details used for your assistance record.",
+        "Add the supporting files requested for this demo workflow.",
+        "Review your entries before saving the AI Seva assistance request.",
+      ];
+      const back = document.getElementById("stepBack");
+      const next = document.getElementById("stepNext");
+      const submit = document.getElementById("submitRequest");
+      const progress = document.getElementById("stepProgress");
+      const confirm = document.getElementById("confirmDetails");
+      let current = 0;
+
+      function update() {
+        panes.forEach((pane, index) => pane.classList.toggle("active", index === current));
+        markers.forEach((marker, index) => {
+          marker.classList.toggle("active", index === current);
+          marker.classList.toggle("done", index < current);
+          marker.querySelector(".csss-num").textContent = index < current ? "✓" : String(index + 1);
+        });
+        document.getElementById("stepTitle").textContent = titles[current];
+        document.getElementById("stepDescription").textContent = descriptions[current];
+        back.disabled = current === 0;
+        next.hidden = current === panes.length - 1;
+        submit.hidden = current !== panes.length - 1;
+        progress.textContent = `Step ${current + 1} of ${panes.length}`;
+        if (current === panes.length - 1) renderReview();
+      }
+
+      function validateStep() {
+        const fields = panes[current].querySelectorAll("input[required],select[required],textarea[required]");
+        for (const field of fields) {
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            field.focus();
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function renderReview() {
+        const groups = [
+          ["Account", 0],
+          ["Academic eligibility", 1],
+          ["Student and course", 2],
+          ["Bank details", 3],
+          ["Documents", 4],
+        ];
+        const output = document.getElementById("reviewSummary");
+        output.replaceChildren();
+        for (const [title, paneIndex] of groups) {
+          const card = document.createElement("section");
+          card.className = "csss-review-card";
+          const heading = document.createElement("h3");
+          heading.textContent = title;
+          card.append(heading);
+          panes[paneIndex].querySelectorAll("input,select,textarea").forEach((field) => {
+            if (field.type === "checkbox" || field.type === "hidden") return;
+            const label = field.closest(".csss-field")?.querySelector("label")?.textContent.trim();
+            if (!label) return;
+            const value = field.type === "file"
+              ? (field.files[0]?.name || "Not uploaded")
+              : field.value;
+            const row = document.createElement("div");
+            row.className = "csss-review-row";
+            const key = document.createElement("span");
+            const content = document.createElement("span");
+            key.textContent = label;
+            content.textContent = value || "—";
+            row.append(key, content);
+            card.append(row);
+          });
+          output.append(card);
+        }
+      }
+
+      back.addEventListener("click", () => { if (current > 0) { current--; update(); } });
+      next.addEventListener("click", () => { if (validateStep() && current < panes.length - 1) { current++; update(); window.scrollTo({ top: 0, behavior: "smooth" }); } });
+      form.addEventListener("submit", (event) => {
+        if (!confirm.checked) {
+          event.preventDefault();
+          confirm.focus();
+          alert("Please confirm that the information is accurate.");
+        }
+      });
+
+      const invalidPane = panes.findIndex((pane) => pane.querySelector(".field-errors, .errorlist"));
+      if (invalidPane >= 0) current = invalidPane;
+      update();
+    })();
+  </script>
+{% endblock %}

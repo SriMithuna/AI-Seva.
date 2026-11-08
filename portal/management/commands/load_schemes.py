@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from portal.models import Department, Scheme
 from departments.agriculture.seed import seed_agriculture_catalog
 from departments.education.seed import seed_education_catalog
+from departments.health.schemes import seed_health_catalog
 
 
 DATA = [
@@ -80,6 +81,7 @@ class Command(BaseCommand):
 
         total += seed_education_catalog()
         total += seed_agriculture_catalog()
+        total += seed_health_catalog()
 
         self.stdout.write(
             self.style.SUCCESS(

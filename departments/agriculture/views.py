@@ -6,6 +6,7 @@ from portal.models import Department, Scheme
 
 from .schemes import AGRICULTURE_ITEMS, AGRICULTURE_ITEMS_BY_SLUG
 from .services import APPLICANT_FORMS, AgricultureApplicantForm, DETAILS_FORMS
+from .workflows import AGRICULTURE_PROCEDURES
 
 
 def agriculture_home(request):
@@ -87,4 +88,5 @@ def agriculture_apply(request, slug):
         "form": form,
         "details_form": details_form,
         "workflow": item["workflow"],
+        "procedure": AGRICULTURE_PROCEDURES.get(slug, []),
     })

@@ -156,6 +156,19 @@ class CitizenProfile(models.Model):
         return self.user.username
 
 
+class EmailOTP(models.Model):
+    """Short-lived, hashed email verification code for a new citizen account."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="email_otp")
+    code_hash = models.CharField(max_length=128)
+    expires_at = models.DateTimeField()
+    attempts = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Email verification for {self.user.username}"
+
+
 # ==========================================
 # 5. OFFICER PROFILE MODEL
 # ==========================================
@@ -191,6 +204,8 @@ class Application(models.Model):
     ]
 
     PRIORITIES = [
+        ('Documents Pending', 'Documents Pending'),
+        ('Critical', 'Critical'),
         ('High', 'High'),
         ('Medium', 'Medium'),
         ('Low', 'Low')
@@ -236,7 +251,7 @@ class Application(models.Model):
     priority_group_verified = models.BooleanField(default=False)
 
     priority = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=PRIORITIES,
         default='Low'
     )

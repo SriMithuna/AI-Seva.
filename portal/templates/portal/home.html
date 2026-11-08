@@ -1615,6 +1615,10 @@
           ],
           sv: [
             [
+              "e-Sanjeevani Teleconsultation",
+              "Prepare a teleconsultation request and continue through the official service.",
+            ],
+            [
               "ABHA Health ID Creation",
               "Create a 14-digit health ID to link your medical records.",
             ],
@@ -1732,13 +1736,18 @@
         "edu|ABC ID Creation": "/departments/education/apply/abc-id-creation/",
         "agri|Soil Health Card Request": "/departments/agriculture/apply/soil-health-card/",
         "agri|e-NAM Farmer Registration": "/departments/agriculture/apply/enam-registration/",
+        "health|ABHA Health ID Creation": "/departments/health/apply/abha/",
+        "health|Ayushman Card Generation": "/departments/health/apply/ayushman-card/",
+        "health|e-Sanjeevani Teleconsultation": "/departments/health/apply/e-sanjeevani/",
       };
       const serviceUrl = (dept, name) => SERVICE_URLS[`${dept}|${name}`];
       const departmentSchemeUrl = (d) => d.k === "edu"
         ? "/departments/education/schemes/"
         : d.k === "agri"
           ? "/departments/agriculture/?type=scheme"
-          : null;
+          : d.k === "health"
+            ? "/departments/health/schemes/"
+            : null;
       $("#cg").innerHTML = D.map((d) => {
         const content = `<span class="ib">${ic(P[d.i])}</span><span class="n">${pl(d.sc.length, "Scheme")}</span><span class="nm">${d.n}</span>`;
         const href = departmentSchemeUrl(d);
@@ -1807,9 +1816,9 @@
       $("#dg").innerHTML = D.map(
         (d, i) =>
           `<div class="dp rv"
-      style="--d:${(i % 3) * 0.12}s"
-      onclick="${d.k === "edu" ? "window.location.href='/departments/education/'" : d.k === "agri" ? "window.location.href='/departments/agriculture/'" : ""}"
-      style="cursor:${d.k === "edu" || d.k === "agri" ? "pointer" : "default"}">
+      onclick="${d.k === "edu" ? "window.location.href='/departments/education/'" : d.k === "agri" ? "window.location.href='/departments/agriculture/'" : d.k === "health" ? "window.location.href='/departments/health/'" : ""}"
+      style="--d:${(i % 3) * 0.12}s;cursor:${["edu","agri","health"].includes(d.k) ? "pointer" : "default"}"
+      ${["edu","agri","health"].includes(d.k) ? `role="link" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"` : ""}>
       <div class="ic">${ic(P[d.i])}</div>
       <div>
         <h4>${d.n}</h4>

@@ -16,6 +16,8 @@ urlpatterns = [
 
    path('departments/agriculture/', include('departments.agriculture.urls')),
 
+   path('departments/health/', include('departments.health.urls')),
+
     # Scheme recommendations
     path(
         'api/recommendations/',
@@ -33,6 +35,8 @@ urlpatterns = [
 
     # Citizen registration
     path('register/', views.citizen_register, name='citizen_register'),
+    path('verify-email/', views.verify_email, name='verify_email'),
+    path('verify-email/resend/', views.resend_email_otp, name='resend_email_otp'),
 
     # Service application
     path('services/abha/', views.abha_service, name='abha_service'),

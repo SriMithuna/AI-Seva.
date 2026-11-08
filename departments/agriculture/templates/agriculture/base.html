@@ -82,7 +82,8 @@
         <nav class="nav-links" id="site-nav" aria-label="Main navigation">
           <a href="/#services">Services</a>
           <a href="/#departments">Departments</a>
-          <a href="{% url 'agriculture:home' %}"{% if active_department != 'education' %} aria-current="page"{% endif %}>Agriculture</a>
+          <a href="{% url 'agriculture:home' %}"{% if active_department == 'agriculture' %} aria-current="page"{% endif %}>Agriculture</a>
+          <a href="{% url 'health:home' %}"{% if active_department == 'health' %} aria-current="page"{% endif %}>Health</a>
           <a href="{% url 'education_home' %}"{% if active_department == 'education' %} aria-current="page"{% endif %}>Education</a>
           <a href="/#track">Track</a>
         </nav>

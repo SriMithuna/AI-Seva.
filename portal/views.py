@@ -1,9 +1,15 @@
 
 import json
-from datetime import date
+import logging
+import secrets
+from datetime import date, timedelta
 
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.db import transaction
 from django.http import FileResponse, JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Q
@@ -11,11 +17,15 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from .models import Scheme, Application, CitizenProfile, Document
-from .forms import CitizenRegistrationForm
+from .models import Scheme, Application, CitizenProfile, Document, EmailOTP
+from .forms import CitizenRegistrationForm, EmailOTPForm
 from .chatbot_service import answer_chat_message
+
+
+logger = logging.getLogger(__name__)
 
 
 def parse_list(value):
@@ -287,19 +297,120 @@ def citizen_register(request):
         form = CitizenRegistrationForm(request.POST)
 
         if form.is_valid():
-            user = form.save()
-
-            CitizenProfile.objects.get_or_create(user=user)
-
-            messages.success(
-                request,
-                "Registration successful! Please log in."
-            )
-            return redirect("citizen_login")
+            if not settings.EMAIL_HOST_USER or not settings.EMAIL_HOST_PASSWORD:
+                form.add_error(
+                    None,
+                    "Email verification isn't configured yet. Add EMAIL_HOST_USER and EMAIL_HOST_PASSWORD to D:\\Ai-Seva\\.env, then restart Django.",
+                )
+            else:
+                try:
+                    with transaction.atomic():
+                        user = form.save(commit=False)
+                        user.is_active = False
+                        user.save()
+                        CitizenProfile.objects.update_or_create(
+                            user=user,
+                            defaults={"phone": form.cleaned_data["phone"]},
+                        )
+                        _issue_email_otp(user)
+                except Exception:
+                    logger.exception("Failed to send citizen email verification OTP")
+                    form.add_error(
+                        None,
+                        "We couldn't send the verification email. Check your Gmail App Password and SMTP settings, then try again.",
+                    )
+                else:
+                    request.session["email_otp_user_id"] = user.pk
+                    return redirect("verify_email")
     else:
         form = CitizenRegistrationForm()
 
     return render(request, "portal/register.html", {"form": form})
+
+
+def _issue_email_otp(user):
+    code = f"{secrets.randbelow(1_000_000):06d}"
+    EmailOTP.objects.update_or_create(
+        user=user,
+        defaults={
+            "code_hash": make_password(code),
+            "expires_at": timezone.now() + timedelta(minutes=5),
+            "attempts": 0,
+        },
+    )
+    send_mail(
+        subject="Your AI Seva verification code",
+        message=(
+            f"Your AI Seva email verification code is {code}. "
+            "It expires in 5 minutes. If you did not register, ignore this email."
+        ),
+        from_email=None,
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
+
+
+def _pending_email_user(request):
+    user_id = request.session.get("email_otp_user_id")
+    if not user_id:
+        return None
+    return User.objects.filter(pk=user_id, is_active=False).first()
+
+
+def verify_email(request):
+    user = _pending_email_user(request)
+    if user is None:
+        request.session.pop("email_otp_user_id", None)
+        messages.info(request, "Register first to verify your email address.")
+        return redirect("citizen_register")
+
+    form = EmailOTPForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        otp = EmailOTP.objects.filter(user=user).first()
+        if otp is None:
+            form.add_error(None, "No verification code is available. Request a new code.")
+        elif otp.attempts >= 5:
+            form.add_error("code", "Too many attempts. Request a new code to continue.")
+        elif otp.expires_at <= timezone.now():
+            form.add_error("code", "This code has expired. Request a new code.")
+        elif check_password(form.cleaned_data["code"], otp.code_hash):
+            user.is_active = True
+            user.save(update_fields=["is_active"])
+            otp.delete()
+            request.session.pop("email_otp_user_id", None)
+            messages.success(request, "Your email is verified. You can now sign in.")
+            return redirect("citizen_login")
+        else:
+            otp.attempts += 1
+            otp.save(update_fields=["attempts"])
+            form.add_error("code", "That code is incorrect. Check the email and try again.")
+
+    return render(request, "portal/verify_email.html", {
+        "form": form,
+        "email": user.email,
+    })
+
+
+@require_POST
+def resend_email_otp(request):
+    user = _pending_email_user(request)
+    if user is None:
+        request.session.pop("email_otp_user_id", None)
+        messages.info(request, "Register first to request a verification code.")
+        return redirect("citizen_register")
+
+    if not settings.EMAIL_HOST_USER or not settings.EMAIL_HOST_PASSWORD:
+        messages.error(request, "Email verification isn't configured. Add EMAIL_HOST_USER and EMAIL_HOST_PASSWORD to .env, then restart Django.")
+        return redirect("verify_email")
+
+    try:
+        _issue_email_otp(user)
+    except Exception:
+        logger.exception("Failed to resend citizen email verification OTP")
+        messages.error(request, "We couldn't send a new code. Check the Gmail SMTP settings and try again.")
+    else:
+        messages.success(request, "A new verification code was sent to your email.")
+    return redirect("verify_email")
 
 def abha_service(request):
     return render(request, "portal/services/abha.html")
@@ -415,7 +526,14 @@ def application_confirmation(request, tracking_id):
     return render(
         request,
         "portal/services/confirmation.html",
-        {"application": application},
+        {
+            "application": application,
+            "active_department": (
+                "education"
+                if application.scheme.department.code == "EDU"
+                else "agriculture"
+            ),
+        },
     )
 
 

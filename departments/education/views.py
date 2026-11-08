@@ -16,6 +16,7 @@ from portal.models import Department, Document, Scheme
 from .schemes import EDUCATION_SCHEMES
 from .services import EDUCATION_SERVICES
 from .slps import refresh_application_slps
+from .workflows import EDUCATION_PROCEDURES
 
 
 EDUCATION_ITEMS = EDUCATION_SCHEMES + EDUCATION_SERVICES
@@ -64,7 +65,11 @@ def education_apply(request, slug):
         initial["mobile_number"] = profile.phone
 
     if request.method == "POST":
-        form = EducationApplicationForm(request.POST, initial=initial)
+        form = EducationApplicationForm(
+            request.POST,
+            initial=initial,
+            require_slps_profile=True,
+        )
         details_form = details_form_class(request.POST, request.FILES)
         form_is_valid = form.is_valid()
         details_are_valid = details_form.is_valid()
@@ -130,12 +135,21 @@ def education_apply(request, slug):
                 tracking_id=application.tracking_id,
             )
     else:
-        form = EducationApplicationForm(initial=initial)
+        form = EducationApplicationForm(
+            initial=initial,
+            require_slps_profile=True,
+        )
         details_form = details_form_class()
 
-    return render(request, "education/apply.html", {
+    template_name = (
+        "education/central_sector_apply.html"
+        if slug == "central-sector-scholarship"
+        else "education/apply.html"
+    )
+    return render(request, template_name, {
         "form": form,
         "details_form": details_form,
         "item": item,
         "active_department": "education",
+        "procedure": EDUCATION_PROCEDURES.get(slug, []),
     })

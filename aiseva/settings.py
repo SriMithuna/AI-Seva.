@@ -102,6 +102,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'departments' / 'education' / 'templates',
             BASE_DIR / 'departments' / 'agriculture' / 'templates',
+            BASE_DIR / 'departments' / 'health' / 'templates',
         ],
 
         'APP_DIRS': True,
@@ -158,6 +159,25 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
+
+# Point @login_required views to AI Seva's custom login page.
+LOGIN_URL = '/login/'
+
+# Gmail SMTP configuration for email verification. Keep credentials in .env.
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.smtp.EmailBackend",
+)
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "true").lower() == "true"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL",
+    EMAIL_HOST_USER or "AI Seva <noreply@localhost>",
+)
+EMAIL_TIMEOUT = 10
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

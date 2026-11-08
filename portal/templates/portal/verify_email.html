@@ -1,0 +1,53 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verify email | AI Seva</title>
+  <style>
+    :root { --navy:#102f70; --orange:#ff982e; --cream:#fffaf3; --text:#182b4d; --muted:#78849a; --border:#e0e6ef; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; background:var(--cream); color:var(--text); font:15px Arial,sans-serif; }
+    .card { width:min(100%,460px); padding:36px; background:#fff; border:1px solid #edf0f5; border-radius:20px; box-shadow:0 15px 45px #102f7010; }
+    .brand { color:var(--navy); font-size:22px; font-weight:800; text-decoration:none; }
+    h1 { margin:26px 0 8px; color:var(--navy); font-size:28px; }
+    p { color:var(--muted); line-height:1.6; }
+    label { display:block; margin:22px 0 8px; font-size:13px; font-weight:700; }
+    input { width:100%; height:50px; padding:0 14px; border:1px solid var(--border); border-radius:9px; font:inherit; font-size:20px; letter-spacing:6px; }
+    button { width:100%; min-height:48px; margin-top:18px; border:0; border-radius:9px; background:var(--navy); color:#fff; font-size:15px; font-weight:700; cursor:pointer; }
+    .resend button { margin-top:12px; border:1px solid var(--border); background:#fff; color:var(--navy); }
+    .error, .message { margin-top:12px; padding:10px 12px; border-radius:8px; background:#fff0ef; color:#b42318; font-size:13px; }
+    .message.success { background:#effaf1; color:#176b2c; }
+    .back { display:block; margin-top:18px; color:var(--navy); text-align:center; font-size:13px; }
+    @media(max-width:520px) { .card { padding:26px 21px; } }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <a class="brand" href="/">AI Seva</a>
+    <h1>Verify your email</h1>
+    <p>Enter the 6-digit code we sent to <strong>{{ email }}</strong>. The code expires in 5 minutes.</p>
+
+    {% if messages %}
+      {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
+    {% endif %}
+    {% if form.non_field_errors %}<div class="error">{{ form.non_field_errors }}</div>{% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <label for="{{ form.code.id_for_label }}">6-digit code</label>
+      {{ form.code }}
+      {% for error in form.code.errors %}<div class="error">{{ error }}</div>{% endfor %}
+      <button type="submit">Verify email</button>
+    </form>
+
+    <form class="resend" method="post" action="{% url 'resend_email_otp' %}">
+      {% csrf_token %}
+      <button type="submit">Send a new code</button>
+    </form>
+    <a class="back" href="{% url 'citizen_register' %}">Back to registration</a>
+  </main>
+  {% include "portal/chatbot_widget.html" %}
+</body>
+</html>

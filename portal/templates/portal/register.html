@@ -307,6 +307,7 @@
             <p class="intro">
                 Join AI Seva to discover government schemes,
                 apply for services and track your applications in one place.
+                We’ll email you a 6-digit code to verify your address.
             </p>
 
             {% if messages %}
@@ -343,6 +344,14 @@
                         <label for="{{ form.email.id_for_label }}">Email address</label>
                         {{ form.email }}
                         {% for error in form.email.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="field full">
+                        <label for="{{ form.phone.id_for_label }}">Phone number</label>
+                        {{ form.phone }}
+                        {% for error in form.phone.errors %}
                             <div class="error">{{ error }}</div>
                         {% endfor %}
                     </div>

@@ -13,6 +13,10 @@ class AgricultureApplicantForm(EducationApplicationForm):
         self.fields["mobile_number"].widget.attrs["inputmode"] = "numeric"
         self.fields["address"].required = True
         self.fields.pop("purpose")
+        # Education-only fields are inherited from the shared applicant form.
+        # Agriculture requests do not collect priority categories or uploads.
+        self.fields.pop("priority_group", None)
+        self.fields.pop("supporting_document", None)
 
     def clean_mobile_number(self):
         number = self.cleaned_data["mobile_number"].strip()

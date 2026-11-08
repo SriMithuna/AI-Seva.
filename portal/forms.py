@@ -34,6 +34,16 @@ class CitizenRegistrationForm(UserCreationForm):
         })
     )
 
+    phone = forms.CharField(
+        max_length=15,
+        label="Phone number",
+        widget=forms.TextInput(attrs={
+            "placeholder": "10-digit mobile number",
+            "inputmode": "numeric",
+            "autocomplete": "tel",
+        }),
+    )
+
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(attrs={
@@ -58,6 +68,37 @@ class CitizenRegistrationForm(UserCreationForm):
             "password2",
         ]
 
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip()
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError("An account with this email address already exists.")
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data["phone"].strip()
+        if not phone.isdigit() or len(phone) != 10:
+            raise ValidationError("Enter a valid 10-digit mobile number.")
+        return phone
+
+
+class EmailOTPForm(forms.Form):
+    code = forms.CharField(
+        label="6-digit email code",
+        min_length=6,
+        max_length=6,
+        widget=forms.TextInput(attrs={
+            "placeholder": "Enter 6-digit code",
+            "inputmode": "numeric",
+            "autocomplete": "one-time-code",
+        }),
+    )
+
+    def clean_code(self):
+        code = self.cleaned_data["code"].strip()
+        if not code.isdigit():
+            raise ValidationError("Enter the six digits from your email.")
+        return code
+
 class EducationApplicationForm(forms.ModelForm):
     priority_group = forms.ChoiceField(
         required=False,
@@ -79,9 +120,14 @@ class EducationApplicationForm(forms.ModelForm):
         validators=[FileExtensionValidator(["pdf", "png", "jpg", "jpeg"]), validate_education_upload],
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, require_slps_profile=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["full_name"].required = True
+        if require_slps_profile:
+            # Education SLPS uses date of birth for its age factor and gender
+            # can distinguish the girl-student category after verification.
+            self.fields["date_of_birth"].required = True
+            self.fields["gender"].required = True
         self.fields["mobile_number"].required = True
 
     class Meta:
@@ -195,6 +241,11 @@ class CentralSectorScholarshipForm(forms.Form):
     class_12_percentage = forms.DecimalField(
         max_digits=5, decimal_places=2, min_value=0, max_value=100
     )
+    board_merit_details = forms.CharField(
+        max_length=200,
+        label="Board merit-list / percentile details",
+        help_text="Enter the information available on your Class 12 board result.",
+    )
     institution_name = forms.CharField(max_length=200)
     course_name = forms.CharField(max_length=150)
     current_year = forms.ChoiceField(choices=[
@@ -207,6 +258,32 @@ class CentralSectorScholarshipForm(forms.Form):
         max_length=4, min_length=4, label="Last 4 digits of bank account"
     )
     ifsc_code = forms.CharField(max_length=11)
+    application_type = forms.ChoiceField(
+        label="Application type",
+        choices=[("Fresh", "Fresh"), ("Renewal", "Renewal")],
+    )
+    other_scholarship = forms.ChoiceField(
+        label="Other scholarship or fee reimbursement received?",
+        choices=[("No", "No"), ("Yes", "Yes"), ("Not sure", "Not sure")],
+    )
+    class_12_marksheet = forms.FileField(
+        label="Class 12 marksheet",
+        validators=[FileExtensionValidator(["pdf", "png", "jpg", "jpeg"]), validate_education_upload],
+    )
+    admission_proof = forms.FileField(
+        label="Bonafide, college ID or admission proof",
+        validators=[FileExtensionValidator(["pdf", "png", "jpg", "jpeg"]), validate_education_upload],
+    )
+    income_certificate = forms.FileField(
+        required=False,
+        label="Income certificate (if required)",
+        validators=[FileExtensionValidator(["pdf", "png", "jpg", "jpeg"]), validate_education_upload],
+    )
+    previous_year_marksheet = forms.FileField(
+        required=False,
+        label="Previous-year marksheet (for renewal)",
+        validators=[FileExtensionValidator(["pdf", "png", "jpg", "jpeg"]), validate_education_upload],
+    )
 
 
 # ==========================================
