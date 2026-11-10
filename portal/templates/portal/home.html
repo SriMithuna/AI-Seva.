@@ -1296,7 +1296,11 @@
           Create account
         </a>
 
-        <a class="btn btn-out" href="#reco"> Sign in </a>
+        {% if user.is_authenticated %}
+        <a class="btn btn-out" href="{% url 'citizen_dashboard' %}">My dashboard</a>
+        {% else %}
+        <a class="btn btn-out" href="{% url 'citizen_login' %}">Sign in</a>
+        {% endif %}
 
         <button class="menu" id="menu" aria-label="Menu">
           <svg
@@ -1747,7 +1751,9 @@
           ? "/departments/agriculture/?type=scheme"
           : d.k === "health"
             ? "/departments/health/schemes/"
-            : null;
+            : d.k === "home"
+              ? "/departments/housing-rural/schemes/"
+              : null;
       $("#cg").innerHTML = D.map((d) => {
         const content = `<span class="ib">${ic(P[d.i])}</span><span class="n">${pl(d.sc.length, "Scheme")}</span><span class="nm">${d.n}</span>`;
         const href = departmentSchemeUrl(d);
@@ -1816,9 +1822,9 @@
       $("#dg").innerHTML = D.map(
         (d, i) =>
           `<div class="dp rv"
-      onclick="${d.k === "edu" ? "window.location.href='/departments/education/'" : d.k === "agri" ? "window.location.href='/departments/agriculture/'" : d.k === "health" ? "window.location.href='/departments/health/'" : ""}"
-      style="--d:${(i % 3) * 0.12}s;cursor:${["edu","agri","health"].includes(d.k) ? "pointer" : "default"}"
-      ${["edu","agri","health"].includes(d.k) ? `role="link" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"` : ""}>
+      onclick="${d.k === "edu" ? "window.location.href='/departments/education/'" : d.k === "agri" ? "window.location.href='/departments/agriculture/'" : d.k === "health" ? "window.location.href='/departments/health/'" : d.k === "home" ? "window.location.href='/departments/housing-rural/'" : ""}"
+      style="--d:${(i % 3) * 0.12}s;cursor:${["edu","agri","health","home"].includes(d.k) ? "pointer" : "default"}"
+      ${["edu","agri","health","home"].includes(d.k) ? `role="link" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"` : ""}>
       <div class="ic">${ic(P[d.i])}</div>
       <div>
         <h4>${d.n}</h4>

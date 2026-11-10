@@ -1,0 +1,19 @@
+{% extends "agriculture/base.html" %}
+{% block title %}{{ item.name }} | AI Seva{% endblock %}
+{% block content %}
+<main class="wrap" style="max-width:980px;padding:38px 0 64px">
+  <p><a href="{% url 'housing_rural:home' %}">Housing & Rural Development</a> / {{ item.name }}</p>
+  <h1 style="margin:16px 0 8px;color:#0b2a6b">{{ item.name }}</h1><p>{{ item.description }}</p>
+  <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(230px,.8fr);gap:24px;margin-top:22px">
+    <section style="padding:22px;border:1px solid #e1e5ed;border-radius:14px"><h2>Request guidance</h2><p>Signed-in citizens can create a trackable AI Seva request. This does not submit an application to a government system.</p>
+      <form method="post">{% csrf_token %}
+        <h3 style="margin:18px 0 8px">Applicant details</h3>{% for field in form %}<p>{{ field.label_tag }}{{ field }}{{ field.errors }}</p>{% endfor %}
+        <h3 style="margin:18px 0 8px">Location and request</h3>{% for field in details_form %}<p>{{ field.label_tag }}{{ field }}{{ field.errors }}</p>{% endfor %}
+        <p style="margin:14px 0;padding:12px;background:#fff8ed">Do not enter Aadhaar numbers, bank account numbers, PINs or passwords. Official verification happens through the linked government service.</p>
+        <button class="btn btn-saf" type="submit">Save guidance request</button>
+      </form>
+    </section>
+    <aside style="padding:20px;border:1px solid #e1e5ed;border-radius:14px"><h2>Prepare these details</h2><ul>{% for document in item.documents %}<li style="margin:9px 0">{{ document }}</li>{% endfor %}</ul><h3 style="margin-top:18px">Next steps</h3><ol>{% for step in item.workflow %}<li style="margin:9px 0">{{ step }}</li>{% endfor %}</ol><a href="{{ item.official_link }}" target="_blank" rel="noopener noreferrer">Open official portal ↗</a><p style="margin-top:12px;font-size:13px">Official eligibility, approval and benefit status are not connected to this prototype.</p></aside>
+  </div>
+</main>
+{% endblock %}

@@ -103,6 +103,7 @@ TEMPLATES = [
             BASE_DIR / 'departments' / 'education' / 'templates',
             BASE_DIR / 'departments' / 'agriculture' / 'templates',
             BASE_DIR / 'departments' / 'health' / 'templates',
+            BASE_DIR / 'departments' / 'housing_rural' / 'templates',
         ],
 
         'APP_DIRS': True,

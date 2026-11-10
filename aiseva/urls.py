@@ -18,6 +18,8 @@ urlpatterns = [
 
    path('departments/health/', include('departments.health.urls')),
 
+   path('departments/housing-rural/', include('departments.housing_rural.urls')),
+
     # Scheme recommendations
     path(
         'api/recommendations/',

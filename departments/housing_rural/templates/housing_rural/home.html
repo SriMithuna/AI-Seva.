@@ -1,0 +1,16 @@
+{% extends "agriculture/base.html" %}
+{% block title %}Housing & Rural Development | AI Seva{% endblock %}
+{% block content %}
+<main class="wrap" style="padding:42px 0 64px">
+  <p><a href="/">Home</a> / Housing & Rural Development</p>
+  <h1 style="margin:18px 0 8px;color:#0b2a6b">Housing & Rural Development</h1>
+  <p style="max-width:760px;color:#626b7b">Explore rural housing, social assistance and livelihood guidance. AI Seva creates a trackable request; official authorities make all eligibility and benefit decisions.</p>
+  <p style="margin:18px 0"><a href="{% url 'housing_rural:home' %}">All items</a> · <a href="{% url 'housing_rural:schemes' %}">Schemes only</a> · {{ scheme_count }} schemes · {{ service_count }} service</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:24px">
+  {% for item in items %}<article style="padding:22px;border:1px solid #e1e5ed;border-radius:14px;background:#fff">
+    <small>{{ item.item_type }}</small><h2 style="margin:8px 0;color:#0b2a6b">{{ item.name }}</h2><p>{{ item.summary }}</p><p style="margin-top:10px"><strong>Guidance:</strong> {{ item.eligibility }}</p>
+    <p style="margin-top:12px"><a href="{% url 'housing_rural:apply' item.slug %}">Prepare a request →</a> · <a href="{{ item.official_link }}" target="_blank" rel="noopener noreferrer">Official portal ↗</a></p>
+  </article>{% endfor %}
+  </div>
+</main>
+{% endblock %}
