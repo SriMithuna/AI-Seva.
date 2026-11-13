@@ -1,6 +1,7 @@
 from pathlib import Path
 
-path = Path("departments/education/templates/education/index.html")
+project_root = Path(__file__).resolve().parents[2]
+path = project_root / "departments/education/templates/education/index.html"
 content = path.read_text(encoding="utf-8")
 
 # Remove the misplaced service button from the scheme section

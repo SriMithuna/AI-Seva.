@@ -1,4 +1,5 @@
 {% extends "agriculture/base.html" %}
+{% load static %}
 
 {% block title %}Education | AI Seva{% endblock %}
 
@@ -6,14 +7,17 @@
   .crumbs { padding-top:24px; color:var(--soft); font-size:13px; }
   .crumbs a { color:var(--navy); text-decoration:none; }
   .edu-hero { padding:34px 0 40px; background:linear-gradient(180deg,#fff4e5 0,var(--bg) 94%); }
-  .hero-grid { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(245px,.7fr); gap:40px; align-items:center; }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:40px; align-items:center; }
   .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--grn); font-weight:700; font-size:13px; letter-spacing:.09em; text-transform:uppercase; }
   .eyebrow::before { content:""; width:24px; height:3px; border-radius:4px; background:var(--saf); }
   .edu-hero h1 { margin-top:12px; max-width:740px; color:var(--navy); font-size:clamp(34px,5vw,54px); line-height:1.08; font-weight:800; }
   .edu-hero h1 span { color:var(--grn); }
   .hero-copy { max-width:650px; margin:17px 0 22px; color:var(--soft); font-size:17px; }
   .hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
-  .hero-art { position:relative; min-height:230px; display:grid; place-items:center; }
+  .hero-art { position:relative; min-height:320px; display:block; margin:0; overflow:hidden; border-radius:22px; box-shadow:0 18px 42px rgba(11,42,107,.16); }
+  .department-illustration { display:block; width:100%; height:320px; object-fit:cover; }
+  .photo-credit { position:absolute; inset:auto 0 0; margin:0; padding:34px 15px 12px; color:#fff; background:linear-gradient(0deg,rgba(11,22,40,.76),transparent); font-size:11px; text-align:left; }
+  .photo-credit a { color:#fff; }
   .art-orbit { position:absolute; width:210px; aspect-ratio:1; border:1px dashed rgba(192,145,51,.5); border-radius:50%; }
   .art-disc { position:relative; width:158px; aspect-ratio:1; display:grid; place-items:center; border:1px solid #f2dfb8; border-radius:50%; background:linear-gradient(145deg,#fff0cf,#fffaf0); box-shadow:0 20px 50px rgba(158,112,37,.15); color:#8b641f; }
   .art-disc svg { width:82px; height:82px; }
@@ -79,15 +83,16 @@
   .step-card h3 { color:var(--navy); font-size:14px; }
   .step-card p { margin-top:4px; color:var(--soft); font-size:13px; }
   .disclaimer { margin-top:19px; padding:15px 17px; border-left:4px solid var(--saf); border-radius:8px; background:#fff5e8; color:#66543a; font-size:13px; }
-  @media(max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1fr) 250px; gap:20px; } .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media(max-width:700px) { .crumbs { padding-top:18px; } .edu-hero { padding:24px 0 30px; } .hero-grid { grid-template-columns:1fr; } .hero-art { display:none; } .hero-copy { margin:13px 0 18px; font-size:15px; } .stats-row { gap:9px; } .stat-box { padding:14px 10px; } .stat-num { font-size:23px; } .stat-label { font-size:11px; } .section { padding-top:38px; } .section-heading { display:block; } .toolbar { align-items:stretch; } .filters { width:100%; } .search-wrap { max-width:none; flex-basis:100%; } .card-grid { grid-template-columns:1fr; } .module-card { padding:19px; } .steps-grid { grid-template-columns:1fr; } .steps-section { padding:20px; } }
+  @media(max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1fr); gap:20px; } .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(max-width:700px) { .crumbs { padding-top:18px; } .edu-hero { padding:24px 0 30px; } .hero-grid { grid-template-columns:1fr; } .hero-art,.department-illustration { min-height:230px; height:230px; } .hero-copy { margin:13px 0 18px; font-size:15px; } .stats-row { gap:9px; } .stat-box { padding:14px 10px; } .stat-num { font-size:23px; } .stat-label { font-size:11px; } .section { padding-top:38px; } .section-heading { display:block; } .toolbar { align-items:stretch; } .filters { width:100%; } .search-wrap { max-width:none; flex-basis:100%; } .card-grid { grid-template-columns:1fr; } .module-card { padding:19px; } .steps-grid { grid-template-columns:1fr; } .steps-section { padding:20px; } }
   @media(prefers-reduced-motion:reduce) { .module-card,.card-details summary::after { transition:none; } }
 {% endblock %}
 
 {% block content %}
   <main>
-    <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><span>Education</span></div>
-    <section class="edu-hero">
+    <section class="edu-hero dept-hero-panel">
+      <img class="dept-hero-image" src="{% static 'portal/images/departments/photos/education.jpg' %}" alt="" aria-hidden="true" fetchpriority="high" />
+      <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><span>Education</span></div>
       <div class="wrap hero-grid">
         <div>
           <span class="eyebrow">Education department</span>
@@ -98,12 +103,6 @@
             <a class="btn btn-out" href="{% url 'citizen_dashboard' %}">Track my requests</a>
           </div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-orbit"></div>
-          <div class="art-disc"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22 32 9l25 13-25 13L7 22Z"/><path d="M17 28v13c8 7 22 7 30 0V28M57 22v19"/><path d="M24 49h16"/></svg></div>
-          <span class="art-badge badge-one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h7"/></svg></span>
-          <span class="art-badge badge-two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="m15 17 2 2 4-5"/></svg></span>
-        </div>
       </div>
       <div class="wrap stats-row" aria-label="Education support catalogue totals">
         <div class="stat-box"><span class="stat-num">{{ scheme_count }}</span><span class="stat-label">Scholarship &amp; loan schemes</span></div>
@@ -113,6 +112,7 @@
       <div class="wrap">
         <div class="edu-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg><span>AI Seva offers guidance and a demo request workflow. It does not submit an official scholarship or loan application.</span></div>
       </div>
+      <div class="dept-hero-credit"><a href="https://unsplash.com/photos/a-classroom-full-of-students-sitting-at-desks-I4lLt9g8i3k" target="_blank" rel="noopener noreferrer">Photo: CIMT Hooghly · Unsplash</a></div>
     </section>
 
     <section class="section wrap" id="education-catalog">

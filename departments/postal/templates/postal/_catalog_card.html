@@ -1,0 +1,6 @@
+<article class="postal-card">
+  <div class="postal-card-top"><span class="postal-type">{{ item.item_type }}</span>{% if item.slps_enabled %}<span class="postal-badge">Officer queue support</span>{% else %}<span class="postal-badge">Preparation tracking</span>{% endif %}</div>
+  <h2>{{ item.name }}</h2><p>{{ item.summary }}</p><p><strong>Eligibility:</strong> {{ item.eligibility }}</p>
+  <ul class="postal-docs">{% for doc in item.documents|slice:":3" %}<li>{{ doc }}</li>{% endfor %}</ul>
+  <a class="btn btn-saf" href="{% url 'postal:apply' item.slug %}">Prepare request →</a>
+</article>

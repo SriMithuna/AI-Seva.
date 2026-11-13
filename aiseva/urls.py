@@ -20,11 +20,20 @@ urlpatterns = [
 
    path('departments/housing-rural/', include('departments.housing_rural.urls')),
 
+   path('departments/labour-msme/', include('departments.labour_msme.urls')),
+
+   path('departments/postal/', include('departments.postal.urls')),
+
     # Scheme recommendations
     path(
         'api/recommendations/',
         views.scheme_recommendations,
         name='scheme_recommendations',
+    ),
+    path(
+        'recommendations/results/',
+        views.scheme_results,
+        name='scheme_results',
     ),
 
     # Chatbot

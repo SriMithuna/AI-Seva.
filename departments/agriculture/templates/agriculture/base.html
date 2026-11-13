@@ -8,7 +8,7 @@
     <title>{% block title %}Agriculture | AI Seva{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
     <style>
       :root {
         --saf:#ff9933; --saf-d:#d9770f; --grn:#138808; --grn-l:#e8f5e6;
@@ -17,12 +17,20 @@
       }
       *,*::before,*::after { box-sizing:border-box; }
       html { scroll-behavior:smooth; }
-      body { margin:0; color:var(--ink); background:var(--bg); font:16px/1.55 "Roboto",Arial,sans-serif; }
-      h1,h2,h3,h4 { margin:0; font-weight:700; letter-spacing:-.01em; }
+      body { margin:0; color:var(--ink); background:var(--bg); font:16px/1.55 "DM Sans",Arial,sans-serif; }
+      h1,h2,h3,h4 { margin:0; font-family:"Manrope","DM Sans",Arial,sans-serif; font-weight:700; letter-spacing:-.02em; }
       a { color:inherit; }
       button { font:inherit; cursor:pointer; }
       :focus-visible { outline:3px solid var(--navy); outline-offset:3px; }
       .wrap { width:min(1180px,100%); margin:0 auto; padding:0 24px; }
+      .dept-hero-panel { position:relative; isolation:isolate; display:flex; flex-direction:column; justify-content:center; min-height:520px; padding:48px 0 42px; overflow:hidden; background:#fffaf1; }
+      .dept-hero-panel.edu-hero,.dept-hero-panel.hero,.dept-hero-panel.postal-hero,.dept-hero-panel.lsm-hero { background:transparent; }
+      .dept-hero-panel::before { content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,rgba(255,253,249,.86),rgba(255,253,249,.72) 54%,rgba(255,253,249,.48)); pointer-events:none; }
+      .dept-hero-image { position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:.58; }
+      .dept-hero-panel > *:not(.dept-hero-image):not(.dept-hero-credit) { position:relative; z-index:2; }
+      .dept-hero-credit { position:absolute; z-index:3; right:max(24px,calc((100vw - 1180px)/2 + 24px)); bottom:12px; color:#655a49; font-size:11px; }
+      .dept-hero-credit a { color:inherit; }
+      @media (max-width:700px) { .dept-hero-panel { min-height:500px; padding:34px 0 38px; } .dept-hero-panel::before { background:rgba(255,253,249,.76); } .dept-hero-credit { right:18px; bottom:10px; left:18px; text-align:right; } }
       .flagbar { height:6px; background:linear-gradient(90deg,var(--saf) 33.3%,#fff 33.3% 66.6%,var(--grn) 66.6%); border-bottom:1px solid var(--line); }
       .site-header { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
       .nav { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
@@ -32,6 +40,15 @@
       .nav-links { display:flex; align-items:center; gap:25px; color:var(--soft); font-weight:500; }
       .nav-links a { text-decoration:none; transition:color .2s; }
       .nav-links a:hover,.nav-links a[aria-current="page"] { color:var(--navy); }
+      .nav-department-dropdown { position:relative; }
+      .nav-department-dropdown summary { display:flex; align-items:center; gap:9px; cursor:pointer; list-style:none; white-space:nowrap; }
+      .nav-department-dropdown summary::-webkit-details-marker { display:none; }
+      .nav-department-dropdown summary::after { content:""; width:7px; height:7px; margin-top:-4px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); transition:transform .18s; }
+      .nav-department-dropdown[open] summary::after { margin-top:4px; transform:rotate(225deg); }
+      .nav-department-menu { position:absolute; top:calc(100% + 12px); left:0; z-index:40; display:grid; gap:2px; min-width:250px; padding:8px; border:1px solid var(--line); border-radius:12px; background:#fff; box-shadow:0 14px 32px rgba(11,42,107,.14); }
+      .nav-department-menu a { display:block; padding:10px 12px; border-radius:7px; color:var(--soft); white-space:nowrap; }
+      .nav-department-menu a:hover,.nav-department-menu a[aria-current="page"] { background:#fff5e8; color:var(--navy); }
+      .nav-department-menu .nav-all-departments { margin-top:4px; border-top:1px solid var(--line); border-radius:0; padding-top:12px; color:var(--navy); font-weight:700; }
       .nav-actions { display:flex; align-items:center; gap:10px; }
       .btn { display:inline-flex; justify-content:center; align-items:center; gap:8px; padding:11px 19px; border:2px solid transparent; border-radius:8px; font-weight:700; text-decoration:none; transition:background .2s,color .2s,transform .2s,box-shadow .2s; }
       .btn:hover { transform:translateY(-1px); }
@@ -61,6 +78,11 @@
         .nav-links { display:none; position:absolute; top:68px; left:0; right:0; padding:16px 22px 20px; background:#fff; border-bottom:1px solid var(--line); box-shadow:0 12px 20px rgba(11,42,107,.08); flex-direction:column; align-items:stretch; gap:0; }
         .nav-links.open { display:flex; }
         .nav-links a { padding:11px 4px; }
+        .nav-department-dropdown { width:100%; }
+        .nav-department-dropdown summary { padding:11px 4px; }
+        .nav-department-menu { position:static; min-width:0; gap:0; margin:0 0 8px 8px; padding:4px 8px; border:0; border-left:2px solid var(--line); border-radius:0; background:transparent; box-shadow:none; }
+        .nav-department-menu a { padding:9px 10px; white-space:normal; }
+        .nav-department-menu .nav-all-departments { margin-top:4px; padding-top:10px; }
         .nav-actions { margin-left:auto; }
         .nav-actions .btn { padding:9px 12px; font-size:13px; }
         .logo { width:38px; height:38px; }
@@ -81,10 +103,18 @@
         </a>
         <nav class="nav-links" id="site-nav" aria-label="Main navigation">
           <a href="/#services">Services</a>
-          <a href="/#departments">Departments</a>
-          <a href="{% url 'agriculture:home' %}"{% if active_department == 'agriculture' %} aria-current="page"{% endif %}>Agriculture</a>
-          <a href="{% url 'health:home' %}"{% if active_department == 'health' %} aria-current="page"{% endif %}>Health</a>
-          <a href="{% url 'education_home' %}"{% if active_department == 'education' %} aria-current="page"{% endif %}>Education</a>
+          <details class="nav-department-dropdown">
+            <summary>Departments</summary>
+            <div class="nav-department-menu" aria-label="Department pages">
+              <a href="{% url 'education_home' %}"{% if active_department == 'education' %} aria-current="page"{% endif %}>Education</a>
+              <a href="{% url 'agriculture:home' %}"{% if active_department == 'agriculture' %} aria-current="page"{% endif %}>Agriculture</a>
+              <a href="{% url 'health:home' %}"{% if active_department == 'health' %} aria-current="page"{% endif %}>Health &amp; Wellness</a>
+              <a href="{% url 'housing_rural:home' %}"{% if active_department == 'housing_rural' %} aria-current="page"{% endif %}>Housing &amp; Rural</a>
+              <a href="{% url 'labour_msme:home' %}"{% if active_department == 'labour_msme' %} aria-current="page"{% endif %}>Labour &amp; MSME</a>
+              <a href="{% url 'postal:home' %}"{% if active_department == 'postal' %} aria-current="page"{% endif %}>Postal Services</a>
+              <a class="nav-all-departments" href="/#departments">Browse all departments</a>
+            </div>
+          </details>
           <a href="/#track">Track</a>
         </nav>
         <div class="nav-actions">
@@ -109,7 +139,7 @@
         </div>
         <div>
           <h2>Explore</h2>
-          <div class="footer-links"><a href="{% url 'agriculture:home' %}">Agriculture</a><a href="{% url 'education_home' %}">Education</a><a href="/#departments">Departments</a><a href="/#schemes">Browse schemes</a></div>
+          <div class="footer-links"><a href="{% url 'agriculture:home' %}">Agriculture</a><a href="{% url 'housing_rural:home' %}">Housing &amp; Rural Development</a><a href="{% url 'health:home' %}">Health</a><a href="{% url 'labour_msme:home' %}">Labour, Skill &amp; MSME</a><a href="{% url 'education_home' %}">Education</a><a href="/#departments">Departments</a><a href="/#schemes">Browse schemes</a></div>
         </div>
         <div>
           <h2>Your account</h2>

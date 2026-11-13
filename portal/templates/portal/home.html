@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -34,7 +34,7 @@
       }
 
       body {
-        font-family: "Roboto", sans-serif;
+        font-family: "DM Sans", sans-serif;
         background: var(--bg);
         color: var(--ink);
         line-height: 1.55;
@@ -44,7 +44,7 @@
       h2,
       h3,
       h4 {
-        font-family: "Roboto", sans-serif;
+        font-family: "Manrope", "DM Sans", sans-serif;
         font-weight: 700;
         letter-spacing: -0.01em;
       }
@@ -98,7 +98,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        font: 800 21px "Roboto";
+        font: 800 21px "DM Sans";
         color: var(--navy);
       }
       .brand em {
@@ -278,7 +278,7 @@
       .stat .cnt {
         display: block;
         font:
-          800 38px "Roboto",
+          800 38px "Manrope",
           sans-serif;
         color: var(--navy);
         line-height: 1.3;
@@ -393,7 +393,7 @@
         background: #ffffff;
         color: #536078;
 
-        font-family: "Roboto", sans-serif;
+        font-family: "DM Sans", sans-serif;
         font-size: 13.5px;
         font-weight: 600;
 
@@ -829,6 +829,7 @@
       .dp:hover .cn {
         color: #138808;
       }
+      .dp { color: inherit; text-decoration: none; font: inherit; }
       /* Scheme and service labels */
       .dp .cn {
         display: inline-block;
@@ -1039,6 +1040,32 @@
         margin-bottom: 14px;
         color: var(--navy);
       }
+      .inline-steps { display:flex; list-style:none; padding:0; margin:0 auto 20px; width:min(430px,100%); }
+      .inline-steps li { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; position:relative; z-index:1; color:#778397; font-size:11px; font-weight:650; text-align:center; }
+      .inline-steps li:not(:last-child)::after { content:""; position:absolute; z-index:-1; height:2px; background:#dce3eb; left:calc(50% + 15px); top:13px; width:calc(100% - 30px); }
+      .inline-steps li.done:not(:last-child)::after { background:var(--grn); }
+      .inline-steps .step-dot { display:grid; place-items:center; width:27px; height:27px; border:1px solid #cbd4de; border-radius:50%; background:#fff; color:#718096; font-size:11px; }
+      .inline-steps li.active { color:var(--grn); }
+      .inline-steps li.active .step-dot { border:2px solid var(--grn); color:var(--grn); box-shadow:0 0 0 3px rgba(19,136,8,.10); }
+      .inline-steps li.done .step-dot { background:var(--grn); border-color:var(--grn); color:#fff; }
+      .wizard-intro { color:#64748b!important; font-size:13px; margin:-6px 0 17px!important; }
+      .optional { color:#8793a2; font-size:11px; font-weight:500; }
+      .field-wide { grid-column:1/-1; }
+      .wizard-actions .btn { width:auto; margin:0; }
+      .wizard-actions .btn-grn { margin-left:auto; }
+      .wizard-hint { padding:10px 12px; border:1px solid #e6eaf0; background:#f7f9fb; border-radius:8px; }
+      .wizard-hint strong { color:var(--navy); }
+      .wizard-progress { display:flex; align-items:center; gap:12px; margin:0 0 18px; color:var(--soft); font-size:12px; font-weight:700; }
+      .wizard-track { flex:1; height:6px; border-radius:9px; overflow:hidden; background:#e9edf3; }
+      .wizard-track i { display:block; width:25%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--saf),var(--grn)); transition:width .3s ease; }
+      .wizard-step { display:none; min-height:170px; }
+      .wizard-step.active { display:block; animation:pop .25s both; }
+      .wizard-hint { color:#667085!important; font-size:12.5px; line-height:1.5; margin:12px 0 0!important; }
+      .wizard-actions { display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin-top:17px; }
+      .wizard-actions .btn { width:auto; margin:0; }
+      .wizard-actions [hidden] { display:none!important; }
+      .btn-back { background:#fff; border:1px solid var(--line); color:var(--navy); }
+      .wiz-reset { border:0; background:transparent; color:#667085; padding:8px 10px; cursor:pointer; font:inherit; font-size:12px; }
       .fg {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1077,6 +1104,7 @@
         width: 100%;
         margin-top: 16px;
       }
+      .fm .wizard-actions .btn { width:auto; margin-top:0; }
       .res {
         margin-top: 16px;
         display: grid;
@@ -1099,6 +1127,7 @@
         border-color: var(--saf);
         background: #fff4e5;
       }
+      .wizard-error { margin-top:14px; padding:11px 13px; border:1px solid #f2c7c4; border-radius:9px; background:#fff5f4; color:#9b2c25; font-size:13px; }
 
       /* track */
       .tk {
@@ -1352,7 +1381,7 @@
         <div class="wrap">
           <div class="head rv">
             <h2>Explore services</h2>
-            <p>Request any of 17 services online, across 8 departments.</p>
+            <p>Browse the available department services and open an application.</p>
           </div>
 
           <!-- Scroll hint -->
@@ -1397,56 +1426,41 @@
             <div>
               <h2>Not sure what you're eligible for?</h2>
               <p>
-                Answer a few quick questions and we'll match you against our 23
-                schemes, filtered by eligibility and ranked by fit.
+                Answer a few simple questions to see schemes that may fit your
+                profile, including central and Tamil Nadu programmes.
               </p>
               <button class="btn btn-saf" id="ro">Find my schemes</button>
-              <p class="note">Nothing you enter leaves this page.</p>
             </div>
             <div class="fm" id="fm">
-              <h4>A few details about you</h4>
-              <div class="fg">
-                <div>
-                  <label for="age">Age</label
-                  ><input
-                    id="age"
-                    type="number"
-                    min="0"
-                    max="120"
-                    placeholder="e.g. 34"
-                  />
-                </div>
-                <div>
-                  <label for="inc">Annual income (₹)</label
-                  ><input
-                    id="inc"
-                    type="number"
-                    min="0"
-                    placeholder="e.g. 180000"
-                  />
-                </div>
-                <div>
-                  <label for="occ">Occupation</label
-                  ><select id="occ">
-                    <option>Farmer</option>
-                    <option>Student</option>
-                    <option>Self-employed</option>
-                    <option>Salaried</option>
-                    <option>Unemployed</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="cat">Category</label
-                  ><select id="cat">
-                    <option>General</option>
-                    <option>OBC</option>
-                    <option>SC</option>
-                    <option>ST</option>
-                  </select>
-                </div>
-              </div>
-              <button class="btn btn-grn" id="rs">Get my schemes</button>
-              <div class="res" id="res" aria-live="polite"></div>
+              {% csrf_token %}
+              <ol class="inline-steps" id="step-list" aria-label="Questionnaire progress"><li class="active"><span class="step-dot">1</span>About you</li><li><span class="step-dot">2</span>Your location</li><li><span class="step-dot">3</span>Study &amp; work</li><li><span class="step-dot">4</span>Household</li></ol>
+              <section class="wizard-step active" data-panel="0"><h4>Tell us about yourself</h4><p class="wizard-intro">This helps us find programmes connected to your age, work and community.</p><div class="fg">
+                <div><label for="age">Age <span class="optional">· optional</span></label><input id="age" type="number" min="0" max="120" placeholder="For example, 34"></div>
+                <div><label for="inc">Annual household income (₹) <span class="optional">· optional</span></label><input id="inc" type="number" min="0" placeholder="Amount in rupees"></div>
+                <div><label for="gender">Gender <span class="optional">· optional</span></label><select id="gender"><option value="">Prefer not to say</option><option value="female">Female</option><option value="male">Male</option><option value="transgender">Transgender</option></select></div>
+                <div><label for="occ">Occupation <span class="optional">· optional</span></label><select id="occ"><option value="">Choose your occupation</option><option value="farmer">Farmer</option><option value="street_vendor">Street vendor</option><option value="artisan">Traditional artisan</option><option value="student">Student</option><option value="self_employed">Self-employed</option><option value="salaried">Salaried</option><option value="unemployed">Unemployed</option></select></div>
+                <div><label for="cat">Community category <span class="optional">· optional</span></label><select id="cat"><option value="">Choose a category</option><option>General</option><option>OBC</option><option>SC</option><option>ST</option><option>BPL</option></select></div>
+              </div></section>
+              <section class="wizard-step" data-panel="1"><h4>Where do you live?</h4><p class="wizard-intro">Some programmes are offered only in a particular state or area.</p><div class="fg">
+                <div><label for="state">State or Union Territory <span class="optional">· optional</span></label><select id="state"><option value="">Choose a state</option><option>Andhra Pradesh</option><option>Karnataka</option><option>Kerala</option><option>Maharashtra</option><option>Tamil Nadu</option><option>Telangana</option><option>Other</option></select></div>
+                <div><label for="area">Area of residence <span class="optional">· optional</span></label><select id="area"><option value="">Choose an area</option><option>Rural</option><option>Urban</option></select></div>
+              </div><p class="wizard-hint"><strong>Why we ask:</strong> State and area can affect which programme is relevant.</p></section>
+              <section class="wizard-step" data-panel="2"><h4>Study, work and health</h4><p class="wizard-intro">These answers help identify education, training and maternal support programmes.</p><div class="fg">
+                <div><label for="student-level">Current study level</label><select id="student-level"><option value="">Not currently studying</option><option value="post_matric">Post-matric</option><option value="undergraduate">Undergraduate</option><option value="postgraduate">Postgraduate</option></select></div>
+                <div><label for="pregnant">Are you currently pregnant?</label><select id="pregnant"><option value="">Prefer not to say</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div><label for="girl-child">Are you a parent or guardian of a girl under 10?</label><select id="girl-child"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div><label for="needs-loan">Are you looking for an education loan?</label><select id="needs-loan"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div><label for="seeking-training">Are you looking for vocational skill training?</label><select id="seeking-training"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+              </div></section>
+              <section class="wizard-step" data-panel="3"><h4>Household and support</h4><p class="wizard-intro">A few household details help us find housing, pension and targeted support options.</p><div class="fg">
+                <div><label for="head-household">Are you the head of your household?</label><select id="head-household"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div><label for="govt-school-girl">Are you a girl student who studied at a government school?</label><select id="govt-school-girl"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div><label for="pucca-house">Does your household own a pucca house?</label><select id="pucca-house"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div><label for="nsap-group">Are you 60+, a widow, or a person with a disability?</label><select id="nsap-group"><option value="">Choose an answer</option><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div class="field-wide"><label for="legal-aid-group">Do you meet a legal-aid eligibility category?</label><select id="legal-aid-group"><option value="">Not sure / prefer not to say</option><option value="true">Yes</option><option value="false">No</option></select></div>
+              </div><p class="wizard-hint"><strong>Legal aid:</strong> Eligibility may include women, children, SC/ST communities, persons with disabilities, and people who meet income criteria. Confirm with the Legal Services Authority.</p><p class="wizard-hint"><strong>General options:</strong> Public Provident Fund and Tele-Law may appear as open options; review their official requirements.</p></section>
+              <div class="wizard-error" id="wizard-error" role="alert" hidden></div>
+              <div class="wizard-actions"><button class="btn btn-back" id="wiz-back" type="button" hidden>← Back</button><button class="btn btn-grn" id="wiz-next" type="button">Next →</button><button class="wiz-reset" id="wiz-reset" type="button">Start over</button></div>
             </div>
           </div>
         </div>
@@ -1543,7 +1557,7 @@
         home: "M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6",
         law: "M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8",
         sci: "M3 12c0-2 4-4 9-4s9 2 9 4-4 4-9 4-9-2-9-4zM12 12h.01M8 4.500c2.500-1.500 6.500 3 7.500 8s.500 7-2.500 8",
-        skill: "M3 20h18M6 20v-6M11 20V9M16 20v-9M4 9l6-4 4 3 6-5",
+        skill: "M3 8h18v12H3zM8 8V5h8v3M3 13h18M12 13v2",
         soc: "M9 11a3 3 0 100-6 3 3 0 000 6zM3 20v-1a5 5 0 015-5h2a5 5 0 015 5v1M17 11a2.500 2.500 0 100-5M21 19v-1a4 4 0 00-3-3.800",
         sport:
           "M8 4h8v6a4 4 0 01-8 0zM8 6H4v1a3 3 0 003 3M16 6h4v1a3 3 0 01-3 3M12 14v4M8 21h8M9 18h6",
@@ -1555,7 +1569,7 @@
           "M12 3a4.500 4.500 0 100 9 4.500 4.500 0 000-9zM12 12v9M8.500 17h7",
         state:
           "M12 2v2M9.5 8V4h5v4M7.5 12V8h9v4M5.5 16v-4h13v4M3 21v-5h18v5M10.5 21v-3h3v3",
-        mail: "M3 7l9 6 9-6M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z",
+        mail: "M5 21V8a5 5 0 0110 0v10H5zM15 11h5v7h-5M5 13h10M15 7l5-3v6l-5-3",
         doc: "M7 3h8l4 4v14H7zM15 3v4h4M10 12h6M10 16h6",
         pin: "M12 21s-7-5.500-7-11a7 7 0 0114 0c0 5.500-7 11-7 11zM12 12a2.500 2.500 0 100-5 2.500 2.500 0 000 5z",
       };
@@ -1583,6 +1597,10 @@
             [
               "ABC ID Creation",
               "Create your Academic Bank of Credits ID to store and transfer course credits.",
+            ],
+            [
+              "Scholarship Application Status and Document Verification",
+              "Prepare a request for help with scholarship status or required documents.",
             ],
           ],
         },
@@ -1639,11 +1657,19 @@
           i: "home",
           c: "#2c6a9a",
           d: "Housing aid, rural pensions, livelihoods and job cards.",
-          sc: ["PMAY-Gramin", "PMAY-Urban", "NSAP Pensions", "DAY-NRLM"],
+          sc: ["PMAY-Gramin", "PMAY-Urban 2.0", "NSAP Pensions", "DAY-NRLM"],
           sv: [
             [
-              "MGNREGA Job Card Request",
-              "Request the job card you need to ask for rural wage work.",
+              "VB-G RAM G Job Card Request",
+              "Prepare a new rural household registration request for a Gramin Rozgar Guarantee Card.",
+            ],
+            [
+              "VB-G RAM G Employment Demand Follow-up",
+              "Follow up an official work demand and its statutory timeline.",
+            ],
+            [
+              "NSAP Pension Status Check",
+              "Prepare a status enquiry for the responsible pension authority.",
             ],
           ],
         },
@@ -1653,16 +1679,20 @@
           s: "Labour & MSME",
           i: "skill",
           c: "#b07d12",
-          d: "Skill training, street vendor loans and worker registration.",
-          sc: ["PM Kaushal Vikas Yojana", "PM SVANidhi", "PM Vishwakarma"],
+          d: "Skill training, worker grievances, artisan and vendor support, and MSME payment complaints.",
+          sc: ["PM Kaushal Vikas Yojana (PMKVY)", "PM SVANidhi", "PM Vishwakarma Yojana"],
           sv: [
             [
-              "e-Shram Registration",
-              "Register as an unorganised worker and get your Universal Account Number.",
+              "PMKVY Skill Training Registration",
+              "Request help finding or registering for PMKVY skill training.",
             ],
             [
-              "Udyam Registration",
-              "Register your micro, small or medium enterprise and get a certificate.",
+              "Labour Grievance Filing & Tracking (SAMADHAN)",
+              "Prepare a labour grievance guidance and tracking request.",
+            ],
+            [
+              "MSME Delayed Payment Complaint Filing & Tracking",
+              "Prepare guidance for an MSME delayed-payment complaint.",
             ],
           ],
         },
@@ -1680,12 +1710,16 @@
           ],
           sv: [
             [
-              "India Post Payments Bank Account Opening",
-              "Open a digital savings account through India Post.",
+              "Postal Grievance Filing and Tracking",
+              "Prepare a complaint about a postal transaction or service issue.",
             ],
             [
-              "Post Office Savings Account Opening",
-              "Open a small-savings account at your post office.",
+              "PLI/RPLI Claim Processing",
+              "Prepare a Postal Life Insurance claim request.",
+            ],
+            [
+              "Deceased Post Office Savings Claim Settlement",
+              "Prepare a nominee or legal-heir claim for a deceased account holder's postal savings.",
             ],
           ],
         },
@@ -1696,18 +1730,8 @@
           i: "law",
           c: "#b9502f",
           d: "Free legal help, tele-law, RTI guidance and e-courts.",
-          sc: ["Nyaya Bandhu", "Tele-Law"],
-          sv: [
-            [
-              "RTI Application Guidance",
-              "Get step-by-step help to file a Right to Information request.",
-            ],
-            [
-              "NALSA Legal Aid Assistance",
-              "Ask for free legal aid if you are eligible.",
-            ],
-            ["e-Courts Services", "Check case status and court orders online."],
-          ],
+          sc: ["Nyaya Bandhu", "Tele-Law", "Free Legal Aid"],
+          sv: [],
         },
         {
           k: "tn",
@@ -1716,21 +1740,8 @@
           i: "state",
           c: "#b23a48",
           d: "State schemes for women and students, plus state certificates.",
-          sc: ["Pudhumai Penn", "Kalaignar Magalir Urimai Thogai"],
-          sv: [
-            [
-              "Community Certificate Application",
-              "Apply online for your community certificate.",
-            ],
-            [
-              "Income Certificate Application",
-              "Apply online for your income certificate.",
-            ],
-            [
-              "Nativity Certificate Application",
-              "Apply online for your nativity certificate.",
-            ],
-          ],
+          sc: ["Pudhumai Penn", "Kalaignar Magalir Urimai Thogai", "Makkalai Thedi Maruthuvam"],
+          sv: [],
         },
       ];
       const pl = (n, w) => n + " " + w + (n === 1 ? "" : "s");
@@ -1738,11 +1749,21 @@
       const SERVICE_URLS = {
         "edu|NSP Student Registration": "/departments/education/apply/nsp-student-registration/",
         "edu|ABC ID Creation": "/departments/education/apply/abc-id-creation/",
+        "edu|Scholarship Application Status and Document Verification": "/departments/education/apply/scholarship-status-document-verification/",
         "agri|Soil Health Card Request": "/departments/agriculture/apply/soil-health-card/",
         "agri|e-NAM Farmer Registration": "/departments/agriculture/apply/enam-registration/",
         "health|ABHA Health ID Creation": "/departments/health/apply/abha/",
         "health|Ayushman Card Generation": "/departments/health/apply/ayushman-card/",
         "health|e-Sanjeevani Teleconsultation": "/departments/health/apply/e-sanjeevani/",
+        "home|VB-G RAM G Job Card Request": "/departments/housing-rural/apply/mgnrega-job-card/",
+        "home|VB-G RAM G Employment Demand Follow-up": "/departments/housing-rural/apply/vbg-ramg-employment-demand/",
+        "home|NSAP Pension Status Check": "/departments/housing-rural/apply/nsap-status-check/",
+        "skill|PMKVY Skill Training Registration": "/departments/labour-msme/apply/pmkvy-training-registration/",
+        "skill|Labour Grievance Filing & Tracking (SAMADHAN)": "/departments/labour-msme/apply/samadhan-grievance/",
+        "skill|MSME Delayed Payment Complaint Filing & Tracking": "/departments/labour-msme/apply/msme-delayed-payment/",
+        "mail|Postal Grievance Filing and Tracking": "/departments/postal/apply/postal-grievance/",
+        "mail|PLI/RPLI Claim Processing": "/departments/postal/apply/pli-rpli-claim/",
+        "mail|Deceased Post Office Savings Claim Settlement": "/departments/postal/apply/deceased-savings-claim/",
       };
       const serviceUrl = (dept, name) => SERVICE_URLS[`${dept}|${name}`];
       const departmentSchemeUrl = (d) => d.k === "edu"
@@ -1753,6 +1774,10 @@
             ? "/departments/health/schemes/"
             : d.k === "home"
               ? "/departments/housing-rural/schemes/"
+              : d.k === "skill"
+                ? "/departments/labour-msme/schemes/"
+                : d.k === "mail"
+                  ? "/departments/postal/schemes/"
               : null;
       $("#cg").innerHTML = D.map((d) => {
         const content = `<span class="ib">${ic(P[d.i])}</span><span class="n">${pl(d.sc.length, "Scheme")}</span><span class="nm">${d.n}</span>`;
@@ -1818,21 +1843,22 @@
         renderSv(b.dataset.f);
       };
 
-      // departments
-      $("#dg").innerHTML = D.map(
-        (d, i) =>
-          `<div class="dp rv"
-      onclick="${d.k === "edu" ? "window.location.href='/departments/education/'" : d.k === "agri" ? "window.location.href='/departments/agriculture/'" : d.k === "health" ? "window.location.href='/departments/health/'" : d.k === "home" ? "window.location.href='/departments/housing-rural/'" : ""}"
-      style="--d:${(i % 3) * 0.12}s;cursor:${["edu","agri","health","home"].includes(d.k) ? "pointer" : "default"}"
-      ${["edu","agri","health","home"].includes(d.k) ? `role="link" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"` : ""}>
-      <div class="ic">${ic(P[d.i])}</div>
-      <div>
-        <h4>${d.n}</h4>
-        <p>${d.d}</p>
-        <span class="cn">${pl(d.sc.length, "scheme")}, ${pl(d.sv.length, "service")}</span>
-      </div>
-    </div>`,
-      ).join("");
+      // Department cards open their full department page, matching the original navigation.
+      const DEPARTMENT_URLS = {
+        edu: "/departments/education/",
+        agri: "/departments/agriculture/",
+        health: "/departments/health/",
+        home: "/departments/housing-rural/",
+        skill: "/departments/labour-msme/",
+        mail: "/departments/postal/",
+      };
+      $("#dg").innerHTML = D.map((d, i) => {
+        const content = `<span class="ic" aria-hidden="true">${ic(P[d.i])}</span><div><h4>${d.n}</h4><p>${d.d}</p><span class="cn">${pl(d.sc.length, "scheme")}, ${pl(d.sv.length, "service")}</span></div>`;
+        const href = DEPARTMENT_URLS[d.k];
+        return href
+          ? `<a class="dp rv" href="${href}" style="--d:${(i % 3) * 0.12}s">${content}</a>`
+          : `<div class="dp rv" style="--d:${(i % 3) * 0.12}s">${content}</div>`;
+      }).join("");
 
       // reveal + counters
       const io = new IntersectionObserver(
@@ -1856,104 +1882,77 @@
       );
       document.querySelectorAll(".rv").forEach((el) => io.observe(el));
 
-      // recommender (demo rules, matched against the schemes above)
+      // Expand the questionnaire inside the homepage recommendation section.
       $("#ro").onclick = () => {
-        const o = $("#fm").classList.toggle("open");
-        $("#ro").textContent = o ? "Hide form" : "Find my schemes";
+        const opened = $("#fm").classList.toggle("open");
+        $("#ro").textContent = opened ? "Hide questions" : "Find my schemes";
+        if (opened) $("#fm").scrollIntoView({ behavior: "smooth", block: "center" });
       };
-      const SCH = [
-        [
-          "Post-Matric Scholarship",
-          "Fee waiver and stipend for SC/ST students",
-          (u) => u.occ === "Student" && (u.cat === "SC" || u.cat === "ST"),
-        ],
-        [
-          "Central Sector Scholarship",
-          "Support for college students from lower-income families",
-          (u) => u.occ === "Student" && u.inc <= 450000,
-        ],
-        [
-          "PM Vidyalaxmi",
-          "Collateral-free education loans",
-          (u) => u.occ === "Student",
-        ],
-        [
-          "PM-KISAN",
-          "Income support for farmers",
-          (u) => u.occ === "Farmer" && u.inc <= 500000,
-        ],
-        [
-          "PM Fasal Bima Yojana",
-          "Crop insurance against losses",
-          (u) => u.occ === "Farmer",
-        ],
-        [
-          "Kisan Credit Card",
-          "Short-term credit for farming needs",
-          (u) => u.occ === "Farmer",
-        ],
-        [
-          "Ayushman Bharat PM-JAY",
-          "Health insurance up to ₹5 lakh",
-          (u) => u.inc <= 250000,
-        ],
-        [
-          "PMAY-Gramin",
-          "Subsidy for a pucca home",
-          (u) => u.inc <= 300000 && u.occ !== "Salaried",
-        ],
-        [
-          "NSAP Pensions",
-          "Monthly pension for seniors",
-          (u) => u.age >= 60 && u.inc <= 300000,
-        ],
-        [
-          "PM Kaushal Vikas Yojana",
-          "Free vocational courses",
-          (u) => u.occ === "Unemployed" && u.age >= 18 && u.age <= 45,
-        ],
-        [
-          "PM SVANidhi",
-          "Working capital loans for street vendors",
-          (u) => u.occ === "Self-employed",
-        ],
-        [
-          "PM Vishwakarma",
-          "Support for traditional artisans",
-          (u) => u.occ === "Self-employed" && u.age >= 18,
-        ],
-        [
-          "Senior Citizens' Savings Scheme (SCSS)",
-          "Savings scheme for seniors",
-          (u) => u.age >= 60,
-        ],
-        [
-          "Public Provident Fund (PPF)",
-          "Long-term savings with tax benefits",
-          (u) => u.age >= 18,
-        ],
-      ];
-      $("#rs").onclick = () => {
-        const u = {
-          age: +$("#age").value,
-          inc: +$("#inc").value,
-          occ: $("#occ").value,
-          cat: $("#cat").value,
-        };
-        if (!$("#age").value || !$("#inc").value) {
-          $("#res").innerHTML =
-            '<div class="rc no"><b>Missing details</b>Enter your age and annual income to see matches.</div>';
+      const wizardPanels = [...document.querySelectorAll(".wizard-step")];
+      const wizardItems = [...document.querySelectorAll("#step-list li")];
+      let wizardIndex = 0;
+      const showWizardStep = (index) => {
+        wizardIndex = index;
+        wizardPanels.forEach((panel, i) => panel.classList.toggle("active", i === index));
+        wizardItems.forEach((item, i) => {
+          item.classList.toggle("active", i === index);
+          item.classList.toggle("done", i < index);
+          item.querySelector(".step-dot").textContent = i < index ? "✓" : String(i + 1);
+        });
+        $("#wiz-back").hidden = index === 0;
+        $("#wiz-next").textContent = index === 3 ? "Find matching schemes →" : "Next →";
+        $("#wizard-error").hidden = true;
+      };
+      const optionalBoolean = (id) => {
+        const value = $("#" + id).value;
+        return value === "" ? null : value === "true";
+      };
+      const readWizardProfile = () => ({
+        age: $("#age").value || null,
+        annual_income: $("#inc").value || null,
+        occupation: $("#occ").value,
+        category: $("#cat").value,
+        gender: $("#gender").value,
+        state: $("#state").value,
+        area: $("#area").value,
+        student_level: $("#student-level").value,
+        pregnant: optionalBoolean("pregnant"),
+        girl_child_under_10: optionalBoolean("girl-child"),
+        seeking_training: optionalBoolean("seeking-training"),
+        needs_loan: optionalBoolean("needs-loan"),
+        has_pucca_house: optionalBoolean("pucca-house"),
+        nsap_group: optionalBoolean("nsap-group"),
+        head_of_household: optionalBoolean("head-household"),
+        govt_school_girl: optionalBoolean("govt-school-girl"),
+        legal_aid_group: optionalBoolean("legal-aid-group"),
+      });
+      $("#wiz-next").onclick = async () => {
+        if (wizardIndex < 3) {
+          showWizardStep(wizardIndex + 1);
           return;
         }
-        const m = SCH.filter((s) => s[2](u));
-        $("#res").innerHTML = m.length
-          ? m
-              .map(
-                (s, i) =>
-                  `<div class="rc" style="--d:${i * 0.12}s"><b>${s[0]}</b>${s[1]}</div>`,
-              )
-              .join("")
-          : '<div class="rc no"><b>No exact match yet</b>Try the Services section or ask the assistant for help.</div>';
+        $("#wiz-next").disabled = true;
+        $("#wiz-next").textContent = "Finding matches…";
+        try {
+          const response = await fetch("/api/recommendations/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value },
+            body: JSON.stringify(readWizardProfile()),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Could not prepare recommendations. Please try again.");
+          window.location.assign(data.results_url);
+        } catch (error) {
+          $("#wizard-error").textContent = error.message || "Could not prepare recommendations. Please try again.";
+          $("#wizard-error").hidden = false;
+          $("#wiz-next").disabled = false;
+          $("#wiz-next").textContent = "Find matching schemes →";
+        }
+      };
+      $("#wiz-back").onclick = () => showWizardStep(Math.max(0, wizardIndex - 1));
+      $("#wiz-reset").onclick = () => {
+        ["age","inc","gender","occ","cat","state","area","student-level","pregnant","girl-child","seeking-training","needs-loan","head-household","govt-school-girl","pucca-house","nsap-group","legal-aid-group"].forEach(id => $("#" + id).value = "");
+        showWizardStep(0);
       };
 
       // tracker

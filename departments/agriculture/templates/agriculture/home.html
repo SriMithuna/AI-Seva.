@@ -1,4 +1,5 @@
 {% extends "agriculture/base.html" %}
+{% load static %}
 
 {% block title %}Agriculture | AI Seva{% endblock %}
 
@@ -6,14 +7,17 @@
   .crumbs { padding-top:24px; color:var(--soft); font-size:13px; }
   .crumbs a { color:var(--navy); text-decoration:none; }
   .hero { padding:35px 0 38px; background:linear-gradient(180deg,#fff4e5 0,var(--bg) 94%); }
-  .hero-grid { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr); gap:42px; align-items:center; }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:30px; align-items:center; }
   .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--grn); font-weight:700; font-size:13px; letter-spacing:.09em; text-transform:uppercase; }
   .eyebrow::before { content:""; width:24px; height:3px; border-radius:4px; background:var(--saf); }
   .hero h1 { margin-top:12px; max-width:760px; color:var(--navy); font-size:clamp(34px,5vw,54px); line-height:1.08; font-weight:800; }
   .hero h1 span { color:var(--grn); }
   .hero-copy { max-width:630px; margin:18px 0 22px; color:var(--soft); font-size:17px; }
   .hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
-  .hero-art { position:relative; min-height:235px; display:grid; place-items:center; }
+  .hero-art { position:relative; min-height:320px; display:block; margin:0; overflow:hidden; border-radius:22px; box-shadow:0 18px 42px rgba(11,42,107,.16); }
+  .department-illustration { display:block; width:100%; height:320px; object-fit:cover; }
+  .photo-credit { position:absolute; inset:auto 0 0; margin:0; padding:34px 15px 12px; color:#fff; background:linear-gradient(0deg,rgba(11,22,40,.76),transparent); font-size:11px; text-align:left; }
+  .photo-credit a { color:#fff; }
   .art-orbit { position:absolute; width:215px; aspect-ratio:1; border:1px dashed rgba(192,145,51,.45); border-radius:50%; }
   .art-disc { position:relative; width:164px; aspect-ratio:1; display:grid; place-items:center; border:1px solid #f2dfb8; border-radius:50%; background:linear-gradient(145deg,#fff0cf,#fffaf0); box-shadow:0 20px 50px rgba(158,112,37,.15); }
   .art-disc svg { width:96px; height:96px; color:#9b6b1b; }
@@ -72,15 +76,16 @@
   .official-link { color:var(--navy); font-size:13px; font-weight:700; text-decoration:none; }
   .official-link:hover { color:var(--saf-d); }
   .empty-state { grid-column:1/-1; display:none; padding:40px 20px; border:1px dashed #c8cfda; border-radius:14px; color:var(--soft); text-align:center; }
-  @media (max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1fr) 260px; gap:20px; } .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (max-width:700px) { .crumbs { padding-top:18px; } .hero { padding:24px 0 28px; } .hero-grid { grid-template-columns:1fr; } .hero-art { display:none; } .hero-copy { margin:13px 0 18px; font-size:15px; } .stats-row { gap:9px; } .stat-box { padding:14px 10px; } .stat-num { font-size:23px; } .stat-label { font-size:11px; } .section { padding-top:38px; } .section-heading { display:block; } .module-total { display:block; margin-top:10px; } .toolbar { align-items:stretch; } .filters { width:100%; } .search-wrap { max-width:none; flex-basis:100%; } .card-grid { grid-template-columns:1fr; } .module-card { padding:19px; } }
+  @media (max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1fr); gap:20px; } .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:700px) { .crumbs { padding-top:18px; } .hero { padding:24px 0 28px; } .hero-grid { grid-template-columns:1fr; } .hero-art,.department-illustration { min-height:230px; height:230px; } .hero-copy { margin:13px 0 18px; font-size:15px; } .stats-row { gap:9px; } .stat-box { padding:14px 10px; } .stat-num { font-size:23px; } .stat-label { font-size:11px; } .section { padding-top:38px; } .section-heading { display:block; } .module-total { display:block; margin-top:10px; } .toolbar { align-items:stretch; } .filters { width:100%; } .search-wrap { max-width:none; flex-basis:100%; } .card-grid { grid-template-columns:1fr; } .module-card { padding:19px; } }
   @media (prefers-reduced-motion:reduce) { .module-card,.module-card::before { transition:none; } }
 {% endblock %}
 
 {% block content %}
   <main>
-    <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><span>Agriculture</span></div>
-    <section class="hero">
+    <section class="hero dept-hero-panel">
+      <img class="dept-hero-image" src="{% static 'portal/images/departments/photos/agriculture.jpg' %}" alt="" aria-hidden="true" fetchpriority="high" />
+      <div class="wrap crumbs"><a href="/">Home</a><span aria-hidden="true"> / </span><span>Agriculture</span></div>
       <div class="wrap hero-grid">
         <div>
           <span class="eyebrow">Agriculture department</span>
@@ -92,26 +97,13 @@
           </div>
           <div class="notice"><span class="notice-icon" aria-hidden="true">i</span><span>AI Seva provides scheme guidance and tracks your demo request. It does not determine eligibility or submit applications to government systems.</span></div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-orbit"></div>
-          <div class="art-disc">
-            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M50 79V43M50 57c-15 0-24-9-24-23 14 0 24 8 24 23ZM50 49c0-15 9-25 25-25 0 15-10 25-25 25ZM27 80h48M34 87h34" />
-              <path d="M20 70c7 2 12 5 16 10M80 68c-7 2-12 5-16 10" opacity=".65" />
-            </svg>
-          </div>
-          <span class="art-leaf leaf-one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4C10 4 5 8 5 14c0 3 2 5 5 5 6 0 9-6 9-15Z"/><path d="M4 21c3-5 6-8 11-11"/></svg></span>
-          <span class="art-leaf leaf-two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V8m0 6c-4 0-6-2-6-6 4 0 6 2 6 6Zm0-3c0-4 2-6 6-6 0 4-2 6-6 6Z"/></svg></span>
-        </div>
       </div>
-    </section>
-
-    <section class="wrap" aria-label="Agriculture department overview">
-      <div class="stats-row">
+      <div class="wrap stats-row" aria-label="Agriculture department overview">
         <div class="stat-box"><span class="stat-num">{{ scheme_count }}</span><span class="stat-label">Government schemes</span></div>
         {% if not scheme_only %}<div class="stat-box"><span class="stat-num">{{ service_count }}</span><span class="stat-label">Farmer services</span></div>
         <div class="stat-box"><span class="stat-num">05</span><span class="stat-label">Ways AI Seva can guide you</span></div>{% endif %}
       </div>
+      <div class="dept-hero-credit"><a href="https://unsplash.com/photos/photo-of-man-standing-on-rice-field-fg5k00uT0TU" target="_blank" rel="noopener noreferrer">Photo: Nandhu Kumar · Unsplash</a></div>
     </section>
 
     <section class="section wrap" id="modules" aria-labelledby="modules-heading">

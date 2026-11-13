@@ -1,6 +1,7 @@
 
 import json
 import logging
+import re
 import secrets
 from datetime import date, timedelta
 
@@ -28,6 +29,93 @@ from .chatbot_service import answer_chat_message
 logger = logging.getLogger(__name__)
 
 
+MIN_RECOMMENDATION_SCORE = 50
+OPEN_SCHEME_SCORE = 55
+OPEN_SCHEME_LIMIT = 2
+
+# ``target`` identifies the intended audience. A target has to match positively
+# before a scheme is recommended. ``criteria`` are limits used to qualify and
+# label a match. These are guidance rules, not official eligibility decisions.
+SCHEME_MATCH_RULES = {
+    "pm-kisan": {"target": {"occupation": ["farmer"]}, "weight": 1.0},
+    "pmfby": {"target": {"occupation": ["farmer"]}, "weight": 1.0},
+    "kcc": {"target": {"occupation": ["farmer"]}, "weight": 0.92},
+    "pmmvy": {"target": {"pregnant": True}, "weight": 0.92},
+    "jsy": {"target": {"pregnant": True}, "weight": 1.0},
+    "sukanya-samriddhi": {"target": {"girl_child_under_10": True}, "weight": 0.92},
+    "scss": {"target": {"age": (60, None)}, "weight": 0.92},
+    "pm-svanidhi": {"target": {"occupation": ["street_vendor"]}, "weight": 1.0},
+    "pm-vishwakarma": {
+        "target": {"occupation": ["artisan"]}, "criteria": {"age": (18, None)}, "weight": 1.0,
+    },
+    "pmkvy": {
+        "target": {"seeking_training": True}, "criteria": {"age": (15, 45)}, "weight": 0.92,
+    },
+    "pmay-gramin": {
+        "target": {"area": ["rural"], "has_pucca_house": False}, "weight": 1.0,
+    },
+    "pmay-urban": {
+        "target": {"area": ["urban"], "has_pucca_house": False}, "weight": 1.0,
+    },
+    "day-nrlm": {
+        "target": {"area": ["rural"], "gender": ["female"]}, "weight": 0.92,
+    },
+    "nsap": {"target": {"nsap_group": True}, "weight": 1.0},
+    "post-matric": {"target": {"student_level": ["post_matric"]}, "weight": 0.92},
+    "central-sector": {"target": {"student_level": ["undergraduate"]}, "weight": 0.92},
+    "pm-vidyalaxmi": {
+        "target": {"student_level": ["undergraduate", "postgraduate"], "needs_loan": True},
+        "weight": 0.92,
+    },
+    # Income is a rough discovery proxy here. The official PM-JAY system
+    # determines beneficiary eligibility.
+    "pm-jay": {"target": {"income": (None, 300000)}, "weight": 1.0},
+    "nyaya-bandhu": {"target": {"legal_aid_group": True}, "weight": 0.92},
+    "free-legal-aid": {"target": {"legal_aid_group": True}, "weight": 0.92},
+    "kalaignar-magalir-urimai-thogai": {
+        "target": {"state": ["tamil nadu"], "gender": ["female"], "head_of_household": True},
+        "weight": 0.92,
+    },
+    "pudhumai-penn": {
+        "target": {"state": ["tamil nadu"], "gender": ["female"], "govt_school_girl": True},
+        "weight": 0.92,
+    },
+    "makkalai-thedi-maruthuvam": {
+        "target": {"state": ["tamil nadu"], "age": (45, None)}, "weight": 0.92,
+    },
+    "ppf": {"target": {}, "open": True, "weight": 0.92},
+    "tele-law": {"target": {}, "open": True, "weight": 0.92},
+}
+
+SCHEME_NAME_TO_SLUG = {
+    "pm-kisan": "pm-kisan",
+    "pm-fasal-bima-yojana": "pmfby",
+    "kisan-credit-card": "kcc",
+    "pm-matru-vandana-yojana": "pmmvy",
+    "janani-suraksha-yojana": "jsy",
+    "sukanya-samriddhi-yojana-ssy": "sukanya-samriddhi",
+    "senior-citizens-savings-scheme-scss": "scss",
+    "pm-svanidhi": "pm-svanidhi",
+    "pm-vishwakarma-yojana": "pm-vishwakarma",
+    "pradhan-mantri-kaushal-vikas-yojana-pmkvy": "pmkvy",
+    "pmay-gramin": "pmay-gramin",
+    "pmay-urban-2-0": "pmay-urban",
+    "day-nrlm": "day-nrlm",
+    "nsap-pensions": "nsap",
+    "post-matric-scholarship": "post-matric",
+    "central-sector-scholarship": "central-sector",
+    "pm-vidyalaxmi": "pm-vidyalaxmi",
+    "ayushman-bharat-pm-jay": "pm-jay",
+    "nyaya-bandhu": "nyaya-bandhu",
+    "free-legal-aid": "free-legal-aid",
+    "kalaignar-magalir-urimai-thogai": "kalaignar-magalir-urimai-thogai",
+    "pudhumai-penn": "pudhumai-penn",
+    "makkalai-thedi-maruthuvam": "makkalai-thedi-maruthuvam",
+    "public-provident-fund-ppf": "ppf",
+    "tele-law": "tele-law",
+}
+
+
 def parse_list(value):
     """Convert comma-separated eligibility values into a list."""
     return [
@@ -37,8 +125,58 @@ def parse_list(value):
     ]
 
 
+def _profile_scheme_slug(name):
+    normalized = re.sub(r"[^a-z0-9]+", "-", (name or "").casefold()).strip("-")
+    return SCHEME_NAME_TO_SLUG.get(normalized)
+
+
+def _matches_value(value, requirement):
+    """Return True/False for known values and None when the answer is missing."""
+    if value is None or value == "":
+        return None
+    if isinstance(requirement, list):
+        return str(value).strip().casefold() in {
+            str(option).strip().casefold() for option in requirement
+        }
+    if isinstance(requirement, bool):
+        return bool(value) == requirement
+    lower, upper = requirement
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return (lower is None or number >= lower) and (upper is None or number <= upper)
+
+
+def _optional_bool(value):
+    """Parse an optional JSON/form boolean without treating 'false' as true."""
+    if value is None or value == "":
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    normalized = str(value).strip().casefold()
+    if normalized in {"true", "1", "yes", "on"}:
+        return True
+    if normalized in {"false", "0", "no", "off"}:
+        return False
+    return None
+
+
 def home(request):
     return render(request, "portal/home.html")
+
+
+def scheme_results(request):
+    """Show the last recommendation run on its own results page."""
+    recommendations = request.session.get("scheme_recommendations")
+    if recommendations is None:
+        return redirect("home")
+    return render(request, "portal/scheme_results.html", {
+        "recommendations": recommendations,
+        "recommendation_count": len(recommendations),
+    })
 
 
 @staff_member_required
@@ -93,102 +231,98 @@ def application_track_api(request):
     })
 
 
-def get_recommendations(profile):
-    """Filter and rank schemes using configured eligibility criteria."""
-    age = profile.get("age")
-    income = profile.get("annual_income")
-    occupation = (profile.get("occupation") or "").strip().casefold()
-    category = (profile.get("category") or "").strip().casefold()
-    state = (profile.get("state") or "").strip().casefold()
+def get_recommendations(profile, tree_probs=None, top_k=6):
+    """Rank configured scheme matches with the target/criteria scoring model."""
+    catalogue = {
+        _profile_scheme_slug(scheme.name): scheme
+        for scheme in Scheme.objects.filter(
+            is_active=True, item_type="Scheme"
+        ).select_related("department")
+    }
+    results, open_items = [], []
 
-    schemes = Scheme.objects.filter(
-        is_active=True,
-        item_type="Scheme",
-    ).select_related("department")
-
-    recommendations = []
-
-    for scheme in schemes:
-        reasons = []
-        missing_details = []
-        score = 0
-        excluded = False
-
-        if scheme.min_age is not None or scheme.max_age is not None:
-            if age is None:
-                missing_details.append("age")
-            elif scheme.min_age is not None and age < scheme.min_age:
-                excluded = True
-            elif scheme.max_age is not None and age > scheme.max_age:
-                excluded = True
-            else:
-                score += 1
-                reasons.append("Your age matches the configured age criteria.")
-
-        if scheme.max_income is not None:
-            if income is None:
-                missing_details.append("annual income")
-            elif income > scheme.max_income:
-                excluded = True
-            else:
-                score += 1
-                reasons.append("Your annual income is within the configured limit.")
-
-        allowed_categories = parse_list(scheme.allowed_categories)
-        if allowed_categories:
-            if not category:
-                missing_details.append("category")
-            elif category not in allowed_categories:
-                excluded = True
-            else:
-                score += 1
-                reasons.append("Your category matches the configured criteria.")
-
-        allowed_occupations = parse_list(scheme.allowed_occupations)
-        if allowed_occupations:
-            if not occupation:
-                missing_details.append("occupation")
-            elif occupation not in allowed_occupations:
-                excluded = True
-            else:
-                score += 1
-                reasons.append("Your occupation matches the configured criteria.")
-
-        scheme_level = (
-            scheme.level or scheme.department.level or ""
-        ).casefold()
-        scheme_state = (scheme.state or "").strip().casefold()
-
-        if scheme_level == "state" or scheme_state:
-            required_state = scheme_state
-            if not required_state:
-                required_state = scheme.department.name.strip().casefold()
-
-            if not state:
-                missing_details.append("state")
-            elif required_state and required_state not in state:
-                excluded = True
-            else:
-                score += 1
-                reasons.append("Your state matches the scheme's configured state.")
-
-        if excluded:
+    for slug, rule in SCHEME_MATCH_RULES.items():
+        scheme = catalogue.get(slug)
+        if scheme is None:
             continue
 
-        if missing_details:
-            eligibility_status = "Needs more information"
-            reasons.append(
-                "Please provide: " + ", ".join(sorted(set(missing_details))) + "."
-            )
-        else:
-            eligibility_status = "Potential match"
-            if not reasons:
-                reasons.append(
-                    "No conflicting configured criteria were found. "
-                    "Verify the official eligibility requirements."
-                )
+        if rule.get("open"):
+            open_items.append({
+                "id": scheme.id,
+                "name": scheme.name,
+                "department": scheme.department.name,
+                "description": scheme.description,
+                "official_link": scheme.official_link,
+                "required_documents": scheme.required_documents.splitlines(),
+                "access_level": scheme.access_level,
+                "eligibility_status": "General option",
+                "relevance_score": OPEN_SCHEME_SCORE,
+                "score": OPEN_SCHEME_SCORE,
+                "scheme": slug,
+                "status": "General option",
+                "reasons": ["Available as a general option; check official eligibility and account requirements."],
+            })
+            continue
 
-        recommendations.append({
+        target_checks = [
+            _matches_value(profile.get(field), requirement)
+            for field, requirement in rule.get("target", {}).items()
+        ]
+        # A target audience must be affirmatively matched. Missing answers do
+        # not produce speculative target matches.
+        if not all(check is True for check in target_checks):
+            continue
+
+        criteria_checks = [
+            _matches_value(profile.get(field), requirement)
+            for field, requirement in rule.get("criteria", {}).items()
+        ]
+        failed = [check for check in criteria_checks if check is False]
+        if len(failed) > 1:
+            continue
+
+        hit_score = (
+            100 * sum(check is True for check in target_checks) / len(target_checks)
+            if target_checks else 40
+        )
+        need_score = 50
+        income = profile.get("income")
+        income_target = rule.get("target", {}).get("income")
+        if income is not None and income_target is not None and income_target[1]:
+            need_score = max(0, min(100, 100 * (1 - income / income_target[1])))
+        completeness = 100 if all(check is not None for check in criteria_checks) else 70
+        relevance_score = (
+            0.40 * hit_score
+            + 0.25 * need_score
+            + 0.20 * rule.get("weight", 1.0) * 100
+            + 0.15 * completeness
+        )
+        if tree_probs and slug in tree_probs:
+            relevance_score = 0.75 * relevance_score + 0.25 * 100 * tree_probs[slug]
+
+        if failed:
+            status = "Almost eligible"
+            relevance_score *= 0.6
+        elif any(check is None for check in criteria_checks):
+            status = "Check eligibility"
+        else:
+            status = "Strong match"
+
+        if relevance_score < MIN_RECOMMENDATION_SCORE:
+            continue
+
+        reasons = [
+            f"Matches the target profile: {field.replace('_', ' ')}."
+            for field, requirement in rule.get("target", {}).items()
+        ]
+        if failed:
+            reasons.append("One configured eligibility limit did not match; confirm the official rules.")
+        elif any(check is None for check in criteria_checks):
+            reasons.append("Some eligibility details still need confirmation.")
+        else:
+            reasons.append("Configured eligibility criteria match your answers; confirm with the official scheme authority.")
+
+        results.append({
             "id": scheme.id,
             "name": scheme.name,
             "department": scheme.department.name,
@@ -196,20 +330,16 @@ def get_recommendations(profile):
             "official_link": scheme.official_link,
             "required_documents": scheme.required_documents.splitlines(),
             "access_level": scheme.access_level,
-            "eligibility_status": eligibility_status,
-            "relevance_score": score,
+            "eligibility_status": status,
+            "relevance_score": round(relevance_score, 1),
+            "score": round(relevance_score, 1),
+            "scheme": slug,
+            "status": status,
             "reasons": reasons,
         })
 
-    recommendations.sort(
-        key=lambda item: (
-            item["eligibility_status"] == "Potential match",
-            item["relevance_score"],
-        ),
-        reverse=True,
-    )
-
-    return recommendations
+    results.sort(key=lambda item: -item["relevance_score"])
+    return results[:top_k] + open_items[:OPEN_SCHEME_LIMIT]
 
 
 @require_POST
@@ -241,21 +371,36 @@ def scheme_recommendations(request):
 
         normalized_profile = {
             "age": age,
+            "income": income,
             "annual_income": income,
-            "occupation": profile.get("occupation", ""),
+            "occupation": (profile.get("occupation", "") or "").strip().casefold().replace(" ", "_"),
             "category": profile.get("category", ""),
-            "state": profile.get("state", ""),
+            "state": (profile.get("state", "") or "").strip().casefold(),
+            "gender": (profile.get("gender", "") or "").strip().casefold(),
+            "area": (profile.get("area", "") or "").strip().casefold(),
+            "pregnant": _optional_bool(profile.get("pregnant")),
+            "girl_child_under_10": _optional_bool(profile.get("girl_child_under_10")),
+            "seeking_training": _optional_bool(profile.get("seeking_training")),
+            "student_level": (profile.get("student_level", "") or "").strip().casefold(),
+            "needs_loan": _optional_bool(profile.get("needs_loan")),
+            "has_pucca_house": _optional_bool(profile.get("has_pucca_house")),
+            "nsap_group": _optional_bool(profile.get("nsap_group")),
+            "head_of_household": _optional_bool(profile.get("head_of_household")),
+            "govt_school_girl": _optional_bool(profile.get("govt_school_girl")),
+            "legal_aid_group": _optional_bool(profile.get("legal_aid_group")),
         }
 
         results = get_recommendations(normalized_profile)
+        request.session["scheme_recommendations"] = results
 
         return JsonResponse({
             "count": len(results),
             "recommendations": results,
+            "results_url": "/recommendations/results/",
             "message": (
-                "These are potential matches based on the eligibility "
-                "rules configured in the database. Check official "
-                "scheme requirements before applying."
+                "These ranked results are guidance matches based on the "
+                "configured audience and criteria. Confirm requirements "
+                "with the official scheme authority."
             ),
         })
 

@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scheme recommendations | AI Seva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--saf:#ff9933;--saf-d:#d9770f;--grn:#138808;--grn-l:#e8f5e6;--navy:#0b2a6b;--ink:#1c2233;--soft:#505a70;--bg:#fffdf9;--line:#e7e2d8;--white:#fff}
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}h1,h2,h3{font-family:"Manrope","DM Sans",sans-serif;letter-spacing:-.01em}a{color:inherit;text-decoration:none}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 24px}.flagbar{height:6px;background:linear-gradient(90deg,var(--saf) 33.3%,#fff 33.3% 66.6%,var(--grn) 66.6%);border-bottom:1px solid var(--line)}
+    header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800;color:var(--navy);white-space:nowrap}.brand em{font-style:normal;color:var(--saf-d)}.logo-img{width:44px;height:44px;object-fit:contain;border-radius:8px}
+    .links{display:flex;align-items:center;gap:24px;color:var(--soft);font-weight:500}.links a:hover{color:var(--navy)}.btn{display:inline-block;padding:10px 17px;border:2px solid transparent;border-radius:8px;font-size:13px;font-weight:700;white-space:nowrap;transition:.2s}.btn-saf{background:var(--saf);color:#1c1200}.btn-saf:hover{background:var(--saf-d);color:#fff}.btn-out{border-color:var(--navy);color:var(--navy)}.btn-out:hover{background:var(--navy);color:#fff}
+    .hero{padding:54px 0 46px;background:linear-gradient(180deg,#fff4e5 0,var(--bg) 86%)}.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:45px;align-items:center}.eyebrow{font-size:12px;color:var(--grn);font-weight:800;letter-spacing:.11em;text-transform:uppercase}.hero h1{font-size:clamp(30px,4.4vw,46px);font-weight:800;line-height:1.12;color:var(--navy);margin:7px 0 12px}.hero p{font-size:16px;color:var(--soft);max-width:64ch}.chakra{width:min(210px,100%);margin:auto;opacity:.9}
+    .summary{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.summary span{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--soft);font-size:12px;font-weight:650}.summary strong{color:var(--navy)}
+    .section{padding:42px 0 66px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px}.section-head h2{font-size:clamp(22px,3vw,30px);color:var(--navy)}.section-head h2:after{content:"";display:block;width:58px;height:4px;margin-top:8px;border-radius:4px;background:linear-gradient(90deg,var(--saf) 50%,var(--grn) 50%)}.section-head p{margin-top:9px;color:var(--soft);font-size:14px}
+    .results{display:grid;gap:13px}.card{padding:20px 22px;background:linear-gradient(110deg,#fff 0,#fffdf9 100%);border:1px solid var(--line);border-left:4px solid var(--grn);border-radius:12px;box-shadow:0 6px 18px rgba(11,42,107,.055)}.card.needs-info{border-left-color:var(--saf)}.card.general{border-left-color:#8b93a5}
+    .card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.department{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:750;color:#777f8f;margin-bottom:4px}.card h3{font-size:19px;line-height:1.3;color:var(--navy)}.pills{display:flex;justify-content:flex-end;gap:7px;flex-wrap:wrap}.badge,.score{white-space:nowrap;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700}.badge{background:var(--grn-l);color:var(--grn)}.needs-info .badge{background:#fff0dd;color:#9a5b0a}.general .badge{background:#eef0f4;color:#596579}.score{background:#fff4e5;color:#9a5b0a}
+    .description{margin:10px 0;color:var(--soft);font-size:14px}.reasons{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.reason{font-size:12px;color:#38683a;background:var(--grn-l);border:1px solid #d8ead5;border-radius:7px;padding:5px 9px}.documents{margin:11px 0;color:var(--soft);font-size:12px}.official{display:inline-flex;margin-top:3px;padding:9px 13px;border-radius:8px;background:var(--navy);color:#fff;font-size:12px;font-weight:700}.official:hover{background:#123b8d}
+    .empty{padding:30px;background:#fff;border:1px solid var(--line);border-radius:12px;color:var(--soft);text-align:center}.notice{margin:20px 0 0;padding:13px 15px;border:1px solid #f0dfc9;background:#fffaf3;border-radius:9px;color:#77572d;font-size:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.footer{background:#071e4d;color:#c5cee2}.footer-grid{padding:32px 24px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}.footer-brand{font-size:19px;font-weight:800;color:#fff}.footer-brand em{font-style:normal;color:var(--saf)}.footer-note{font-size:13px;margin-top:6px}.copyright{padding:14px 24px;border-top:1px solid rgba(255,255,255,.14);font-size:12px;color:#9fb0d8}
+    @media(max-width:900px){.links{gap:13px;font-size:13px}.nav>.btn{display:none}.hero-grid{grid-template-columns:1fr .45fr;gap:20px}}
+    @media(max-width:680px){.nav{min-height:64px}.links{display:none}.hero{padding:36px 0 32px}.hero-grid{grid-template-columns:1fr}.chakra{display:none}.card-head{display:block}.pills{justify-content:flex-start;margin-top:10px}.section{padding-top:30px}.section-head{display:block}.wrap{padding:0 18px}.copyright{padding-left:18px}}
+  </style>
+</head>
+<body>
+  <div class="flagbar"></div>
+  <header><div class="wrap nav">
+    <a class="brand" href="/#top"><img class="logo-img" src="{% static 'portal/images/aiseva-logo.png' %}" alt="" onerror="this.style.display='none'"> <span>AI <em>Seva</em></span></a>
+    <nav class="links" aria-label="Main navigation"><a href="/#services">Services</a><a href="/#departments">Departments</a><a href="/#schemes">Schemes</a><a href="/#reco">Eligibility</a><a href="/#track">Track</a></nav>
+    <a class="btn btn-saf" href="{% url 'citizen_register' %}">Create account</a>
+    {% if user.is_authenticated %}<a class="btn btn-out" href="{% url 'citizen_dashboard' %}">My dashboard</a>{% else %}<a class="btn btn-out" href="{% url 'citizen_login' %}">Sign in</a>{% endif %}
+  </div></header>
+  <main id="top">
+    <section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">Scheme discovery</div><h1>Your possible scheme matches</h1><p>Review the programmes that may fit your profile. Confirm eligibility, current rules and application details with the official scheme authority.</p><div class="summary"><span><strong>{{ recommendation_count }}</strong> possible match{{ recommendation_count|pluralize }}</span><span>Ranked by configured fit</span></div></div>
+      <svg class="chakra" viewBox="0 0 200 200" fill="none" aria-hidden="true"><circle cx="100" cy="100" r="88" stroke="#0b2a6b" stroke-width="4"/><circle cx="100" cy="100" r="12" fill="#0b2a6b"/><g stroke="#0b2a6b" stroke-width="2.5"><path d="M100 12v76"/><path d="M100 12v76" transform="rotate(30 100 100)"/><path d="M100 12v76" transform="rotate(60 100 100)"/><path d="M100 12v76" transform="rotate(90 100 100)"/><path d="M100 12v76" transform="rotate(120 100 100)"/><path d="M100 12v76" transform="rotate(150 100 100)"/><path d="M100 12v76" transform="rotate(180 100 100)"/><path d="M100 12v76" transform="rotate(210 100 100)"/><path d="M100 12v76" transform="rotate(240 100 100)"/><path d="M100 12v76" transform="rotate(270 100 100)"/><path d="M100 12v76" transform="rotate(300 100 100)"/><path d="M100 12v76" transform="rotate(330 100 100)"/></g></svg>
+    </div></section>
+    <section class="section"><div class="wrap"><div class="section-head"><div><h2>Recommended for you</h2><p>Potential guidance matches based on the answers you provided.</p></div><a class="btn btn-out" href="/#reco">← Update answers</a></div>
+      {% if recommendations %}<div class="results" aria-label="Scheme recommendations">
+        {% for scheme in recommendations %}
+          <article class="card{% if scheme.eligibility_status == 'Check eligibility' or scheme.eligibility_status == 'Almost eligible' %} needs-info{% elif scheme.eligibility_status == 'General option' %} general{% endif %}">
+            <div class="card-head"><div><div class="department">{{ scheme.department }}</div><h3>{{ scheme.name }}</h3></div><div class="pills"><span class="badge">{{ scheme.eligibility_status }}</span><span class="score">Fit score {{ scheme.relevance_score|floatformat:0 }}/100</span></div></div>
+            {% if scheme.description %}<p class="description">{{ scheme.description }}</p>{% endif %}
+            {% if scheme.reasons %}<div class="reasons">{% for reason in scheme.reasons %}<span class="reason">{{ reason }}</span>{% endfor %}</div>{% endif %}
+            {% if scheme.required_documents %}<p class="documents"><strong>Documents to check:</strong> {{ scheme.required_documents|join:", " }}</p>{% endif %}
+            {% if scheme.official_link %}<a class="official" href="{{ scheme.official_link }}" target="_blank" rel="noopener noreferrer">Visit official scheme source ↗</a>{% endif %}
+          </article>
+        {% endfor %}
+      </div>{% else %}<div class="empty"><strong>No potential matches came up for these answers.</strong><br>Update your answers or browse the department catalogues for other schemes and services.</div>{% endif %}
+      <p class="notice"><strong>Please note:</strong> These are guidance matches, not an official eligibility decision or guarantee of approval. The responsible government department makes the final decision.</p>
+      <div class="actions"><a class="btn btn-saf" href="/#reco">Retake the questions</a><a class="btn btn-out" href="/#departments">Browse all departments</a></div>
+    </div></section>
+  </main>
+  <footer class="footer"><div class="wrap footer-grid"><div><div class="footer-brand">AI <em>Seva</em></div><p class="footer-note">One citizen portal for government schemes, applications and tracking.</p></div><div><a href="/#schemes">Browse schemes</a><br><a href="/#track">Track application</a></div></div><div class="wrap copyright">© 2026 AI Seva — Unified Government Citizen Portal. College project demo.</div></footer>
+</body>
+</html>
